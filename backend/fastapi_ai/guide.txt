@@ -1,0 +1,11 @@
+api document: https://documenter.getpostman.com/view/37883094/2sAXjF8EYb
+run: uvicorn main:app --reload
+download package: pip install requirements.txt
+
+pip install uvicorn
+pip install fastapi
+pip install sahi
+pip install torch torchvision torchaudio
+pip install IPython
+pip install ultralytics
+pip install python-multipart
