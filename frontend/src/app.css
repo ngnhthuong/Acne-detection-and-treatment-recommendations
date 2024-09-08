@@ -9,6 +9,8 @@
     --theme-off-button: rgba(79,89,102,.122);
     --theme-background-tag: #F3FFE4;
     --them-scrollbar: #ececee;
+    --theme-background-green: rgb(58, 144, 58);
+    --theme-background-orange: orange;
 }
 
 * {
@@ -16,7 +18,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-size: 15px;
+    font-size: 14.09px;
 }
 
 main {
@@ -24,4 +26,10 @@ main {
     width: 100vw;
     height: 100vh;
 }
+
+.box--shadow-btn {
+    box-shadow: inset 0px 2px 2px 0px rgba(255, 255, 255, 0.5),
+      7px 7px 20px 0px rgba(0, 0, 0, 0.1), 4px 4px 5px 0px rgba(0, 0, 0, 0.1);
+  }
+
 

@@ -22,7 +22,7 @@ MODEL_PATH = '/Users/nguyennhatthuong/Documents/ance_detection/acne_doctor-care_
 detection_model = AutoDetectionModel.from_pretrained(
     model_type= "yolov8",
     model_path = MODEL_PATH,
-    confidence_threshold=0.5,
+    confidence_threshold=0.1,
     device="cuda:0"
 )
 

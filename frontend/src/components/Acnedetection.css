@@ -1,4 +1,4 @@
-.acne__detection--split{
+.acne__detection--split {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -9,14 +9,16 @@
     padding-right: 10px;
 }
 
-.acne__detection--tool{
+.acne__detection--tool {
     display: flex;
     flex-direction: row;
     height: 161px;
     width: 100%;
+
+
 }
 
-.acne__detection--result{
+.acne__detection--result {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -25,42 +27,373 @@
     width: 100%;
 }
 
-.acne__detection--result-image{
+.acne__detection--result-image {
     width: 640px;
     height: 100%;
     min-width: 640px;
     max-width: 640px;
-    background-color: blueviolet;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background-color: var(--background-grey);
+    overflow: hidden;
 }
 
-.acne__detection--tag{
+.acne__detection--result-image-box {
+    width: 640px;
+    max-width: 640px;
+    min-width: 640px;
+    height: 640px;
+    min-height: 640px;
+    max-height: 640px;
+}
+
+.acne__detection--tag {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
     width: calc(100% - 650px);
     height: 100%;
-    background-color: burlywood;
+    border-radius: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    gap: 10px;
 }
 
-.acne__detection--tool-input-image{
+.acne__detection--tool-input-image {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     gap: 10px;
     height: 100%;
-    width: 189px;
-    background-color: var(--background-grey);
+    width: 164px;
+    background-color: var(--theme-background-green);
     border-radius: 20px;
-    border: 1px solid var(--green-light);
+    color: var(--color-icon);
+    font-weight: 200;
+}
+
+.acne__detection--tool-input-image:hover {
+    transform: scale(1.01);
+}
+
+.acne__detection--tool-input-image:active {
+    transform: scale(1);
+}
+
+.acne__detection--tool-image-tool-scroll {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+    width: calc(100% - 389px);
+    padding: 0 7px 0 7px;
+
+}
+
+.acne__detection--tool-images {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    height: 107px;
+    width: 100%;
+
+}
+
+
+
+.acne__detection--tool-image {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 113px;
+    border-radius: 10px;
+
+}
+
+.delete-btn {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: -2px;
+    left: -2px;
+    width: 20px;
+    height: 20px;
+    border-radius: 6px;
+    border: none;
+    background-color: red;
+}
+
+.delete-btn:hover {
+    cursor: pointer;
+    transform: scale(1.05);
+}
+
+.icon--element-mul {
+    color: white;
+    font-weight: bold;
+}
+
+.acne-image {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    border-radius: 10px;
+}
+
+.acne__detection--tool-scroll {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    width: 49%;
+    height: 100%;
+    border-radius: 10px;
+    background-color: var(--theme-background-green);
+}
+
+.acne__detection--tool-scrolls {
+    width: 100%;
+    height: calc(100% - 113px);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    color: var(--color-icon);
+    font-weight: 200;
+    font-size: 14px;
+}
+
+/* slider */
+.slider-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 210px;
     color: var(--color-icon);
 }
 
-.acne__detection--tool-image-tool-scroll{
-    height: 100%;
-    background-color: antiquewhite;
-    width: calc(100% - 389px);
+.slider {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 8px;
+    background: var(--green-light);
+    outline: none;
+    opacity: 0.7;
+    transition: opacity .2s;
+    border-radius: 5px;
 }
 
-.acne__detection--tool-model-logo-mode{
-    min-width: 200px;
-    height: 100%;
-    background-color: bisque;
+.slider:hover {
+    opacity: 1;
 }
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    background: var(--green-deep);
+    cursor: pointer;
+    border-radius: 50%;
+    border: 3.5px solid var(--green-light);
+}
+
+.slider::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    background: var(--green-light);
+    cursor: pointer;
+    border-radius: 50%;
+}
+
+
+/* logo mode */
+
+.acne__detection--tool-model-logo-mode {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-width: calc(100% - 650px);
+    height: 100%;
+}
+
+
+.acne__detection--tool-model-logo {
+    width: 100%;
+    height: 54%;
+    background-image: url(../assets/logo/logoWord.png);
+    background-size: cover;
+}
+
+/* model used, mode used */
+.acne__detection--tool-model-modes {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+    gap: 10px;
+    /* height: 30%; */
+}
+
+.acne__detection--tool-model-modes span {
+    color: var(--color-icon);
+}
+
+.acne__detection--tool-model-used,
+.acne__detection--tool-mode-used {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    width: 90%;
+    height: 50%;
+    font-weight: 200;
+}
+
+.select__option {
+    border-radius: 10px;
+    border: none;
+    min-height: 33px;
+    font-size: 14px;
+    width: 100%;
+    background-color: var(--theme-background-green);
+    color: var(--color-icon);
+    font-weight: 200;
+    padding: 0 20px;
+    padding-left: 20px;
+    background-image: linear-gradient(45deg, transparent 50%, white 50%),
+        linear-gradient(135deg, white 50%, transparent 50%);
+    background-position: calc(100% - 15px) center, calc(100% - 10px) center;
+    background-size: 5px 5px, 5px 5px;
+    background-repeat: no-repeat;
+    appearance: none;
+    outline: none;
+}
+
+
+.acne__detection--tag-labels {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 90%;
+    max-height: 115px;
+    /* Set maximum height to enable scrolling */
+    padding-top: 10px;
+    gap: 10px;
+    overflow-y: auto;
+    /* Enable vertical scrolling */
+    border-radius: 10px;
+    min-height: 65px;
+    max-height: 115px;
+}
+
+.acne__detection--tag-labels::-webkit-scrollbar {
+    display: none;
+    /* For Chrome, Safari, and Opera */
+}
+
+.acne__detection--tag-labels .labels {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 20px;
+    width: 100%;
+}
+
+
+.color-label {
+    height: 3px;
+    width: 22px;
+    background-color: brown;
+}
+
+.acne__detection--result-tag {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    height: 81%;
+    font-weight: 200;
+}
+
+.acne__detection--summary {
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    align-items: center;
+    width: 90%;
+    height: 16%;
+    gap: 10px;
+}
+
+.acne__detection--summary-total,
+.acne__detection--summary-level {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    min-height: 33px;
+    border-radius: 10px;
+    padding-left: 10px;
+    color: white;
+    font-weight: 200;
+    /* green orange red  = level 1-2-3*/
+    background-color: orange;
+}
+.acne__detection--summary-level {
+    width: 60%;
+}
+
+.acne__detection--summary-level-save-update{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    height: 33px;
+    width: 100%;
+}
+
+.acne__detection--summary-save{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 37%;
+    min-height: 33px;
+    border-radius: 10px;
+    color: white;
+    font-weight: 200;
+    background-color: var(--theme-background-green);
+}
+
+
+.acne__detection--summary-update{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 37%;
+    min-height: 33px;
+    border-radius: 10px;
+    color: white;
+    font-weight: 200;
+    background-color: #59b2f1;
+}
+
+

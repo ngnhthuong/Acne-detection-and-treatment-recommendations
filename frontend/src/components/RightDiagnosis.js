@@ -28,7 +28,7 @@ export default function RightDiagnosis() {
 
     return (
         <div className="right-diagnosis">
-            <div className={onOffChat ? "chatbox display-hidden" : "chatbox"} >
+            <div className={onOffChat ? "chatbox display-hidden box--shadow-btn" : "chatbox box--shadow-btn"} >
                 <div className="chatbox__message">
                     <div className="chatbox__message--user">
                         <div className="message">
@@ -83,7 +83,7 @@ export default function RightDiagnosis() {
                 </div>
                 <div className="chatbox__send">
                     <div className="chatbox__send--input">
-                        <textarea className="chatbox__send--text-input" name="text-input" id="text-input"></textarea>
+                        <textarea className="chatbox__send--text-input" placeholder="Ask me anything about acne..." name="text-input" id="text-input"></textarea>
                     </div>
                     <div className="chatbox__send--func">
                         <div className='chatbox__send--advance'>
@@ -120,14 +120,14 @@ export default function RightDiagnosis() {
             {
                 onOffChat ? (
                     <div className="button-close-open-chat button-close-open-chat__close">
-                        <button onClick={() => toggleOnOffChat()}>
-                            <ArrowRight className="icon--element" />
+                        <button className="chat-open__btn box--shadow-btn" onClick={() => toggleOnOffChat()}>
+                            <ArrowRight className="icon--element-arrow" />
                         </button>
                     </div>
                 ) : (
                     <div className="button-close-open-chat">
-                        <button onClick={() => toggleOnOffChat()}>
-                            <ArrowLeft className="icon--element" />
+                        <button className="chat-close__btn box--shadow-btn" onClick={() => toggleOnOffChat()}>
+                            <ArrowLeft className="icon--element-arrow" />
                         </button>
                     </div>
                 )
