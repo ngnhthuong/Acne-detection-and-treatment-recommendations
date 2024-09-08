@@ -228,7 +228,7 @@ export default function RightDiagnosis() {
                 </div>
             </div>
             <div className="acne__detection--result">
-                <div className="acne__detection--result-image box--shadow-btn">
+                <div className="acne__detection--result-image">
                     <div className="acne__detection--result-image-box">
                         {/* implement images */}
                         <BoundingBoxCanvas imageUrl={imageUrl} boxes={boxes} labelColors={labelColors} sliderConfidence = {sliderConfidence} overlapThreshold = {sliderOverlap}/>

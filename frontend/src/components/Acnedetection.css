@@ -38,7 +38,7 @@
     flex-direction: column;
     border-radius: 10px;
     border: 1px solid var(--border);
-    background-color: var(--background-grey);
+    /* background-color: var(--background-grey); */
     overflow: hidden;
 }
 
@@ -62,6 +62,7 @@
     padding-top: 10px;
     padding-bottom: 10px;
     gap: 10px;
+    background-color: var(--background-grey);
 }
 
 .acne__detection--tool-input-image {
@@ -298,6 +299,7 @@
     border-radius: 10px;
     min-height: 65px;
     max-height: 115px;
+    background-color: white;
 }
 
 .acne__detection--tag-labels::-webkit-scrollbar {
@@ -354,7 +356,7 @@
     color: white;
     font-weight: 200;
     /* green orange red  = level 1-2-3*/
-    background-color: orange;
+    background-color: var(--theme-background-orange);
 }
 .acne__detection--summary-level {
     width: 60%;
