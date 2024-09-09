@@ -1,12 +1,16 @@
 import React, { useRef, useEffect } from 'react';
 
-const BoundingBoxCanvas = ({ imageUrl, boxes, labelColors, sliderConfidence, overlapThreshold }) => {
+const BoundingBoxCanvas = ({ selectedOptionModeUsed, imageUrl, boxes, labelColors, sliderConfidence, overlapThreshold }) => {
   const canvasRef = useRef(null);
 
   useEffect(() => {
+    if (!imageUrl) return; 
+
     const canvas = canvasRef.current;
     const context = canvas.getContext('2d');
     const image = new Image();
+
+    image.src = imageUrl; 
 
     const calculateIoU = (boxA, boxB) => {
       const xA = Math.max(boxA.x_min, boxB.x_min);
@@ -22,7 +26,7 @@ const BoundingBoxCanvas = ({ imageUrl, boxes, labelColors, sliderConfidence, ove
     };
 
     const filterBoxes = (boxes) => {
-      const normalizedThreshold = overlapThreshold / 100; // Convert to decimal
+      const normalizedThreshold = overlapThreshold / 100;
       const filtered = [];
 
       boxes.forEach((box, index) => {
@@ -34,13 +38,11 @@ const BoundingBoxCanvas = ({ imageUrl, boxes, labelColors, sliderConfidence, ove
           const otherBox = boxes[otherIndex];
           const iou = calculateIoU(box, otherBox);
 
-          // Allow minimal overlap when threshold is 0%
           if (overlapThreshold === 0 && iou > 0) {
             keep = false;
             break;
           }
 
-          // Normal threshold logic
           if (iou >= normalizedThreshold) {
             if (box.confidence < otherBox.confidence) {
               keep = false;
@@ -58,9 +60,10 @@ const BoundingBoxCanvas = ({ imageUrl, boxes, labelColors, sliderConfidence, ove
     };
 
     image.onload = () => {
-      canvas.width = 640;
-      canvas.height = 640;
-      context.drawImage(image, 0, 0, 640, 640);
+      canvas.width = image.width;
+      canvas.height = image.height;
+      context.clearRect(0, 0, canvas.width, canvas.height);
+      context.drawImage(image, 0, 0, canvas.width, canvas.height);
 
       const filteredBoxes = filterBoxes(boxes);
 
@@ -74,7 +77,6 @@ const BoundingBoxCanvas = ({ imageUrl, boxes, labelColors, sliderConfidence, ove
           context.strokeStyle = labelColors[class_name];
         }
 
-        // Fill the bounding box area with a semi-transparent color
         context.globalAlpha = 0.2;
         context.fillRect(x_min, y_min, width, height);
         context.globalAlpha = 1.0;
@@ -82,38 +84,45 @@ const BoundingBoxCanvas = ({ imageUrl, boxes, labelColors, sliderConfidence, ove
         context.lineWidth = 1;
         context.strokeRect(x_min, y_min, width, height);
 
-        const label = `${class_name} ${Math.round(confidence * 100)}%`;
-        context.font = '200 12px Inter, sans-serif'; // Use Inter font with weight 200
-        context.textAlign = 'left'; // Align text to the left
-        context.textBaseline = 'top'; // Align text to the top
+        let label = '';
+        if (selectedOptionModeUsed === "all" || selectedOptionModeUsed === "drawall") {
+          label = `${class_name} ${Math.round(confidence * 100)}%`;
+        } else if (selectedOptionModeUsed === "drawlabel") {
+          label = `${class_name}`;
+        } else if (selectedOptionModeUsed === "drawconfidence") {
+          label = `${Math.round(confidence * 100)}%`;
+        }
+
+        context.font = '200 12px Inter, sans-serif';
+        context.textAlign = 'left';
+        context.textBaseline = 'top';
 
         const textWidth = context.measureText(label).width;
-        const textHeight = 15; // Approximate text height
-        const padding = 4; // Padding around the text
+        const textHeight = 15;
+        const padding = 4;
 
-        // Calculate background position with boundary checks
         let backgroundX = x_min;
         let backgroundY = y_min - textHeight - padding * 2;
 
-        // Adjust if the background rectangle goes beyond the canvas
         if (backgroundX + textWidth + padding * 2 > canvas.width) {
           backgroundX = canvas.width - textWidth - padding * 2;
         }
         if (backgroundY < 0) {
-          backgroundY = y_min + padding * 2; // Place below the bounding box
+          backgroundY = y_min + padding * 2;
         }
 
         context.fillStyle = labelColors[class_name];
         context.fillRect(backgroundX, backgroundY, textWidth + padding * 2, textHeight + padding * 2);
 
-        // Draw text
         context.fillStyle = 'black';
         context.fillText(label, backgroundX + padding, backgroundY + padding);
       });
     };
 
-    image.src = imageUrl;
-  }, [imageUrl, boxes, labelColors, sliderConfidence, overlapThreshold]);
+    image.onerror = () => {
+      console.error('Failed to load image.');
+    };
+  }, [imageUrl, boxes, labelColors, sliderConfidence, overlapThreshold, selectedOptionModeUsed]);
 
   return <canvas ref={canvasRef} />;
 };

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import "./navleft.css";
+import "./Navleft.css";
 import { ReactComponent as ReportIcon } from '../assets/icons/report.svg';
 import { ReactComponent as SettingIcon } from '../assets/icons/setting.svg';
 import { ReactComponent as LogoutIcon } from '../assets/icons/logout.svg';
@@ -24,7 +24,6 @@ export default function NavLeft() {
     const handleClickTest = () => {
         navigate('/test');
     };
-
     return (
         <div className="nav__left box--shadow-btn">
             <div className="nav__left--avatar">

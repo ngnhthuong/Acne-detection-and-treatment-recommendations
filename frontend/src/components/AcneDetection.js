@@ -111,12 +111,14 @@ export default function RightDiagnosis() {
     const [sliderConfidence, setSliderConfidence] = useState(50); // Giá trị mặc định là 50
     const [sliderOverlap, setSliderOverlap] = useState(50); // Giá trị mặc định là 50
     const [selectedOptionModelUsed, setSelectedOptionModelUsed] = useState('');
-    const [selectedOptionModeUsed, setSelectedOptionModeUsed] = useState('');
+    const [selectedOptionModeUsed, setSelectedOptionModeUsed] = useState('all');
+
 
     const handleChangeSelecteModelUsed = (event) => {
         setSelectedOptionModelUsed(event.target.value);
     };
     const handleChangeSelecteModeUsed = (event) => {
+        console.log(event.target.value);
         setSelectedOptionModeUsed(event.target.value);
     };
     const handleChangeSliderConfidence = (event) => {
@@ -139,7 +141,7 @@ export default function RightDiagnosis() {
             };
             reader.readAsDataURL(file);
         }
-        console.log('hihii',imageUrl)
+        // console.log('hihii',imageUrl)
     };
 
 
@@ -231,7 +233,7 @@ export default function RightDiagnosis() {
                 <div className="acne__detection--result-image">
                     <div className="acne__detection--result-image-box">
                         {/* implement images */}
-                        <BoundingBoxCanvas imageUrl={imageUrl} boxes={boxes} labelColors={labelColors} sliderConfidence = {sliderConfidence} overlapThreshold = {sliderOverlap}/>
+                        <BoundingBoxCanvas selectedOptionModeUsed={selectedOptionModeUsed} imageUrl={imageUrl} boxes={boxes} labelColors={labelColors} sliderConfidence = {sliderConfidence} overlapThreshold = {sliderOverlap}/>
                     </div>
                 </div>
                 <div className="acne__detection--tag box--shadow-btn">
@@ -246,8 +248,8 @@ export default function RightDiagnosis() {
                                     className="select__option box--shadow-btn"
                                 >
                                     <option value="" disabled>Select an model option</option>
-                                    <option value="option1" >Yolo + Sahi</option>
-                                    <option value="option2" >RestNet</option>
+                                    <option value="yolosahi" >Yolo + Sahi</option>
+                                    <option value="resnet" >RestNet</option>
                                 </select>
                             </div>
                             <div className="acne__detection--tool-mode-used">
@@ -258,9 +260,10 @@ export default function RightDiagnosis() {
                                     onChange={handleChangeSelecteModeUsed}
                                     className="select__option box--shadow-btn"
                                 >
-                                    <option value="" disabled>Select an mode option</option>
-                                    <option value="option1" >Draw Labels</option>
-                                    <option value="option2" >Draw Confidence</option>
+                                    <option value="all" disabled>Select an mode option</option>
+                                    <option value="drawall" >Draw All</option>
+                                    <option value="drawlabel" >Draw Labels</option>
+                                    <option value="drawconfidence" >Draw Confidence</option>
                                 </select>
                             </div>
                         </div>

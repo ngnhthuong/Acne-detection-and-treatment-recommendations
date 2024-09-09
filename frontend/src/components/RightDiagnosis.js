@@ -1,6 +1,6 @@
 // Diagnosis.js
 import React, { useState } from "react";
-import "./rightDiagnosis.css";
+import "./RightDiagnosis.css";
 import { ReactComponent as ArrowLeft } from '../assets/icons/arrow-left.svg';
 import { ReactComponent as Send } from '../assets/icons/send.svg';
 import { ReactComponent as Gpt } from '../assets/icons/gpt.svg';
