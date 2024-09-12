@@ -8,15 +8,7 @@ import { ReactComponent as DemoIcon } from '../assets/icons/demo.svg';
 import { ReactComponent as ScanIcon } from '../assets/icons/scan.svg';
 import { ReactComponent as MedicalRecordIcon } from '../assets/icons/medicalrecord.svg';
 import Avatar from '../assets/avatars/avatar.jpg';
-
-const Tooltip = ({ text, children }) => {
-    return (
-        <div className="tooltip">
-            {children}
-            <div className="tooltiptext box--shadow-btn">{text}</div>
-        </div>
-    );
-};
+import Tooltip from './Tooltip';
 
 export default function NavLeft() {
     const navigate = useNavigate();
@@ -24,6 +16,7 @@ export default function NavLeft() {
     const handleClickTest = () => {
         navigate('/test');
     };
+    
     return (
         <div className="nav__left box--shadow-btn">
             <div className="nav__left--avatar">
@@ -43,7 +36,7 @@ export default function NavLeft() {
                             <ScanIcon className="icon--element" />
                         </div>
                     </Tooltip>
-                    <Tooltip text="Medical Record">
+                    <Tooltip text="Skin health monitoring">
                         <div className="icon" onClick={handleClickTest}>
                             <MedicalRecordIcon className="icon--element" />
                         </div>
@@ -60,7 +53,7 @@ export default function NavLeft() {
                             <LogoutIcon className="icon--element" />
                         </div>
                     </Tooltip>
-                    <Tooltip text="Report">
+                    <Tooltip text="Feedback">
                         <div className="icon">
                             <ReportIcon className="icon--element" />
                         </div>

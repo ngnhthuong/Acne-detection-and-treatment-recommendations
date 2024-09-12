@@ -128,3 +128,5 @@ const BoundingBoxCanvas = ({ selectedOptionModeUsed, imageUrl, boxes, labelColor
 };
 
 export default BoundingBoxCanvas;
+
+
