@@ -1,18 +1,24 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { ReactComponent as UploadImg } from "../assets/icons/upload-img.svg";
 import { ReactComponent as MultipleImg } from "../assets/icons/multiple.svg";
-import logoImg from "../assets/logo/logoWord.png";
 import "./AcneDetectionFuncHead.css";
 import ImgDiagnoisis from "./ImgDiagnoisis";
-
+import { useSelector, useDispatch } from "react-redux";
 const AcneDetectionFuncHead = ({
   handleImageUpload,
   toggleUploadAndCropImageDialogOpen,
   imageBase64ArrayPredict,
+  handleChangeSelectedImage,
+  base64Image,
 }) => {
   const totalSlots = 4; // Fixed number of ImgDiagnoisis components
   const filledSlots = imageBase64ArrayPredict.length;
   const emptySlots = totalSlots - filledSlots;
+  const images = useSelector((state) => state.acnePredictionDaily.images);
+  useEffect(() => {
+    console.log("imagessssss", images);
+    console.log(images.length)
+  }, [images]);
 
   return (
     <>
@@ -26,23 +32,21 @@ const AcneDetectionFuncHead = ({
       </div>
       <div className="acne__detection--tool-image-tool-scroll">
         <div className="acne__detection--tool-images">
-          {/* Render filled slots with data */}
-          {imageBase64ArrayPredict.map((base64, index) => (
+          {images.map((object, index) => (
             <ImgDiagnoisis
-              key={base64.id_img}
+              key = {index}
               tag="1"
-              id_img={base64.id_img}
-              base64={base64.img}
-              onDelete={handleImageUpload}
-            />
+              image_id = {object.image_id}
+              base64Image= {object.image_base64}
+              handleChangeSelectedImage ={handleChangeSelectedImage}
+     x       />
           ))}
-          {/* Render empty slots */}
-          {Array.from({ length: emptySlots }, (_, index) => (
+          {Array.from({ length: 4 - images.length }, (_, index) => (
             <ImgDiagnoisis
               key={`empty-${index}`}
               tag="1" 
               id_img={null}
-              base64={null} 
+              base64Image= {null}
               onDelete={() => {}}
             />
           ))}

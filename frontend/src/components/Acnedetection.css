@@ -12,7 +12,7 @@
 .acne__detection--tool {
     display: flex;
     flex-direction: row;
-    height: 113px;
+    min-height: 113px;
     width: 100%;
 }
 

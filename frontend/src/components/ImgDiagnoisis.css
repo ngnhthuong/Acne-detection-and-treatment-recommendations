@@ -8,15 +8,14 @@
     padding: 0 7px 0 7px;
 }
 
-.acne__detection--tool-images {
+/* .acne__detection--tool-images {
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    height: 107px;
+    height: 100%;
     width: 100%;
-
-}
+} */
 
 .acne__detection--tool-image {
     position: relative;
@@ -67,6 +66,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    overflow: hidden;
 }
 
 .acne-image.faded {
@@ -79,7 +79,10 @@
 
 .responsive-image {
     max-width: 100%;
-    height: auto;
-    object-fit: contain; /* Use 'cover' if you want the image to fill the container */
-    border-radius: 10px; /* Optional: same border-radius as the container */
+    object-fit: contain;
 } 
+
+.active-image {
+    border: 2px solid var(--green-light);
+    border-radius: 10px;
+}

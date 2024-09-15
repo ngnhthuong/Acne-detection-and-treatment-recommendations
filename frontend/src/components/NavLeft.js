@@ -26,12 +26,7 @@ export default function NavLeft() {
             </div>
             <div className="nav__left--func">
                 <div className="nav__left--head">
-                    <Tooltip text="Demo">
-                        <div className="icon">
-                            <DemoIcon className="icon--element" />
-                        </div>
-                    </Tooltip>
-                    <Tooltip text="Acne scan">
+                    <Tooltip text="Acne scan daily">
                         <div className="icon">
                             <ScanIcon className="icon--element" />
                         </div>
@@ -39,6 +34,11 @@ export default function NavLeft() {
                     <Tooltip text="Skin health monitoring">
                         <div className="icon" onClick={handleClickTest}>
                             <MedicalRecordIcon className="icon--element" />
+                        </div>
+                    </Tooltip>
+                    <Tooltip text="Demo">
+                        <div className="icon">
+                            <DemoIcon className="icon--element" />
                         </div>
                     </Tooltip>
                 </div>
