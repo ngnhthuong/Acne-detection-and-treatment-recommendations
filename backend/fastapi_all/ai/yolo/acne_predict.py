@@ -22,7 +22,7 @@ MODEL_PATH = '/Users/nhatthuong/Documents/Acne-detection-and-treatment-recommend
 detection_model = AutoDetectionModel.from_pretrained(
     model_type= "yolov8",
     model_path = MODEL_PATH,
-    confidence_threshold=0.1,
+    confidence_threshold=0.05,
     device="cuda:0"
 )
 
@@ -54,8 +54,8 @@ def acnePredictWithSahi(file_path):
     result = get_sliced_prediction(
         file_path,  # Sử dụng file_path đã được truyền vào
         detection_model=detection_model,
-        slice_height=128,
-        slice_width=128,
+        slice_height=258,
+        slice_width=258,
         overlap_height_ratio=0.2,
         overlap_width_ratio=0.2
     )

@@ -69,8 +69,6 @@ async def delete_and_put_upload_files(user_id: str, data: DeleteAndAddBase64Img)
     if not acne_treatment:
         raise HTTPException(status_code=404, detail="Today have no history")
 
-        
-    
     # Lọc bỏ các hình ảnh và hình ảnh dự đoán có image_id nằm trong img_id_remove_list
     updated_images = [img for img in acne_treatment.get("images", []) if img["image_id"] not in data.img_id_remove_list]
     updated_predicted_images = [img_predict for img_predict in acne_treatment.get("predicted_images", []) if img_predict["image_id"] not in data.img_id_remove_list]

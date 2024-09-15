@@ -5,7 +5,7 @@ def acneDetectionFormat(acne_detection) -> dict:
         "id": str(acne_detection['_id']),
         "user_id": acne_detection['user_id'],
         "images": [
-            {"image_id": image["image_id"], "image": image["image"]} for image in acne_detection['images']
+            {"image_id": image["image_id"], "image_base64": image["image_base64"]} for image in acne_detection['images']
         ],
         "predicted_images": [
             {
