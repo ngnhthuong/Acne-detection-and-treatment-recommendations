@@ -1,0 +1,8 @@
+run: uvicorn index:app --reload
+pip install uvicorn
+pip install fastapi
+pip install sahi
+pip install torch torchvision torchaudio
+pip install IPython
+pip install ultralytics
+pip install python-multipart
