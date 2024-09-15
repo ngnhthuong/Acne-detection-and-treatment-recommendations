@@ -13,6 +13,7 @@ import {
   ACNE_DETECTION_DAILY_SUCCESS,
   ACNE_DETECTION_DAILY_FAILURE,
   ACNE_DETECTION_DAILY_CROP_EDIT,
+  ACNE_DETECTION_DAILY_ACTIVE_SHOW,
 } from "./types";
 
 export const increaseCounter = (data) => {
@@ -40,12 +41,12 @@ export const FetchUsers = (data) => {
   return async (dispatch, getState) => {
     try {
       dispatch(fetchUserRequest());
-      console.log("data", data);
       const res = await axios.post(
         "http://localhost:8000/api/user/login/",
         data
       );
       const dataRes = res && res.data ? res.data : [];
+      console.log("dataRes", dataRes);
       dispatch(fetchUserSuccess(dataRes));
     } catch (error) {
       dispatch(fetchUserFailure(error));
@@ -59,10 +60,10 @@ export const fetchUserRequest = () => {
   };
 };
 
-export const fetchUserSuccess = (data) => {
+export const fetchUserSuccess = (dataRes) => {
   return {
     type: FETCH_USER_SUCCESS,
-    dataUser: data,
+    dataUser: dataRes,
   };
 };
 
@@ -97,10 +98,9 @@ export const regisUserRequest = () => {
   };
 };
 
-export const regisUserSuccess = (data) => {
+export const regisUserSuccess = () => {
   return {
     type: REGIS_USER_SUCCESS,
-    dataUser: data,
   };
 };
 
@@ -113,20 +113,55 @@ export const regisUserFailure = (error) => {
 
 // detection skin daily
 
-export const detectionAcneDaily = (data) => {
+export const detectionAcneDaily = (data, user_id) => {
   return async (dispatch, getState) => {
     try {
-      dispatch(regisUserRequest());
+      dispatch(detectionAcneDailyRequest());
       const res = await axios.post(
-        "http://localhost:8000/api/user/register/",
+        "http://localhost:8000/api/acne_detection_daily/" + user_id,
         data
       );
-      dispatch(regisUserSuccess());
+      const dataRes = res && res.data ? res.data.data : null;
+      console.log('dadaad---',dataRes);
+      dispatch(detectionAcneDailySuccess(dataRes));
     } catch (error) {
-      dispatch(regisUserFailure(error));
+      dispatch(detectionAcneDailyFailure(error));
       console.log("error", error);
     }
   };
+};
+
+export const detectionAcneDailyPut = (data, user_id) => {
+    return async (dispatch, getState) => {
+      try {
+        dispatch(detectionAcneDailyRequest());
+        const res = await axios.put(
+          "http://localhost:8000/api/acne_detection_daily/deleteAndPut/" + user_id,
+          data
+        );
+        const dataRes = res && res.data ? res.data.data : null;
+        dispatch(detectionAcneDailySuccess(dataRes));
+      } catch (error) {
+        dispatch(detectionAcneDailyFailure(error));
+        console.log("error", error);
+      }
+    };
+};
+
+export const getDetectionAcneDailyPut = (user_id) => {
+    return async (dispatch, getState) => {
+      try {
+        dispatch(detectionAcneDailyRequest());
+        const res = await axios.get(
+          "http://localhost:8000/api/acne_detection_daily/" + user_id
+        );
+        const dataRes = res && res.data ? res.data.data : null;
+        dispatch(detectionAcneDailySuccess(dataRes));
+      } catch (error) {
+        dispatch(detectionAcneDailyFailure(error));
+        console.log("error", error);
+      }
+    };
 };
 
 export const detectionAcneDailyRequest = () => {
@@ -135,10 +170,10 @@ export const detectionAcneDailyRequest = () => {
   };
 };
 
-export const detectionAcneDailySuccess = (data) => {
+export const detectionAcneDailySuccess = (dataRes) => {
   return {
     type: ACNE_DETECTION_DAILY_SUCCESS,
-    dataAcnePredictionDaily: data,
+    dataAcnePredictionDaily: dataRes,
   };
 };
 
@@ -148,10 +183,17 @@ export const detectionAcneDailyFailure = (error) => {
     payload: error,
   };
 };
-
+// edit image crop
 export const detectionAcneDailyCropEdit = (data) => {
-    return {
-      type: ACNE_DETECTION_DAILY_CROP_EDIT,
-      dataCropEdit: data,
-    };
+  return {
+    type: ACNE_DETECTION_DAILY_CROP_EDIT,
+    dataCropEdit: data,
   };
+};
+// show image active
+export const detectionAcneDailyActiveShow = (image_id) => {
+  return {
+    type: ACNE_DETECTION_DAILY_ACTIVE_SHOW,
+    image_id_active: image_id,
+  };
+};

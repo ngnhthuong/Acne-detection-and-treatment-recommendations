@@ -21,13 +21,13 @@ export default function RightDiagnosis() {
             {
                 onOffChat ? (
                     <div className="button-close-open-chat button-close-open-chat__close">
-                        <button className="chat-open__btn box--shadow-btn" onClick={() => toggleOnOffChat()}>
+                        <button className="chat-open__btn" onClick={() => toggleOnOffChat()}>
                             <ArrowRight className="icon--element-arrow" />
                         </button>
                     </div>
                 ) : (
                     <div className="button-close-open-chat">
-                        <button className="chat-close__btn box--shadow-btn" onClick={() => toggleOnOffChat()}>
+                        <button className="chat-close__btn" onClick={() => toggleOnOffChat()}>
                             <ArrowLeft className="icon--element-arrow" />
                         </button>
                     </div>

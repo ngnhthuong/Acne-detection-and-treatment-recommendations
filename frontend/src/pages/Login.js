@@ -5,7 +5,7 @@ import { ReactComponent as ViewOffImg } from "../assets/icons/view-off.svg";
 import LogoImg from "../assets/logo/lowypa1.png";
 import RegistrationDialog from "../components/RegistrationDialog";
 import { useSelector, useDispatch } from "react-redux";
-import { FetchUsers } from "../action/actions";
+import { FetchUsers, getDetectionAcneDailyPut } from "../action/actions";
 import { useNavigate } from "react-router-dom"; // Import useNavigate
 
 const Login = () => {
@@ -37,9 +37,13 @@ const Login = () => {
   };
   useEffect(() => {
     if (isLoggedIn && user) {
-      navigate("/diagnosis"); // Chuyển hướng đến /diagnosis
+      dispatch(getDetectionAcneDailyPut(user.id));
+      setTimeout(() => {
+        navigate("/diagnosis");
+      }, 1000);
     }
-  }, [isLoggedIn, user, navigate]);
+    console.log(user)
+  }, [isLoggedIn, user]);
   return (
     <>
       {regisOpen && (

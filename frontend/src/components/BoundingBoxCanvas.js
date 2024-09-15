@@ -219,6 +219,7 @@ const BoundingBoxCanvas = ({ selectedOptionModeUsed, base64Image, boxes, labelCo
 
         let label = '';
         if (selectedOptionModeUsed === "all" || selectedOptionModeUsed === "drawall") {
+          console.log("selectedOptionModeUsed", selectedOptionModeUsed)
           label = `${class_name} ${Math.round(confidence * 100)}%`;
         } else if (selectedOptionModeUsed === "drawlabel") {
           label = `${class_name}`;

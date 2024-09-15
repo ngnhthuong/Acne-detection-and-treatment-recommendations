@@ -1,22 +1,49 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./AcneDetectionFuncRight.css";
+import { useSelector, useDispatch } from "react-redux";
+const AcneDetectionFuncRight = ({
+  sliderConfidence,
+  sliderOverlap,
+  handleChangeSliderConfidence,
+  handleChangeSliderOverlap,
+  handleChangeSelecteModeUsed,
+  selectedOptionModeUsed,
+  handleChangeSelecteModelUsed,
+  selectedOptionModelUsed,
+  labelColors,
+}) => {
+  const predicted_images = useSelector(
+    (state) => state.acnePredictionDaily.predicted_images
+  );
+  const image_active = useSelector(
+    (state) => state.acnePredictionDaily.image_active
+  );
 
-const AcneDetectionFuncRight = ({sliderConfidence, sliderOverlap, handleChangeSliderConfidence, handleChangeSliderOverlap}) => {
-  const [selectedOptionModelUsed, setSelectedOptionModelUsed] = useState("");
-  const [selectedOptionModeUsed, setSelectedOptionModeUsed] = useState("");
-  const handleChangeSelecteModelUsed = (event) => {
-    setSelectedOptionModelUsed(event.target.value);
-  };
-  const handleChangeSelecteModeUsed = (event) => {
-    console.log(event.target.value);
-    setSelectedOptionModeUsed(event.target.value);
-  };
+  const images = useSelector((state) => state.acnePredictionDaily.images);
+
+  const [labelList, setLabelList] = useState([]);
+
+  useEffect(() => {
+    console.log("predicted_images", predicted_images);
+    predicted_images.map((item) => {
+      if (item.image_id === image_active && item.architecture_ai_name === selectedOptionModelUsed) {
+        const uniqueClassNames = [
+          ...new Set(item.predicted.map((item) => item.class_name)),
+        ];
+        console.log('labelList', uniqueClassNames);
+        setLabelList(uniqueClassNames);
+      }
+    });
+    if (predicted_images.length === 0) {
+      setLabelList([]);
+    }
+  }, [selectedOptionModelUsed, image_active, images]);
+
   return (
     <div className="acne__detection--tag box--shadow-btn">
       <div className="acne__detection--result-tag">
         <div className="acne__detection--tool-model-modes">
-        <div className="acne__detection--tool-model-used">
-            {/* <span>Model:</span> */}
+          <div className="acne__detection--tool-model-used">
             <select
               id="optionsModelUsed"
               value={selectedOptionModelUsed}
@@ -26,8 +53,8 @@ const AcneDetectionFuncRight = ({sliderConfidence, sliderOverlap, handleChangeSl
               <option value="" disabled>
                 Select an model option
               </option>
-              <option value="yolosahi">Yolo + Sahi</option>
-              <option value="resnet">RestNet</option>
+              <option value="YoloV8 with SAHI">YoloV8 with SAHI</option>
+              <option value="YoloV8">YoloV8</option>
             </select>
           </div>
 
@@ -47,74 +74,48 @@ const AcneDetectionFuncRight = ({sliderConfidence, sliderOverlap, handleChangeSl
             </select>
           </div>
           <div className="acne__detection--tool-scroll box--shadow-btn">
-              <span>Confidence Threshold: {sliderConfidence}%</span>
-              <div className="slider-container">
-                <span>0%</span>
-                <input
-                  type="range"
-                  min="1"
-                  max="100"
-                  value={sliderConfidence}
-                  onChange={handleChangeSliderConfidence}
-                  className="slider box--shadow-btn"
-                />
-                <span>100%</span>
-              </div>
+            <span>Confidence Threshold: {sliderConfidence}%</span>
+            <div className="slider-container">
+              <span>0%</span>
+              <input
+                type="range"
+                min="1"
+                max="100"
+                value={sliderConfidence}
+                onChange={handleChangeSliderConfidence}
+                className="slider box--shadow-btn"
+              />
+              <span>100%</span>
             </div>
-            
-            <div className="acne__detection--tool-scroll box--shadow-btn">
-              <span>Overlap Threshold: {sliderOverlap}%</span>
-              <div className="slider-container">
-                <span>0%</span>
-                <input
-                  type="range"
-                  min="1"
-                  max="100"
-                  value={sliderOverlap}
-                  onChange={handleChangeSliderOverlap}
-                  className="slider box--shadow-btn"
-                />
-                <span>100%</span>
-              </div>
+          </div>
+
+          <div className="acne__detection--tool-scroll box--shadow-btn">
+            <span>Overlap Threshold: {sliderOverlap}%</span>
+            <div className="slider-container">
+              <span>0%</span>
+              <input
+                type="range"
+                min="1"
+                max="100"
+                value={sliderOverlap}
+                onChange={handleChangeSliderOverlap}
+                className="slider box--shadow-btn"
+              />
+              <span>100%</span>
             </div>
+          </div>
         </div>
-        
+
         <div className="acne__detection--tag-labels box--shadow-btn">
-          <div className="labels">
-            <div
-              className="color-label box--shadow-btn"
-              style={{ background: "orange" }}
-            ></div>
-            <div className="name-label">Blackhead</div>
-          </div>
-          <div className="labels">
-            <div
-              className="color-label box--shadow-btn"
-              style={{ background: "red" }}
-            ></div>
-            <div className="name-label">Acne_scars</div>
-          </div>
-          <div className="labels">
-            <div
-              className="color-label box--shadow-btn"
-              style={{ background: "green" }}
-            ></div>
-            <div className="name-label">Crystanlline</div>
-          </div>
-          <div className="labels">
-            <div
-              className="color-label box--shadow-btn"
-              style={{ background: "green" }}
-            ></div>
-            <div className="name-label">sebo-crystan-conglo</div>
-          </div>
-          <div className="labels">
-            <div
-              className="color-label box--shadow-btn"
-              style={{ background: "green" }}
-            ></div>
-            <div className="name-label">sebo-crystan-conglo</div>
-          </div>
+          {labelList && labelList.map((item, index) => (
+            <div className="labels" key={index}>
+              <div
+                className="color-label box--shadow-btn"
+                style={{ background: labelColors[item] }}
+              ></div>
+              <div className="name-label">{item}</div>
+            </div>
+          ))}
         </div>
       </div>
 
@@ -129,9 +130,6 @@ const AcneDetectionFuncRight = ({sliderConfidence, sliderOverlap, handleChangeSl
           <div className="acne__detection--summary-save  box--shadow-btn">
             <span className="acne__detection--save">Save</span>
           </div>
-          {/* <div className="acne__detection--summary-update  box--shadow-btn">
-                <span className="acne__detection--save">Update</span>
-              </div> */}
         </div>
       </div>
     </div>

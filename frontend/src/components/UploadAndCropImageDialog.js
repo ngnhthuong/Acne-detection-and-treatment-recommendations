@@ -10,17 +10,17 @@ import { ReactComponent as MedicalImg } from "../assets/icons/medical.svg";
 
 import ImgDiagnoisis from "./ImgDiagnoisis";
 import { useSelector, useDispatch } from "react-redux";
-import {detectionAcneDailyCropEdit} from "../action/actions";
+import { detectionAcneDailyCropEdit, detectionAcneDailyPut, detectionAcneDaily } from "../action/actions";
 
-const UploadAndCropImage = ({
-  toggleUploadAndCropImageDialogOpen,
-  carryOutPrediction,
-  imageBase64ArrayPredict,
-}) => {
+const UploadAndCropImage = ({ toggleUploadAndCropImageDialogOpen }) => {
   const dispatch = useDispatch();
+  const user_id = useSelector((state) => state.user.user.id);
+  const id_daily_acne_detection = useSelector(
+    (state) => state.acnePredictionDaily.id_daily_acne_detection
+  );
   const images = useSelector((state) => state.acnePredictionDaily.images);
   const [imageBase64Array, setImageBase64Array] = useState(images);
-
+  const [imagePredict, setImagePredict] = useState([]);
   const [selectedImage, setSelectedImage] = useState(null);
   const [uploadError, setUploadError] = useState("");
   const [idImgDelete, setIdImgDelete] = useState([]);
@@ -73,23 +73,22 @@ const UploadAndCropImage = ({
       image_base64: croppedImage,
     };
     setImageBase64Array((prevArray) => [...prevArray, imgUpObject]);
+    setImagePredict((prevArray) => [...prevArray, imgUpObject]);
     setSelectedImage(null); // Reset selected image after cropping
   };
 
   const handleDeleteImage = (id_img) => {
-    console.log("Delete image with id:", id_img);
     setIdImgDelete((prevArray) => [...prevArray, id_img]);
 
-    // setImageBase64Array((prevArray) =>
-    //   prevArray.filter((imgObj) => imgObj.id_image !== id_img)
-    // );
+    setImagePredict((prevArray) => {
+      const newArray = prevArray.filter((imgObj) => imgObj.image_id !== id_img);
+      return newArray;
+    })
 
     setImageBase64Array((prevArray) => {
       const newArray = prevArray.filter((imgObj) => imgObj.image_id !== id_img);
-      console.log("Updated imageBase64Array:", newArray);
       return newArray;
     });
-
     console.log("Delete image with id:", idImgDelete);
   };
 
@@ -99,11 +98,19 @@ const UploadAndCropImage = ({
     console.log(imageBase64Array);
   }, [imageBase64Array]);
 
-  // New function
   const handleDispatchImage = () => {
-    console.log("Carry out prediction!--", imageBase64Array);
-    dispatch(detectionAcneDailyCropEdit(imageBase64Array));
-  }
+    if (id_daily_acne_detection == "") {
+      dispatch(detectionAcneDaily(imageBase64Array, user_id));
+    } else {
+      let data = {
+        image_base64_list: imagePredict,
+        img_id_remove_list: idImgDelete,
+      };
+      console.log("data", data);
+      dispatch(detectionAcneDailyPut(data, user_id));
+      setImagePredict([]);
+    }
+  };
 
   return (
     <div className="background__dialog ">
@@ -189,7 +196,7 @@ const UploadAndCropImage = ({
               {imageBase64Array.map((object, index) => (
                 <ImgDiagnoisis
                   key={index}
-                  image_id = {object.image_id}
+                  image_id={object.image_id}
                   base64Image={object.image_base64}
                   onDelete={handleDeleteImage}
                 />

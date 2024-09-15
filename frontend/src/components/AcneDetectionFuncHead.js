@@ -5,21 +5,10 @@ import "./AcneDetectionFuncHead.css";
 import ImgDiagnoisis from "./ImgDiagnoisis";
 import { useSelector, useDispatch } from "react-redux";
 const AcneDetectionFuncHead = ({
-  handleImageUpload,
   toggleUploadAndCropImageDialogOpen,
-  imageBase64ArrayPredict,
   handleChangeSelectedImage,
-  base64Image,
 }) => {
-  const totalSlots = 4; // Fixed number of ImgDiagnoisis components
-  const filledSlots = imageBase64ArrayPredict.length;
-  const emptySlots = totalSlots - filledSlots;
   const images = useSelector((state) => state.acnePredictionDaily.images);
-  useEffect(() => {
-    console.log("imagessssss", images);
-    console.log(images.length)
-  }, [images]);
-
   return (
     <>
       <div
@@ -39,7 +28,7 @@ const AcneDetectionFuncHead = ({
               image_id = {object.image_id}
               base64Image= {object.image_base64}
               handleChangeSelectedImage ={handleChangeSelectedImage}
-     x       />
+           />
           ))}
           {Array.from({ length: 4 - images.length }, (_, index) => (
             <ImgDiagnoisis

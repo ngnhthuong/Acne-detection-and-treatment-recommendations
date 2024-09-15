@@ -13,11 +13,11 @@ const App = () => {
     { path: "/", element: <Login/> }, // Truyền hàm đăng nhập vào Login
     {
       path: "/diagnosis",
-      element: <ProtectedRoute element={<Diagnosis />} isLoggedIn={true} />,
+      element: <ProtectedRoute element={<Diagnosis />} isLoggedIn={isLoggedIn} />,
     },
     {
       path: "/test",
-      element: <ProtectedRoute element={<Test />} isLoggedIn={true} />,
+      element: <ProtectedRoute element={<Test />} isLoggedIn={isLoggedIn} />,
     },
   ]);
 

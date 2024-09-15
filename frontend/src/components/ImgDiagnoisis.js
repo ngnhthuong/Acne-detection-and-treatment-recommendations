@@ -45,7 +45,8 @@
 import React from "react";
 import "./ImgDiagnoisis.css";
 import { ReactComponent as MultipleImg } from "../assets/icons/multiple.svg";
-
+import { useSelector, useDispatch } from "react-redux";
+import { detectionAcneDailyActiveShow } from "../action/actions";
 const ImgDiagnoisis = ({
   onDelete,
   tag,
@@ -53,8 +54,13 @@ const ImgDiagnoisis = ({
   image_id,
   base64Image,
 }) => {
+  const dispatch = useDispatch();
+  const image_active = useSelector((state) => state.acnePredictionDaily.image_active);
+  const handleChangeActiveImage = (image_id) => {
+    dispatch(detectionAcneDailyActiveShow(image_id));
+  }
   return (
-    <div className="acne__detection--tool-image box--shadow-btn">
+    <div className="acne__detection--tool-image box--shadow-btn" onClick={base64Image && tag == 1 ? () => handleChangeActiveImage(image_id) : null}>
       {tag != 1 ? (
         <button
           className="delete-btn box--shadow-btn"
@@ -64,11 +70,11 @@ const ImgDiagnoisis = ({
         </button>
       ) : null}
       {base64Image ? (
-        <div className="acne-image active-image">
+        <div className={image_active == image_id && tag == 1 ? "acne-image active-image" : "acne-image"} >
           <img className="responsive-image" src={base64Image} alt="Diagnosis" />
         </div>
       ) : (
-        <div className="acne-image active-image"></div>
+        <div className="acne-image"></div>
       )}
     </div>
   );
