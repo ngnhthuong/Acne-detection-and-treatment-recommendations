@@ -10,8 +10,7 @@
 **Members participating in the project:**
 | Full Name                    | StudentID        | Role         |
 |-------------------------------|-----------------|-----------------|
-| Nguyen Nhat Thuong         | 20522000        | AI, api_ai|
-| Le Van Sy               | 20521854       | UI/UX, api_website      |
+| Nguyen Nhat Thuong         | 20522000        | AI, API, WEBSITE UI/UX|
 
 **Structure of Repositories:**
 ```
