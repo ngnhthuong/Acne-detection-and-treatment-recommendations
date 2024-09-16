@@ -31,8 +31,8 @@ export default function RightDiagnosis() {
   const images = useSelector((state) => state.acnePredictionDaily.images);
   const user = useSelector((state) => state.user.user);
   // mode, model, confidence, overlap using for props
-  const [sliderConfidence, setSliderConfidence] = useState(44);
-  const [sliderOverlap, setSliderOverlap] = useState(44);
+  const [sliderConfidence, setSliderConfidence] = useState(1);
+  const [sliderOverlap, setSliderOverlap] = useState(1);
   const [selectedOptionModeUsed, setSelectedOptionModeUsed] = useState("all");
   const [selectedOptionModelUsed, setSelectedOptionModelUsed] = useState("YoloV8 with SAHI");
   const [isUploadAndCropImageDialogOpen, setUploadAndCropImageDialogOpen] = useState(false);

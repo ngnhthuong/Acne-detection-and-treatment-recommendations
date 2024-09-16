@@ -50,9 +50,8 @@ def acnePredictWithYolo(file_path):
     return {'message': 'YoloV8', 'bounding-box': boundingbox}
 
 def acnePredictWithSahi(file_path):
-    print(file_path)
     result = get_sliced_prediction(
-        file_path,  # Sử dụng file_path đã được truyền vào
+        file_path,  
         detection_model=detection_model,
         slice_height=258,
         slice_width=258,

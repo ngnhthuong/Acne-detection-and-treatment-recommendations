@@ -1,0 +1,25 @@
+
+// Function to decode and check token expiration
+function isTokenExpired(token) {
+  try {
+    const decoded = jwt_decode(token);
+    const currentTime = Date.now() / 1000; // Current time in seconds
+    return decoded.exp < currentTime;
+  } catch (error) {
+    console.error("Invalid token:", error);
+    return true; // Consider the token expired if it can't be decoded
+  }
+}
+
+// Function to log out the user
+function logout() {
+  localStorage.removeItem('authToken');
+  localStorage.removeItem('userId');
+  window.location.href = '/login'; // Redirect to login page
+}
+
+// Example usage
+const token = localStorage.getItem('authToken');
+if (token && isTokenExpired(token)) {
+  logout();
+}

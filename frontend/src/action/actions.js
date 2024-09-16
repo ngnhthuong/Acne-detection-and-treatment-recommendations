@@ -1,4 +1,5 @@
 import axios from "axios";
+
 import {
   INCREMENT,
   DECREMENT,
@@ -14,6 +15,11 @@ import {
   ACNE_DETECTION_DAILY_FAILURE,
   ACNE_DETECTION_DAILY_CROP_EDIT,
   ACNE_DETECTION_DAILY_ACTIVE_SHOW,
+  ACNE_DETECTION_DAILY_REQUEST_GET,
+  ACNE_DETECTION_NOTIFICATION_SUCCESS_REQUEST,
+  FETCH_USER_RESET,
+  REGIS_USER_RESET,
+  ACNE_DETECTION_DAILY_RESET,
 } from "./types";
 
 export const increaseCounter = (data) => {
@@ -36,19 +42,25 @@ export const devideCounter = () => {
 };
 
 // login
-
 export const FetchUsers = (data) => {
   return async (dispatch, getState) => {
+    console.log("dataRes", data);
     try {
       dispatch(fetchUserRequest());
-      const res = await axios.post(
-        "http://localhost:8000/api/user/login/",
-        data
-      );
-      const dataRes = res && res.data ? res.data : [];
+
+      const res = await axios.post("http://localhost:8000/api/user/login/", data);
+      const dataRes = res && res.data ? res.data : {};
+
       console.log("dataRes", dataRes);
+
+      if (dataRes.token) {
+        localStorage.setItem('authToken', dataRes.token);
+        localStorage.setItem('userData', JSON.stringify(dataRes.data));
+      }
+
       dispatch(fetchUserSuccess(dataRes));
     } catch (error) {
+      console.error('Login error:', error);
       dispatch(fetchUserFailure(error));
     }
   };
@@ -61,6 +73,7 @@ export const fetchUserRequest = () => {
 };
 
 export const fetchUserSuccess = (dataRes) => {
+  console.log("dataRRRR", dataRes);
   return {
     type: FETCH_USER_SUCCESS,
     dataUser: dataRes,
@@ -73,6 +86,11 @@ export const fetchUserFailure = (error) => {
     payload: error,
   };
 };
+export const fetchUserReset = () => {
+  return {
+    type: FETCH_USER_RESET,
+  };
+}
 
 // regis user
 
@@ -86,8 +104,9 @@ export const regisUsers = (data) => {
       );
       dispatch(regisUserSuccess());
     } catch (error) {
-      dispatch(regisUserFailure(error));
+      const dataRes = error.response.data['detail']
       console.log("error", error);
+      dispatch(regisUserFailure(dataRes));
     }
   };
 };
@@ -104,6 +123,12 @@ export const regisUserSuccess = () => {
   };
 };
 
+export const regisUserReset = () => {
+  return {
+    type: REGIS_USER_RESET,
+  };
+};
+
 export const regisUserFailure = (error) => {
   return {
     type: REGIS_USER_FAILURE,
@@ -112,56 +137,75 @@ export const regisUserFailure = (error) => {
 };
 
 // detection skin daily
-
 export const detectionAcneDaily = (data, user_id) => {
   return async (dispatch, getState) => {
     try {
       dispatch(detectionAcneDailyRequest());
+
+      const token = localStorage.getItem('authToken');
       const res = await axios.post(
-        "http://localhost:8000/api/acne_detection_daily/" + user_id,
-        data
+        `http://localhost:8000/api/acne_detection_daily/${user_id}`,
+        data,
+        {
+          headers: { Authorization: `Bearer ${token}` }
+        }
       );
+
       const dataRes = res && res.data ? res.data.data : null;
-      console.log('dadaad---',dataRes);
+      console.log('dadaad---', dataRes);
       dispatch(detectionAcneDailySuccess(dataRes));
+      dispatch(detectionAcneDailySuccessNoti());
     } catch (error) {
       dispatch(detectionAcneDailyFailure(error));
       console.log("error", error);
     }
   };
 };
-
 export const detectionAcneDailyPut = (data, user_id) => {
-    return async (dispatch, getState) => {
-      try {
-        dispatch(detectionAcneDailyRequest());
-        const res = await axios.put(
-          "http://localhost:8000/api/acne_detection_daily/deleteAndPut/" + user_id,
-          data
-        );
-        const dataRes = res && res.data ? res.data.data : null;
-        dispatch(detectionAcneDailySuccess(dataRes));
-      } catch (error) {
-        dispatch(detectionAcneDailyFailure(error));
-        console.log("error", error);
-      }
-    };
-};
+  return async (dispatch, getState) => {
+    try {
+      dispatch(detectionAcneDailyRequest());
 
+      const token = localStorage.getItem('authToken');
+      const res = await axios.put(
+        `http://localhost:8000/api/acne_detection_daily/deleteAndPut/${user_id}`,
+        data,
+        {
+          headers: { Authorization: `Bearer ${token}` }
+        }
+      );
+
+      const dataRes = res && res.data ? res.data.data : null;
+      dispatch(detectionAcneDailySuccess(dataRes));
+      dispatch(detectionAcneDailySuccessNoti());
+    } catch (error) {
+      dispatch(detectionAcneDailyFailure(error));
+      console.log("error", error);
+    }
+  };
+};
 export const getDetectionAcneDailyPut = (user_id) => {
-    return async (dispatch, getState) => {
-      try {
-        dispatch(detectionAcneDailyRequest());
-        const res = await axios.get(
-          "http://localhost:8000/api/acne_detection_daily/" + user_id
-        );
-        const dataRes = res && res.data ? res.data.data : null;
+  return async (dispatch, getState) => {
+    try {
+      dispatch(detectionAcneDailyRequestGet());
+
+      const token = localStorage.getItem('authToken');
+      const res = await axios.get(
+        `http://localhost:8000/api/acne_detection_daily/${user_id}`,
+        {
+          headers: { Authorization: `Bearer ${token}` }
+        }
+      );
+
+      const dataRes = res && res.data ? res.data.data : null;
+      setTimeout(() => {
         dispatch(detectionAcneDailySuccess(dataRes));
-      } catch (error) {
-        dispatch(detectionAcneDailyFailure(error));
-        console.log("error", error);
-      }
-    };
+      }, 2750);
+    } catch (error) {
+      dispatch(detectionAcneDailyFailure(error));
+      console.log("error", error);
+    }
+  };
 };
 
 export const detectionAcneDailyRequest = () => {
@@ -170,10 +214,22 @@ export const detectionAcneDailyRequest = () => {
   };
 };
 
+export const detectionAcneDailyRequestGet = () => {
+  return {
+    type: ACNE_DETECTION_DAILY_REQUEST_GET,
+  };
+};
+
 export const detectionAcneDailySuccess = (dataRes) => {
   return {
     type: ACNE_DETECTION_DAILY_SUCCESS,
     dataAcnePredictionDaily: dataRes,
+  };
+};
+
+export const detectionAcneDailySuccessNoti = () => {
+  return {
+    type: ACNE_DETECTION_NOTIFICATION_SUCCESS_REQUEST,
   };
 };
 
@@ -197,3 +253,6 @@ export const detectionAcneDailyActiveShow = (image_id) => {
     image_id_active: image_id,
   };
 };
+
+// check token 
+

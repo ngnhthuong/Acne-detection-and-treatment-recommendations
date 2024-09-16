@@ -7,10 +7,18 @@ import { ReactComponent as CropImg } from "../assets/icons/crop.svg";
 import { ReactComponent as UploadImg } from "../assets/icons/upload-img.svg";
 import { ReactComponent as LockedImg } from "../assets/icons/locked.svg";
 import { ReactComponent as MedicalImg } from "../assets/icons/medical.svg";
+import ZoomAcneImg from "../assets/icons/zoom_images.png";
+import LimitedImg from "../assets/icons/limited_images.png";
+import HighQualityImg from "../assets/icons/high_quality.png";
 
 import ImgDiagnoisis from "./ImgDiagnoisis";
+import LoadingTask from "./LoadingTask";
 import { useSelector, useDispatch } from "react-redux";
-import { detectionAcneDailyCropEdit, detectionAcneDailyPut, detectionAcneDaily } from "../action/actions";
+import {
+  detectionAcneDailyCropEdit,
+  detectionAcneDailyPut,
+  detectionAcneDaily,
+} from "../action/actions";
 
 const UploadAndCropImage = ({ toggleUploadAndCropImageDialogOpen }) => {
   const dispatch = useDispatch();
@@ -19,11 +27,13 @@ const UploadAndCropImage = ({ toggleUploadAndCropImageDialogOpen }) => {
     (state) => state.acnePredictionDaily.id_daily_acne_detection
   );
   const images = useSelector((state) => state.acnePredictionDaily.images);
+  const isLoading = useSelector((state) => state.acnePredictionDaily.isLoading);
   const [imageBase64Array, setImageBase64Array] = useState(images);
   const [imagePredict, setImagePredict] = useState([]);
   const [selectedImage, setSelectedImage] = useState(null);
   const [uploadError, setUploadError] = useState("");
   const [idImgDelete, setIdImgDelete] = useState([]);
+  const [notificationEmpty, setNotificationEmpty] = useState(false);
 
   const cropperRef = useRef(null);
   const generateDateTimeId = () => {
@@ -74,7 +84,7 @@ const UploadAndCropImage = ({ toggleUploadAndCropImageDialogOpen }) => {
     };
     setImageBase64Array((prevArray) => [...prevArray, imgUpObject]);
     setImagePredict((prevArray) => [...prevArray, imgUpObject]);
-    setSelectedImage(null); // Reset selected image after cropping
+    setSelectedImage(null);
   };
 
   const handleDeleteImage = (id_img) => {
@@ -83,7 +93,7 @@ const UploadAndCropImage = ({ toggleUploadAndCropImageDialogOpen }) => {
     setImagePredict((prevArray) => {
       const newArray = prevArray.filter((imgObj) => imgObj.image_id !== id_img);
       return newArray;
-    })
+    });
 
     setImageBase64Array((prevArray) => {
       const newArray = prevArray.filter((imgObj) => imgObj.image_id !== id_img);
@@ -100,8 +110,22 @@ const UploadAndCropImage = ({ toggleUploadAndCropImageDialogOpen }) => {
 
   const handleDispatchImage = () => {
     if (id_daily_acne_detection == "") {
-      dispatch(detectionAcneDaily(imageBase64Array, user_id));
+      if (imagePredict.length === 0) {
+        setNotificationEmpty(true);
+        setTimeout(() => {
+          setNotificationEmpty(false);
+        }, 3000);
+        return;
+      }
+      dispatch(detectionAcneDaily(imagePredict, user_id));
     } else {
+      if (imagePredict.length === 0 && idImgDelete.length === 0 || (images.length === 0 && imagePredict.length === 0)) {
+        setNotificationEmpty(true);
+        setTimeout(() => {
+          setNotificationEmpty(false);
+        }, 3000);
+        return;
+      }
       let data = {
         image_base64_list: imagePredict,
         img_id_remove_list: idImgDelete,
@@ -115,6 +139,7 @@ const UploadAndCropImage = ({ toggleUploadAndCropImageDialogOpen }) => {
   return (
     <div className="background__dialog ">
       <div className="background__dialog--main box--shadow-btn">
+        {isLoading && <LoadingTask />}
         <div className="dialog__header">
           <div className="dialog__header--area dialog__header--title">
             Choose Image Diagnosis
@@ -158,6 +183,14 @@ const UploadAndCropImage = ({ toggleUploadAndCropImageDialogOpen }) => {
                 disabled={isUploadDisabled}
               />
             </div>
+            {
+              notificationEmpty && (
+                <div className="notification__empty">
+                  <p>Hãy thêm dữ liệu!</p>
+                </div>
+              )
+            }
+      
           </div>
 
           {uploadError && <p className="error-message">{uploadError}</p>}
@@ -203,6 +236,7 @@ const UploadAndCropImage = ({ toggleUploadAndCropImageDialogOpen }) => {
               ))}
             </div>
           </div>
+
           <div className="save__img">
             <button
               className="dialog__img-save"
@@ -215,12 +249,51 @@ const UploadAndCropImage = ({ toggleUploadAndCropImageDialogOpen }) => {
               <span>Carry out diagnosis</span>
             </button>
           </div>
+
           <div className="img__diagnoises--recommend">
             <div className="img__diagnoises--rule--title">
-              Recommended Images
+              How to take a good image?
             </div>
             <div className="img__diagnoises--rules--list">
-              <div className="img__diagnoises--rule"></div>
+              <div className="img__diagnoises--rule">
+                <div className="img__diagnoises--guild">
+                  <img
+                    className="img__diagnoises--icon"
+                    src={HighQualityImg}
+                    alt="limited_images"
+                  />
+                </div>
+                <div className="img_diagnoises--text">
+                  Đảm bảo rằng các ảnh tải lên có độ phân giải cao để tránh bị vỡ khi cắt ảnh và hỗ trợ quá
+                  trình nhận diện chính xác.
+                </div>
+              </div>
+              <div className="img__diagnoises--rule">
+                <div className="img__diagnoises--guild">
+                  <img
+                    className="img__diagnoises--icon"
+                    src={ZoomAcneImg}
+                    alt="zoom_acne"
+                  />
+                </div>
+                <div className="img_diagnoises--text">
+                  Sử dụng chức năng phóng to ảnh để tránh việc vật thể mụn quá nhỏ. Điều này sẽ
+                  cải thiện độ chính xác của quá trình nhận diện.
+                </div>
+              </div>
+
+              <div className="img__diagnoises--rule">
+                <div className="img__diagnoises--guild">
+                  <img
+                    className="img__diagnoises--icon"
+                    src={LimitedImg}
+                    alt="limited_images"
+                  />
+                </div>
+                <div className="img_diagnoises--text">
+                  Bạn có thể tải lên tối thiểu 1 ảnh và tối đa 4 ảnh để dự đoán.
+                </div>
+              </div>
             </div>
           </div>
         </div>

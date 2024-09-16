@@ -26,11 +26,14 @@ const AcneDetectionFuncRight = ({
   useEffect(() => {
     console.log("predicted_images", predicted_images);
     predicted_images.map((item) => {
-      if (item.image_id === image_active && item.architecture_ai_name === selectedOptionModelUsed) {
+      if (
+        item.image_id === image_active &&
+        item.architecture_ai_name === selectedOptionModelUsed
+      ) {
         const uniqueClassNames = [
           ...new Set(item.predicted.map((item) => item.class_name)),
         ];
-        console.log('labelList', uniqueClassNames);
+        console.log("labelList", uniqueClassNames);
         setLabelList(uniqueClassNames);
       }
     });
@@ -44,6 +47,7 @@ const AcneDetectionFuncRight = ({
       <div className="acne__detection--result-tag">
         <div className="acne__detection--tool-model-modes">
           <div className="acne__detection--tool-model-used">
+            <div className="span__tag">Model Used:</div>
             <select
               id="optionsModelUsed"
               value={selectedOptionModelUsed}
@@ -59,6 +63,7 @@ const AcneDetectionFuncRight = ({
           </div>
 
           <div className="acne__detection--tool-mode-used">
+            <div className="span__tag">Mode Used:</div>
             <select
               id="optionsModelUsed"
               value={selectedOptionModeUsed}
@@ -107,15 +112,16 @@ const AcneDetectionFuncRight = ({
         </div>
 
         <div className="acne__detection--tag-labels box--shadow-btn">
-          {labelList && labelList.map((item, index) => (
-            <div className="labels" key={index}>
-              <div
-                className="color-label box--shadow-btn"
-                style={{ background: labelColors[item] }}
-              ></div>
-              <div className="name-label">{item}</div>
-            </div>
-          ))}
+          {labelList &&
+            labelList.map((item, index) => (
+              <div className="labels" key={index}>
+                <div
+                  className="color-label box--shadow-btn"
+                  style={{ background: labelColors[item] }}
+                ></div>
+                <div className="name-label">{item}</div>
+              </div>
+            ))}
         </div>
       </div>
 
@@ -127,9 +133,9 @@ const AcneDetectionFuncRight = ({
           <div className="acne__detection--summary-level box--shadow-btn">
             <span>Skin level: 1</span>
           </div>
-          <div className="acne__detection--summary-save  box--shadow-btn">
+          {/* <div className="acne__detection--summary-save  box--shadow-btn">
             <span className="acne__detection--save">Save</span>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

@@ -2,18 +2,18 @@ import React, { useState, useEffect } from "react";
 import "./RegistrationDialog.css";
 import { ReactComponent as MultipleImg } from "../assets/icons/multiple.svg";
 import { useSelector, useDispatch } from "react-redux";
-
+import LoadingTask from "./LoadingTask";
 import {
   regisUsers,
   regisUserRequest,
   regisUserSuccess,
   regisUserFailure,
 } from "../action/actions";
-const RegistrationForm = ({handleChangeRegisOpen}) => {
+const RegistrationForm = ({ handleChangeRegisOpen }) => {
   const dispatch = useDispatch();
   const regisLoading = useSelector((state) => state.userRegis.isLoading);
   const regisError = useSelector((state) => state.userRegis.isError);
-  
+  const [openLoading, setOpenLoading] = useState(false);
   const [formData, setFormData] = useState({
     first_name: "",
     last_name: "",
@@ -35,18 +35,28 @@ const RegistrationForm = ({handleChangeRegisOpen}) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const data = formData
+    const data = formData;
     console.log("Form submitted:", data);
     dispatch(regisUsers(data));
   };
 
   useEffect(() => {
-    console.log("regisLoading", regisLoading);
-    console.log("regisError", regisError);
+    let timer;
+    if (regisLoading) {
+      setOpenLoading(true);
+    } else {
+      timer = setTimeout(() => {
+        setOpenLoading(false);
+      }, 1000);
+    }
+    return () => {
+      clearTimeout(timer);
+    };
   }, [regisLoading, regisError]);
 
   return (
     <div className="registration">
+      {openLoading && <LoadingTask />}
       <div className="registration__background">
         <button className="cls-btn-regis" onClick={handleChangeRegisOpen}>
           <MultipleImg className="icon--element-mul" />

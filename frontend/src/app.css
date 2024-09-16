@@ -18,8 +18,8 @@
     --theme-background-orange-light: rgb(253, 230, 187);
     --theme-background-orange-light-deep: rgb(255, 201, 101);
     --theme-background-orange-deep: rgb(245, 159, 0);
-
     --theme-background-dialog: rgba(0, 0, 0, 0.5);
+    --theme-color-red: red;
 }
 
 * {

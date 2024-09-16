@@ -50,7 +50,7 @@ const AcneDetectionResultImg = ({
   }, [image_active, selectedOptionModelUsed, selectedOptionModeUsed]);
 
   return (
-    <div className="acne__detection--result-image">
+    <div className="acne__detection--result-image box--shadow-btn">
       <div className="acne__detection--result-image-box">
         <BoundingBoxCanvas
           selectedOptionModeUsed={selectedOptionModeUsed}

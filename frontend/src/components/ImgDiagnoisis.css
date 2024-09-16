@@ -67,6 +67,7 @@
     justify-content: center;
     align-items: center;
     overflow: hidden;
+    border: 0.5px solid var(--border);
 }
 
 .acne-image.faded {

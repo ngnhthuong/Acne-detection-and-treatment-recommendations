@@ -5,19 +5,64 @@ import { ReactComponent as ViewOffImg } from "../assets/icons/view-off.svg";
 import LogoImg from "../assets/logo/lowypa1.png";
 import RegistrationDialog from "../components/RegistrationDialog";
 import { useSelector, useDispatch } from "react-redux";
-import { FetchUsers, getDetectionAcneDailyPut } from "../action/actions";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
+import {
+  FetchUsers,
+  getDetectionAcneDailyPut,
+  fetchUserSuccess,
+  regisUserReset,
+} from "../action/actions";
+import { useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
 
 const Login = () => {
-  const user = useSelector((state) => state.user.user);
-  const isLoading = useSelector((state) => state.user.isLoading);
-  const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
-  const navigate = useNavigate();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const isClose = useSelector((state) => state.userRegis.isClose);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [viewPassword, setViewPassword] = useState(false);
   const [regisOpen, setRegisOpen] = useState(false);
+
+  const user = useSelector((state) => state.user.user);
+  const isLoading = useSelector((state) => state.user.isLoading);
+  const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
+
+  function isTokenExpired(token) {
+    if (!token || token === true) {
+      return true;
+    }
+    try {
+      const decoded = jwtDecode(token);
+      console.log("decoded", decoded);
+      const currentTime = Date.now() / 1000;
+      return decoded.exp < currentTime;
+    } catch (error) {
+      console.error("Invalid token:", error);
+      return true;
+    }
+  }
+
+  useEffect(() => {
+    const token = localStorage.getItem("authToken");
+    const data = localStorage.getItem("userData");
+    const isToken = isTokenExpired(token);
+    
+    if (token && isToken) {
+      localStorage.removeItem("authToken");
+      localStorage.removeItem("userData");
+      window.location.href = "/";
+    } else if (token && data && !isToken) {
+      dispatch(fetchUserSuccess({ data: JSON.parse(data) }));
+    }
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (isLoggedIn && user) {
+      dispatch(getDetectionAcneDailyPut(user.id));
+      navigate("/diagnosis");
+    }
+    console.log(user);
+  }, [isLoggedIn, user, dispatch, navigate]);
 
   const handleChangeRegisOpen = () => {
     setRegisOpen((prev) => !prev);
@@ -35,15 +80,13 @@ const Login = () => {
     };
     dispatch(FetchUsers(data));
   };
+
   useEffect(() => {
-    if (isLoggedIn && user) {
-      dispatch(getDetectionAcneDailyPut(user.id));
-      setTimeout(() => {
-        navigate("/diagnosis");
-      }, 1000);
+    if (isClose) {
+      setRegisOpen(false);
     }
-    console.log(user)
-  }, [isLoggedIn, user]);
+  }, [isClose]);
+
   return (
     <>
       {regisOpen && (
@@ -76,7 +119,7 @@ const Login = () => {
               </div>
               <div className="login__password">
                 <input
-                  type={viewPassword ? "text" : "password"} // Toggle between text and password
+                  type={viewPassword ? "text" : "password"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required

@@ -13,15 +13,16 @@
 }
 
 .background__dialog--main{
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
     width: 40rem;
     height: 600px;
-    background-color: aquamarine;
     border-radius: 15px;
     overflow: hidden;
+    border: none;
 }
 
 .dialog__header{
@@ -34,11 +35,13 @@
     height: 3.5rem;
     background-color: var(--theme-background-white-dialog);
     border-bottom: 1px solid var(--border);
+    border-radius: 15px 15px 0 0;
 }
 
 .dialog__header--title{
     font-size: 1.2rem;
     font-weight: bold;
+    color: var(--theme-background-green);
 }
 .cls__btn{
     position: absolute;
@@ -71,15 +74,18 @@
     padding: 1rem;
     gap: 1rem;
     overflow-y: auto;
+    border-radius: 0 0 15px 15px;
+    scrollbar-width: none;
 }
 
 .dialog__body::-webkit-scrollbar {
-    width: 4px;
+    width: 0px;
 }
 
 .dialog__body::-webkit-scrollbar-thumb {
     background-color: var(--theme-background-green);
     border-radius: 4px;
+    display: none; 
 }
 
 /* btn upload image */
@@ -128,10 +134,13 @@
 
 
 .img__diagnoises--rule--title{
-    font-size: 1.15rem;
-    font-weight: bold;
-    padding: 5px 15px 5px 10px;
+    display: flex;
+    /* justify-content: center; */
     align-items: center;
+    font-size: 1rem;
+    padding: 10px 10px 10px 5px;
+    color: var(--theme-background-green);
+    font-weight: bold;
 }
 
 .cropper-container .cropper-view-box,
@@ -208,10 +217,16 @@
 
 .dialog__body-func{
     display: flex;
+    align-items: center;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: left;
     width: 100%;
     height: fit-content;
+    gap: 10px;
+}
+
+.notification__empty{
+    color: var(--theme-color-red);
 }
 
 
@@ -252,3 +267,50 @@
     color: var(--theme-background-orange-deep);
 }
 
+.img__diagnoises--recommend{
+}
+
+.img__diagnoises--rules--list{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    height: 400px;
+    width: 100%;
+    gap: 12px;
+    padding-top: 5px;
+}
+
+.img__diagnoises--rule{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 5px;
+    width: 100%;
+    height: 112px;
+    background-color: var(--theme-background-tag);
+    border-radius: 8px;
+    padding: 0 0 0 5px;
+}
+
+.img__diagnoises--guild{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 112px;
+    height: 100%;
+    border-radius: 8px;
+}
+
+.img_diagnoises--text{
+    display: flex;
+    align-items: center;
+    height: 100%;
+    width: calc(100% - 122px);
+    border-radius:8px;
+    padding: 10px;
+}
+
+.img__diagnoises--icon{
+    width: 90px;
+    height: fit-content;
+}

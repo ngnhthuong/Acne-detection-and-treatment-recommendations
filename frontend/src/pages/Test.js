@@ -21,10 +21,6 @@ const Test = (props) => {
   };
 
   useEffect(() => {
-    dispatch(FetchUsers());
-  },[]);
-
-  useEffect(() => {
     console.log("users", users);
   }, [users]);
 

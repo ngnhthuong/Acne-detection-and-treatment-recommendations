@@ -13,10 +13,12 @@ import tempfile
 import os
 
 acneDetection = APIRouter()
-
 @acneDetection.post("/api/acne_detection_daily/{user_id}")
-async def create_or_update_upload_files(user_id: str, data: List[ImageBase64AndModel]):
-    print('hih')
+async def create_or_update_upload_files(
+    user_id: str,
+    data: List[ImageBase64AndModel],
+    
+):
     today_start = datetime.combine(datetime.now().date(), datetime.min.time())
     today_end = datetime.combine(datetime.now().date(), datetime.max.time())
     acne_treatment = acne_detection_table.find_one({
@@ -25,6 +27,7 @@ async def create_or_update_upload_files(user_id: str, data: List[ImageBase64AndM
     })
     if acne_treatment:
         raise HTTPException(status_code=404, detail="Today exist history")
+    
     images = []
     predicted_images = []
     for img_data in data:
@@ -38,13 +41,21 @@ async def create_or_update_upload_files(user_id: str, data: List[ImageBase64AndM
             temp_file_path = temp_file.name
         try:
             predicte_result_sahi = acnePredictWithSahi(temp_file_path)
-            predicted_images.append({ "image_id": img_data.image_id, "predicted": predicte_result_sahi['bounding-box'], "architecture_ai_name": "YoloV8 with SAHI"})
+            predicted_images.append({
+                "image_id": img_data.image_id,
+                "predicted": predicte_result_sahi['bounding-box'],
+                "architecture_ai_name": "YoloV8 with SAHI"
+            })
             predicte_result_yolo = acnePredictWithYolo(temp_file_path)
-            predicted_images.append({ "image_id": img_data.image_id, "predicted": predicte_result_yolo['bounding-box'], "architecture_ai_name": "YoloV8"})
-
+            predicted_images.append({
+                "image_id": img_data.image_id,
+                "predicted": predicte_result_yolo['bounding-box'],
+                "architecture_ai_name": "YoloV8"
+            })
             images.append({"image_id": img_data.image_id, "image_base64": img_data.image_base64})
         finally:
             os.remove(temp_file_path)
+    
     acne_treatment_instance = {
         "user_id": user_id,
         "images": images,
@@ -55,9 +66,12 @@ async def create_or_update_upload_files(user_id: str, data: List[ImageBase64AndM
     inserted_document = acne_detection_table.find_one({"_id": result.inserted_id})
     return {"data": acneDetectionFormat(inserted_document)}
 
-
 @acneDetection.put("/api/acne_detection_daily/deleteAndPut/{user_id}")
-async def delete_and_put_upload_files(user_id: str, data: DeleteAndAddBase64Img):
+async def delete_and_put_upload_files(
+    user_id: str,
+    data: DeleteAndAddBase64Img,
+    
+):
     today_start = datetime.combine(datetime.now().date(), datetime.min.time())
     today_end = datetime.combine(datetime.now().date(), datetime.max.time())
     
@@ -69,7 +83,6 @@ async def delete_and_put_upload_files(user_id: str, data: DeleteAndAddBase64Img)
     if not acne_treatment:
         raise HTTPException(status_code=404, detail="Today have no history")
 
-    # Lọc bỏ các hình ảnh và hình ảnh dự đoán có image_id nằm trong img_id_remove_list
     updated_images = [img for img in acne_treatment.get("images", []) if img["image_id"] not in data.img_id_remove_list]
     updated_predicted_images = [img_predict for img_predict in acne_treatment.get("predicted_images", []) if img_predict["image_id"] not in data.img_id_remove_list]
 
@@ -118,7 +131,10 @@ async def delete_and_put_upload_files(user_id: str, data: DeleteAndAddBase64Img)
     return {"message": "success: Acne detection has been updated successfully", "data": acneDetectionFormat(acne_treatment_new)}
 
 @acneDetection.get("/api/acne_detection_daily/{user_id}")
-async def get_acne_detection_daily(user_id: str):
+async def get_acne_detection_daily(
+    user_id: str,
+    
+):
     today_start = datetime.combine(datetime.now().date(), datetime.min.time())
     today_end = datetime.combine(datetime.now().date(), datetime.max.time())
     acne_treatment = acne_detection_table.find_one({
@@ -126,11 +142,14 @@ async def get_acne_detection_daily(user_id: str):
         "date": {"$gte": today_start, "$lt": today_end}
     })
     if not acne_treatment:
-        raise HTTPException(status_code=404, detail="Today have no history")
+        return {"message": "success: get acne_detection_daily", "data": []}
 
-    return {"message": "success: get acne_detection_daily" ,"data": acneDetectionFormat(acne_treatment)}
+    return {"message": "success: get acne_detection_daily", "data": acneDetectionFormat(acne_treatment)}
 
 @acneDetection.get("/api/acne_detection_user_all/{user_id}")
-async def get_acne_detection_user_all(user_id: str):
+async def get_acne_detection_user_all(
+    user_id: str,
+    
+):
     acne_treatment = acne_detection_table.find({"user_id": user_id})
     return {"message": "success: get all detection of user", "data": acneDetectionListFormat(acne_treatment)}
