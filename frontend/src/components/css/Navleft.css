@@ -58,11 +58,13 @@
 
 .icon{
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     width: 33px;
     height: 33px;
     cursor: pointer;
+    position: relative;
 }
 
 .icon--element{
@@ -79,3 +81,12 @@
 }
 
 
+.icon-active{
+    color: var(--green-light);
+    background-color: var(--theme-background-green);
+    border-radius: 10px 10px 10px 10px;
+    .icon--element{
+        color: white;
+
+    }
+}

@@ -57,6 +57,7 @@
 
 .yesNo__dialog--button button:hover{
     background-color: var(--theme-background-orange-light);
+    cursor: pointer;
 }
 
 .yesNo__dialog--button button:active{

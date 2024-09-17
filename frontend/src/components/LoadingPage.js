@@ -1,6 +1,5 @@
-import react from 'react';
 import LoadingGif from '../assets/loading/lowypa_loading.gif';
-import './LoadingPage.css';
+import './css/LoadingPage.css';
 const LoadingPage = () => {
     return (
         <div className='loading__background'>

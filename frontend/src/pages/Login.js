@@ -10,7 +10,7 @@ import {
   getDetectionAcneDailyPut,
   fetchUserSuccess,
   regisUserReset,
-} from "../action/actions";
+} from "../redux/action/actions";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 
@@ -92,7 +92,7 @@ const Login = () => {
       {regisOpen && (
         <RegistrationDialog handleChangeRegisOpen={handleChangeRegisOpen} />
       )}
-      <div className="login__background">
+      <div className="login__background ban--select">
         <div className="login__background--split">
           <div className="sologan__background">
             <img
@@ -124,6 +124,7 @@ const Login = () => {
                   onChange={(e) => setPassword(e.target.value)}
                   required
                   placeholder="Password"
+                  minLength={8}
                 />
                 {viewPassword ? (
                   <ViewOffImg

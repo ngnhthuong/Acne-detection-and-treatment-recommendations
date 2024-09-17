@@ -1,10 +1,9 @@
-import react from 'react';
-import './YesNoDialog.css';
+import './css/YesNoDialog.css';
 
 const YesNoDialog = ({notification, handleAccept}) => {
     return (
         <div className='yesNo__background'>
-            <div className='yesNo__dialog--frame box--shadow-btn'>
+            <div className='yesNo__dialog--frame box--shadow-btn  ban--select'>
                 <div className='yesNo__dialog'>
                     <div className='yesNo__dialog--title'>
                         <h1>Are you sure?</h1>

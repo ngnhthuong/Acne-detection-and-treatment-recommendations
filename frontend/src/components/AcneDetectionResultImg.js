@@ -1,9 +1,8 @@
-import react from "react";
 import React, { useState } from "react";
-import "./AcneDetectionResultImg.css";
+import "./css/AcneDetectionResultImg.css";
 import BoundingBoxCanvas from "./BoundingBoxCanvas";
-import "./Acnedetection.css";
-import "./AcneDetectionFuncRight.css";
+import "./css/Acnedetection.css";
+import "./css/AcneDetectionFuncRight.css";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
 
@@ -30,7 +29,7 @@ const AcneDetectionResultImg = ({
           setImage(object.image_base64);
         }
         const foundObj = predicted_images.find(
-          (obj) => obj.image_id === image_active && obj.architecture_ai_name == selectedOptionModelUsed
+          (obj) => obj.image_id === image_active && obj.architecture_ai_name === selectedOptionModelUsed
         );
         if (foundObj) {
           setBoxes(foundObj.predicted);

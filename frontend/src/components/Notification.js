@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import "./Notification.css";
+import "./css/Notification.css";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchUserReset, regisUserReset } from "../action/actions";
+import { fetchUserReset, regisUserReset } from "../redux/action/actions";
 
 const Notification = () => {
   const dispatch = useDispatch();
@@ -76,7 +76,7 @@ const Notification = () => {
   ]);
 
   return (
-    <div className={`notification ${show ? "show" : ""} ${type}`}>
+    <div className={`notification ban--select ${show ? "show" : ""} ${type}`}>
       {notification}
     </div>
   );

@@ -21,15 +21,17 @@
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    height: calc(100% - 113px);
+    min-height: calc(100% - 122px);
     width: 100%;
 }
 
 .span__tag{
     color: var(--theme-background-green);
     font-weight: 300;
-    padding: 0 5px 5px 3px
+    padding: 0 5px 5px 3px;
 }
+
+
 
 
 

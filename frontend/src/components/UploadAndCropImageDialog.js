@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import Cropper from "react-cropper";
 import "cropperjs/dist/cropper.css";
-import "./UploadAndCropImageDialog.css";
+import "./css/UploadAndCropImageDialog.css";
 import { ReactComponent as MultipleImg } from "../assets/icons/multiple.svg";
 import { ReactComponent as CropImg } from "../assets/icons/crop.svg";
 import { ReactComponent as UploadImg } from "../assets/icons/upload-img.svg";
@@ -15,10 +15,9 @@ import ImgDiagnoisis from "./ImgDiagnoisis";
 import LoadingTask from "./LoadingTask";
 import { useSelector, useDispatch } from "react-redux";
 import {
-  detectionAcneDailyCropEdit,
   detectionAcneDailyPut,
   detectionAcneDaily,
-} from "../action/actions";
+} from "../redux/action/actions";
 
 const UploadAndCropImage = ({ toggleUploadAndCropImageDialogOpen }) => {
   const dispatch = useDispatch();
@@ -137,7 +136,7 @@ const UploadAndCropImage = ({ toggleUploadAndCropImageDialogOpen }) => {
   };
 
   return (
-    <div className="background__dialog ">
+    <div className="background__dialog ban--select">
       <div className="background__dialog--main box--shadow-btn">
         {isLoading && <LoadingTask />}
         <div className="dialog__header">
@@ -265,7 +264,7 @@ const UploadAndCropImage = ({ toggleUploadAndCropImageDialogOpen }) => {
                 </div>
                 <div className="img_diagnoises--text">
                   Đảm bảo rằng các ảnh tải lên có độ phân giải cao để tránh bị vỡ khi cắt ảnh và hỗ trợ quá
-                  trình nhận diện chính xác.
+                  trình chuẩn đoán chính xác hơn.
                 </div>
               </div>
               <div className="img__diagnoises--rule">
@@ -278,7 +277,7 @@ const UploadAndCropImage = ({ toggleUploadAndCropImageDialogOpen }) => {
                 </div>
                 <div className="img_diagnoises--text">
                   Sử dụng chức năng phóng to ảnh để tránh việc vật thể mụn quá nhỏ. Điều này sẽ
-                  cải thiện độ chính xác của quá trình nhận diện.
+                  cải thiện độ chính xác của quá trình chuẩn đoán.
                 </div>
               </div>
 
@@ -291,7 +290,7 @@ const UploadAndCropImage = ({ toggleUploadAndCropImageDialogOpen }) => {
                   />
                 </div>
                 <div className="img_diagnoises--text">
-                  Bạn có thể tải lên tối thiểu 1 ảnh và tối đa 4 ảnh để dự đoán.
+                  Bạn có thể tải lên tối thiểu 1 ảnh và tối đa 4 ảnh để chuẩn đoán mụn.
                 </div>
               </div>
             </div>

@@ -1,14 +1,11 @@
 import React, { useState, useEffect } from "react";
-import "./RegistrationDialog.css";
+import "./css/RegistrationDialog.css";
 import { ReactComponent as MultipleImg } from "../assets/icons/multiple.svg";
 import { useSelector, useDispatch } from "react-redux";
 import LoadingTask from "./LoadingTask";
 import {
   regisUsers,
-  regisUserRequest,
-  regisUserSuccess,
-  regisUserFailure,
-} from "../action/actions";
+} from "../redux/action/actions";
 const RegistrationForm = ({ handleChangeRegisOpen }) => {
   const dispatch = useDispatch();
   const regisLoading = useSelector((state) => state.userRegis.isLoading);
@@ -55,7 +52,7 @@ const RegistrationForm = ({ handleChangeRegisOpen }) => {
   }, [regisLoading, regisError]);
 
   return (
-    <div className="registration">
+    <div className="registration ban--select">
       {openLoading && <LoadingTask />}
       <div className="registration__background">
         <button className="cls-btn-regis" onClick={handleChangeRegisOpen}>
@@ -149,6 +146,7 @@ const RegistrationForm = ({ handleChangeRegisOpen }) => {
               placeholder="New Password"
               value={formData.password}
               onChange={handleChange}
+              minLength={8}
               required
             />
           </div>

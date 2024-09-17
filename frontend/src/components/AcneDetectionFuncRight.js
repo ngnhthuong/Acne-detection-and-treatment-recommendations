@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
-import "./AcneDetectionFuncRight.css";
-import { useSelector, useDispatch } from "react-redux";
+import "./css/AcneDetectionFuncRight.css";
+import { useSelector } from "react-redux";
+
 const AcneDetectionFuncRight = ({
   sliderConfidence,
   sliderOverlap,
@@ -20,11 +21,11 @@ const AcneDetectionFuncRight = ({
   );
 
   const images = useSelector((state) => state.acnePredictionDaily.images);
-
   const [labelList, setLabelList] = useState([]);
+  const [totalAcnes, setTotalAcnes] = useState(0);
+  const [levelAcnes, setLevelAcnes] = useState(-1);
 
   useEffect(() => {
-    console.log("predicted_images", predicted_images);
     predicted_images.map((item) => {
       if (
         item.image_id === image_active &&
@@ -33,21 +34,37 @@ const AcneDetectionFuncRight = ({
         const uniqueClassNames = [
           ...new Set(item.predicted.map((item) => item.class_name)),
         ];
-        console.log("labelList", uniqueClassNames);
         setLabelList(uniqueClassNames);
+        setTotalAcnes(item.total_acnes);
+        if (item.total_acnes > 0 && item.total_acnes <= 5) {
+          setLevelAcnes(1);
+        } else if (item.total_acnes > 5 && item.total_acnes <= 20) {
+          setLevelAcnes(2);
+        } else if (item.total_acnes > 20 && item.total_acnes <= 50) {
+          setLevelAcnes(3);
+        } else if (item.total_acnes > 50) {
+          setLevelAcnes(4);
+        } else if (item.total_acnes === 0) {
+          setLevelAcnes(0);
+        }
       }
     });
     if (predicted_images.length === 0) {
       setLabelList([]);
+      setTotalAcnes(0);
+      setLevelAcnes(-1);
     }
-  }, [selectedOptionModelUsed, image_active, images]);
+  }, [selectedOptionModelUsed, image_active, images, predicted_images]);
 
   return (
     <div className="acne__detection--tag box--shadow-btn">
+      {/* <span className="discribe-about-function">
+        <QuestionAskImg className="icon__explain--func" />
+      </span> */}
       <div className="acne__detection--result-tag">
         <div className="acne__detection--tool-model-modes">
           <div className="acne__detection--tool-model-used">
-            <div className="span__tag">Model Used:</div>
+            <div className="span__tag ban--select">Model Used</div>
             <select
               id="optionsModelUsed"
               value={selectedOptionModelUsed}
@@ -63,7 +80,7 @@ const AcneDetectionFuncRight = ({
           </div>
 
           <div className="acne__detection--tool-mode-used">
-            <div className="span__tag">Mode Used:</div>
+            <div className="span__tag ban--select">Mode Used</div>
             <select
               id="optionsModelUsed"
               value={selectedOptionModeUsed}
@@ -79,7 +96,9 @@ const AcneDetectionFuncRight = ({
             </select>
           </div>
           <div className="acne__detection--tool-scroll box--shadow-btn">
-            <span>Confidence Threshold: {sliderConfidence}%</span>
+            <span className="ban--select">
+              Confidence Threshold: {sliderConfidence}%
+            </span>
             <div className="slider-container">
               <span>0%</span>
               <input
@@ -95,7 +114,9 @@ const AcneDetectionFuncRight = ({
           </div>
 
           <div className="acne__detection--tool-scroll box--shadow-btn">
-            <span>Overlap Threshold: {sliderOverlap}%</span>
+            <span className="ban--select">
+              Overlap Threshold: {sliderOverlap}%
+            </span>
             <div className="slider-container">
               <span>0%</span>
               <input
@@ -126,16 +147,54 @@ const AcneDetectionFuncRight = ({
       </div>
 
       <div className="acne__detection--summary">
-        <div className="acne__detection--summary-total box--shadow-btn">
-          <span>Total acnes: 23</span>
-        </div>
         <div className="acne__detection--summary-level-save-update">
-          <div className="acne__detection--summary-level box--shadow-btn">
-            <span>Skin level: 1</span>
+          <div
+            className="acne__detection--summary-level box--shadow-btn"
+            style={{
+              backgroundColor:
+                levelAcnes === 1
+                  ? "#d0f0c0" // Soft Green
+                  : levelAcnes === 2
+                  ? "#fffacd" // Soft Yellow
+                  : levelAcnes === 3
+                  ? "#ffcccb" // Soft Pink
+                  : levelAcnes === 4
+                  ? "#ffe4e1" // Soft Rose
+                  : "", // Soft Blue
+              color:
+                levelAcnes === 1
+                  ? "#2e7d32" // Darker Green
+                  : levelAcnes === 2
+                  ? "#fbc02d" // Darker Yellow
+                  : levelAcnes === 3
+                  ? "#d32f2f" // Darker Pink
+                  : levelAcnes === 4
+                  ? "#c62828" // Darker Rose
+                  : "", // Darker Blue
+            }}
+          >
+            <span className="ban--select">
+              Skin level:{" "}
+              {(() => {
+                if (levelAcnes === 1) {
+                  return <span>Mild</span>;
+                } else if (levelAcnes === 2) {
+                  return <span>Moderate</span>;
+                } else if (levelAcnes === 3) {
+                  return <span>Severe</span>;
+                } else if (levelAcnes === 4) {
+                  return <span>Very Severe</span>;
+                } else if (levelAcnes === 0) {
+                  return <span>Good Skin (Glow)</span>;
+                } else {
+                  return <span>No</span>;
+                }
+              })()}
+            </span>
           </div>
-          {/* <div className="acne__detection--summary-save  box--shadow-btn">
-            <span className="acne__detection--save">Save</span>
-          </div> */}
+        </div>
+        <div className="acne__detection--summary-total box--shadow-btn ban--select">
+          <span>Total acnes: {totalAcnes ? totalAcnes : "0"}</span>
         </div>
       </div>
     </div>

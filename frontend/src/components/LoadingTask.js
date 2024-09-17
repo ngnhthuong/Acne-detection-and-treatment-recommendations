@@ -1,6 +1,5 @@
-import react from 'react';
 import LoadingGifIcon from '../assets/loading/loading_icon.gif';
-import './LoadingTask.css';
+import './css/LoadingTask.css';
 
 const LoadingTask = () => {
     return (

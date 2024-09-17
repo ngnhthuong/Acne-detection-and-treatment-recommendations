@@ -1,59 +1,24 @@
+// Diagnosis.js
 import React from "react";
-import "./test.css";
-// import { connect } from "react-redux";
-import { useSelector, useDispatch } from "react-redux";
-import { useEffect } from "react";
+import NavLeft from "../components/NavLeft";
+import RightDiagnosis from "../components/RightDiagnosis";
+import "./diagnosis.css";
+import LoadingPage from "../components/LoadingPage";
+import { useSelector } from "react-redux";
 
-import {
-  increaseCounter,
-  decreaseCounter,
-  devideCounter,
-  FetchUsers,
-} from "../action/actions";
-
-const Test = (props) => {
-  const count = useSelector((state) => state.counter.count);
-  const devide = useSelector((state) => state.devide.devide);
-  const users = useSelector((state) => state.user.list_user);
-  const dispatch = useDispatch();
-  const handleIncrease = () => {
-    dispatch(increaseCounter(2))
-  };
-
-  useEffect(() => {
-    console.log("users", users);
-  }, [users]);
-
+export default function Test() {
+  const isLoadingGet = useSelector((state) => state.acnePredictionDaily.isLoadingGet);
   return (
-    <div className="Middle">
-      <h1>Test</h1>
-      <div>
-        Count: {count} {devide}
+    <>
+      {isLoadingGet ? <LoadingPage/> : null}
+      <div className="diagnosis">
+        <div className="area__left">
+          <NavLeft />
+        </div>
+        {/* <div className="area__right">
+          <RightDiagnosis />
+        </div> */}
       </div>
-      {
-        users && <div>{users.name}</div>
-      }
-      <button onClick={() => dispatch(devideCounter())}>Devide</button>
-      <button onClick={() => handleIncrease(2)}>Increate</button>
-      <button onClick={() => dispatch(decreaseCounter())}>Decreate</button>
-    </div>
+    </>
   );
-};
-
-// const mapStateToProps = (state) => {
-//   return {
-//     count: state.counter.count,
-//     devide: state.devide.devide,
-//   };
-// };
-
-// const mapDispatchToProps = (dispatch) => {
-//   return {
-//     devideCounter: () => dispatch(devideCounter()),
-//     increaseCounter: () => dispatch(increaseCounter()),
-//     decreaseCounter: () => dispatch(decreaseCounter()),
-//   };
-// };
-
-// export default connect(mapStateToProps, mapDispatchToProps)(Test);
-export default Test;
+}

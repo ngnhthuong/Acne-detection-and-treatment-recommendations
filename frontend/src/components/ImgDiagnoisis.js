@@ -43,10 +43,10 @@
 // export default ImgDiagnoisis;
 
 import React from "react";
-import "./ImgDiagnoisis.css";
+import "./css/ImgDiagnoisis.css";
 import { ReactComponent as MultipleImg } from "../assets/icons/multiple.svg";
 import { useSelector, useDispatch } from "react-redux";
-import { detectionAcneDailyActiveShow } from "../action/actions";
+import { detectionAcneDailyActiveShow } from "../redux/action/actions";
 const ImgDiagnoisis = ({
   onDelete,
   tag,

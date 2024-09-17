@@ -1,9 +1,7 @@
-import React, { useEffect } from "react";
 import { ReactComponent as UploadImg } from "../assets/icons/upload-img.svg";
-import { ReactComponent as MultipleImg } from "../assets/icons/multiple.svg";
-import "./AcneDetectionFuncHead.css";
+import "./css/AcneDetectionFuncHead.css";
 import ImgDiagnoisis from "./ImgDiagnoisis";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 const AcneDetectionFuncHead = ({
   toggleUploadAndCropImageDialogOpen,
   handleChangeSelectedImage,

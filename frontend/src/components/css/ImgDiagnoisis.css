@@ -58,7 +58,7 @@
     height: 100%;
     overflow: hidden;
     border-radius: 10px;
-    background-image: url(../assets/icons/no-image.svg);
+    background-image: url(../../assets/icons/no-image.svg);
     background-size: contain; /* Scale the image to fit within the container */
     background-position: center; /* Center the image */
     background-repeat: no-repeat; /* Prevent the image from repeating */

@@ -1,11 +1,10 @@
 // Diagnosis.js
-import React, { useState, useEffect } from "react";
-import "./Acnedetection.css";
+import React, { useState } from "react";
+import "./css/Acnedetection.css";
 import AcneDetectionFuncRight from "./AcneDetectionFuncRight";
 import AcneDetectionResultImg from "./AcneDetectionResultImg";
 import AcneDetectionFuncHead from "./AcneDetectionFuncHead";
 import UploadAndCropImageDialog from "./UploadAndCropImageDialog";
-import { useSelector, useDispatch } from "react-redux";
 
 
 const labelColors = {
@@ -27,9 +26,6 @@ const labelColors = {
 
 
 export default function RightDiagnosis() {
-  // selected image, user
-  const images = useSelector((state) => state.acnePredictionDaily.images);
-  const user = useSelector((state) => state.user.user);
   // mode, model, confidence, overlap using for props
   const [sliderConfidence, setSliderConfidence] = useState(1);
   const [sliderOverlap, setSliderOverlap] = useState(1);
@@ -71,6 +67,7 @@ export default function RightDiagnosis() {
           />
         </div>
         <div className="acne__detection--result">
+
           <AcneDetectionResultImg
             selectedOptionModeUsed={selectedOptionModeUsed}
             selectedOptionModelUsed = {selectedOptionModelUsed}

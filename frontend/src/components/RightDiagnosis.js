@@ -1,13 +1,13 @@
 // Diagnosis.js
 import React, { useState } from "react";
-import "./RightDiagnosis.css";
+import "./css/RightDiagnosis.css";
 import { ReactComponent as ArrowLeft } from '../assets/icons/arrow-left.svg';
 import { ReactComponent as ArrowRight } from '../assets/icons/arrow-right.svg';
 import AcneDetection from "../components/AcneDetection";
 import Chatbox from "./Chatbox";
 
 export default function RightDiagnosis() {
-    const [onOffChat, setOnOffChat] = useState(true);
+    const [onOffChat, setOnOffChat] = useState(false);
 
     const toggleOnOffChat = () => {
         setOnOffChat(prevState => !prevState);

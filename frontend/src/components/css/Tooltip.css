@@ -15,7 +15,7 @@
     position: absolute;
     z-index: 1;
     left: 100%;
-    top: -50%;
+    top: -55%;
     white-space: nowrap;
     opacity: 0;
     transition: opacity 0.3s;
