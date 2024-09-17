@@ -44,13 +44,16 @@ async def create_or_update_upload_files(
             predicted_images.append({
                 "image_id": img_data.image_id,
                 "predicted": predicte_result_sahi['bounding-box'],
-                "architecture_ai_name": "YoloV8 with SAHI"
+                "architecture_ai_name": "YoloV8 with SAHI",
+                "total_acnes": len(predicte_result_sahi['bounding-box'])
             })
             predicte_result_yolo = acnePredictWithYolo(temp_file_path)
             predicted_images.append({
                 "image_id": img_data.image_id,
                 "predicted": predicte_result_yolo['bounding-box'],
-                "architecture_ai_name": "YoloV8"
+                "architecture_ai_name": "YoloV8",
+                "total_acnes": len(predicte_result_yolo['bounding-box'])
+
             })
             images.append({"image_id": img_data.image_id, "image_base64": img_data.image_base64})
         finally:
@@ -103,13 +106,15 @@ async def delete_and_put_upload_files(
             predicted_images.append({
                 "image_id": img_data.image_id,
                 "predicted": predicte_result_sahi['bounding-box'],
-                "architecture_ai_name": "YoloV8 with SAHI"
+                "architecture_ai_name": "YoloV8 with SAHI",
+                "total_acnes": len(predicte_result_sahi['bounding-box'])
             })
             predicte_result_yolo = acnePredictWithYolo(temp_file_path)
             predicted_images.append({
                 "image_id": img_data.image_id,
                 "predicted": predicte_result_yolo['bounding-box'],
-                "architecture_ai_name": "YoloV8"
+                "architecture_ai_name": "YoloV8",
+                "total_acnes": len(predicte_result_yolo['bounding-box'])
             })
             images.append({"image_id": img_data.image_id, "image_base64": img_data.image_base64})
         finally:

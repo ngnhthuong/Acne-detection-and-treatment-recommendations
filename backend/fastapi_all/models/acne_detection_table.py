@@ -18,6 +18,7 @@ class PredictedImage(BaseModel):
     image_id: str
     predicted: List[Dict[str, float]]
     architecture_ai_name: str
+    total_acnes: int
     
 class AcneTreatment(BaseModel):
     user_id: str
