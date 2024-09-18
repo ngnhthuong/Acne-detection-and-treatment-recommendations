@@ -1,6 +1,7 @@
 from fastapi import APIRouter, UploadFile, File, HTTPException
 from typing import List
-from datetime import datetime
+from datetime import datetime, timedelta
+import pytz
 import base64
 import uuid
 from pymongo import MongoClient
@@ -19,8 +20,11 @@ async def create_or_update_upload_files(
     data: List[ImageBase64AndModel],
     
 ):
-    today_start = datetime.combine(datetime.now().date(), datetime.min.time())
-    today_end = datetime.combine(datetime.now().date(), datetime.max.time())
+    vietnam_tz = pytz.timezone('Asia/Ho_Chi_Minh')
+    now_vietnam = datetime.now(vietnam_tz)
+    today_start = datetime.combine(now_vietnam.date(), datetime.min.time()).astimezone(vietnam_tz)
+    today_end = datetime.combine(now_vietnam.date(), datetime.max.time()).astimezone(vietnam_tz)
+    
     acne_treatment = acne_detection_table.find_one({
         "user_id": user_id,
         "date": {"$gte": today_start, "$lt": today_end}
@@ -75,8 +79,10 @@ async def delete_and_put_upload_files(
     data: DeleteAndAddBase64Img,
     
 ):
-    today_start = datetime.combine(datetime.now().date(), datetime.min.time())
-    today_end = datetime.combine(datetime.now().date(), datetime.max.time())
+    vietnam_tz = pytz.timezone('Asia/Ho_Chi_Minh')
+    now_vietnam = datetime.now(vietnam_tz)
+    today_start = datetime.combine(now_vietnam.date(), datetime.min.time()).astimezone(vietnam_tz)
+    today_end = datetime.combine(now_vietnam.date(), datetime.max.time()).astimezone(vietnam_tz)
     
     acne_treatment = acne_detection_table.find_one({
         "user_id": user_id,
@@ -140,8 +146,10 @@ async def get_acne_detection_daily(
     user_id: str,
     
 ):
-    today_start = datetime.combine(datetime.now().date(), datetime.min.time())
-    today_end = datetime.combine(datetime.now().date(), datetime.max.time())
+    vietnam_tz = pytz.timezone('Asia/Ho_Chi_Minh')
+    now_vietnam = datetime.now(vietnam_tz)
+    today_start = datetime.combine(now_vietnam.date(), datetime.min.time()).astimezone(vietnam_tz)
+    today_end = datetime.combine(now_vietnam.date(), datetime.max.time()).astimezone(vietnam_tz)
     acne_treatment = acne_detection_table.find_one({
         "user_id": user_id,
         "date": {"$gte": today_start, "$lt": today_end}

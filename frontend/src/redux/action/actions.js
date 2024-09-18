@@ -1,5 +1,7 @@
 import axios from "axios";
 
+import { BASE_URL } from "../../configs/config";
+
 import {
   INCREMENT,
   DECREMENT,
@@ -48,19 +50,19 @@ export const FetchUsers = (data) => {
     try {
       dispatch(fetchUserRequest());
 
-      const res = await axios.post("http://localhost:8000/api/user/login/", data);
+      const res = await axios.post(`${BASE_URL}/api/user/login/`, data);
       const dataRes = res && res.data ? res.data : {};
 
       console.log("dataRes", dataRes);
 
       if (dataRes.token) {
-        localStorage.setItem('authToken', dataRes.token);
-        localStorage.setItem('userData', JSON.stringify(dataRes.data));
+        localStorage.setItem("authToken", dataRes.token);
+        localStorage.setItem("userData", JSON.stringify(dataRes.data));
       }
 
       dispatch(fetchUserSuccess(dataRes));
     } catch (error) {
-      console.error('Login error:', error);
+      console.error("Login error:", error);
       dispatch(fetchUserFailure(error));
     }
   };
@@ -90,7 +92,7 @@ export const fetchUserReset = () => {
   return {
     type: FETCH_USER_RESET,
   };
-}
+};
 
 // regis user
 
@@ -98,13 +100,10 @@ export const regisUsers = (data) => {
   return async (dispatch, getState) => {
     try {
       dispatch(regisUserRequest());
-      const res = await axios.post(
-        "http://localhost:8000/api/user/register/",
-        data
-      );
+      const res = await axios.post(`${BASE_URL}/api/user/register/`, data);
       dispatch(regisUserSuccess());
     } catch (error) {
-      const dataRes = error.response.data['detail']
+      const dataRes = error.response.data["detail"];
       console.log("error", error);
       dispatch(regisUserFailure(dataRes));
     }
@@ -142,17 +141,17 @@ export const detectionAcneDaily = (data, user_id) => {
     try {
       dispatch(detectionAcneDailyRequest());
 
-      const token = localStorage.getItem('authToken');
+      const token = localStorage.getItem("authToken");
       const res = await axios.post(
-        `http://localhost:8000/api/acne_detection_daily/${user_id}`,
+        `${BASE_URL}/api/acne_detection_daily/${user_id}`,
         data,
         {
-          headers: { Authorization: `Bearer ${token}` }
+          headers: { Authorization: `Bearer ${token}` },
         }
       );
 
       const dataRes = res && res.data ? res.data.data : null;
-      console.log('dadaad---', dataRes);
+      console.log("dadaad---", dataRes);
       dispatch(detectionAcneDailySuccess(dataRes));
       dispatch(detectionAcneDailySuccessNoti());
     } catch (error) {
@@ -166,12 +165,12 @@ export const detectionAcneDailyPut = (data, user_id) => {
     try {
       dispatch(detectionAcneDailyRequest());
 
-      const token = localStorage.getItem('authToken');
+      const token = localStorage.getItem("authToken");
       const res = await axios.put(
-        `http://localhost:8000/api/acne_detection_daily/deleteAndPut/${user_id}`,
+        `${BASE_URL}/api/acne_detection_daily/deleteAndPut/${user_id}`,
         data,
         {
-          headers: { Authorization: `Bearer ${token}` }
+          headers: { Authorization: `Bearer ${token}` },
         }
       );
 
@@ -184,16 +183,17 @@ export const detectionAcneDailyPut = (data, user_id) => {
     }
   };
 };
+
 export const getDetectionAcneDailyPut = (user_id) => {
   return async (dispatch, getState) => {
     try {
       dispatch(detectionAcneDailyRequestGet());
 
-      const token = localStorage.getItem('authToken');
+      const token = localStorage.getItem("authToken");
       const res = await axios.get(
-        `http://localhost:8000/api/acne_detection_daily/${user_id}`,
+        `${BASE_URL}/api/acne_detection_daily/${user_id}`,
         {
-          headers: { Authorization: `Bearer ${token}` }
+          headers: { Authorization: `Bearer ${token}` },
         }
       );
 
@@ -254,5 +254,4 @@ export const detectionAcneDailyActiveShow = (image_id) => {
   };
 };
 
-// check token 
-
+// check token

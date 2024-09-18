@@ -16,6 +16,7 @@ TOKEN_EXPIRE_HOURS = 1
 
 @user.post("/api/user/login/")
 async def login_user(data: LoginRequest):
+    print(data)
     user_data = user_table.find_one({"email": data.email})
     if user_data and bcrypt.checkpw(data.password.encode('utf-8'), user_data["password"].encode('utf-8')):
         token = generate_token(data.email)

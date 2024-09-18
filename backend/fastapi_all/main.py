@@ -12,15 +12,16 @@ app = FastAPI()
 origins = [
     "http://localhost",
     "http://localhost:8000",
-    "http://localhost:3000"  
+    "http://localhost:3000",
+    "http://localhost:3001", 
 ]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,  # Cho phép các domain trong danh sách
+    allow_origins=origins,  
     allow_credentials=True,
-    allow_methods=["*"],  # Cho phép tất cả các phương thức HTTP
-    allow_headers=["*"],  # Cho phép tất cả các header
+    allow_methods=["*"],  
+    allow_headers=["*"],  
 )
 
 # Bao gồm các router
