@@ -22,6 +22,9 @@ import {
   FETCH_USER_RESET,
   REGIS_USER_RESET,
   ACNE_DETECTION_DAILY_RESET,
+  ACTIVE_DIALOG_SETTING,
+  ACTIVE_DIALOG_RESET,
+  CLOSE_DIALOG_SETTING
 } from "./types";
 
 export const increaseCounter = (data) => {
@@ -254,4 +257,16 @@ export const detectionAcneDailyActiveShow = (image_id) => {
   };
 };
 
-// check token
+
+// ACTIVE DIALOG
+export const activeDialogSetting = () => {
+  return {
+    type: ACTIVE_DIALOG_SETTING,
+  };
+}
+
+export const closeDialogSetting = () => {
+  return {
+    type: CLOSE_DIALOG_SETTING,
+  };
+}

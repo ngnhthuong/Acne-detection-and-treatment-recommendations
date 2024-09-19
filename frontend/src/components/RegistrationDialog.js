@@ -3,11 +3,13 @@ import "./css/RegistrationDialog.css";
 import { ReactComponent as MultipleImg } from "../assets/icons/multiple.svg";
 import { useSelector, useDispatch } from "react-redux";
 import LoadingTask from "./LoadingTask";
+
 import {
   regisUsers,
 } from "../redux/action/actions";
 const RegistrationForm = ({ handleChangeRegisOpen }) => {
   const dispatch = useDispatch();
+  const today = new Date().toISOString().split("T")[0];
   const regisLoading = useSelector((state) => state.userRegis.isLoading);
   const regisError = useSelector((state) => state.userRegis.isError);
   const [openLoading, setOpenLoading] = useState(false);
@@ -96,6 +98,7 @@ const RegistrationForm = ({ handleChangeRegisOpen }) => {
                 name="birth_date"
                 value={formData.birth_date}
                 onChange={handleChange}
+                max={today}
               />
             </div>
 

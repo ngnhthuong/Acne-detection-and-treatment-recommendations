@@ -119,6 +119,10 @@
     transform: scale(1);
 }
 
+.webcam{
+    width: 110px;
+}
+
 .list__diagnoises--img{
     display: flex;
     align-items: center;
@@ -314,3 +318,40 @@
     width: 90px;
     height: fit-content;
 }
+
+.webcam-flip {
+    transform: scaleX(-1);
+    border-radius: 10px;
+    border: 1px solid var(--green-light);
+  }
+
+.bouding__capture--btn{
+    width: 100%;
+    display: flex;
+    justify-content: right;
+    align-items: center;
+    padding-top: 10px;
+}
+.capture-btn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    width: 130px;
+    min-height: 2.5rem;
+    border: none;
+    color: var(--theme-background-orange-deep);
+    border-radius: 5px;
+    background-color: var(--theme-background-orange-light);
+}
+
+.capture-btn:hover{
+    cursor: pointer;
+    transform: scale(1.01);
+    background-color: var(--theme-background-orange-light-deep);
+}
+
+/* .capture_icon{
+    color: var(--theme-background-orange-deep) !important;
+} */
+

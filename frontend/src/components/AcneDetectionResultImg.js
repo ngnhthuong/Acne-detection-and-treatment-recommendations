@@ -5,6 +5,8 @@ import "./css/Acnedetection.css";
 import "./css/AcneDetectionFuncRight.css";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
+import { ReactComponent as ZoomImg } from "../assets/icons/zoom.svg";
+import { ReactComponent as ReZoomImg } from "../assets/icons/rezoom.svg";
 
 const AcneDetectionResultImg = ({
   sliderConfidence,
@@ -22,6 +24,10 @@ const AcneDetectionResultImg = ({
   );
   const [image, setImage] = useState("");
   const [boxes, setBoxes] = useState([{}]);
+  const [openZoom, setOpenZoom] = useState(false);
+  const handleZoom = () => {
+    setOpenZoom(!openZoom);
+  };
   const handleSetImage = () => {
     images &&
       images.map((object) => {
@@ -29,7 +35,9 @@ const AcneDetectionResultImg = ({
           setImage(object.image_base64);
         }
         const foundObj = predicted_images.find(
-          (obj) => obj.image_id === image_active && obj.architecture_ai_name === selectedOptionModelUsed
+          (obj) =>
+            obj.image_id === image_active &&
+            obj.architecture_ai_name === selectedOptionModelUsed
         );
         if (foundObj) {
           setBoxes(foundObj.predicted);
@@ -45,22 +53,50 @@ const AcneDetectionResultImg = ({
   };
 
   useEffect(() => {
+    console.log(images.length)
     handleSetImage();
   }, [image_active, selectedOptionModelUsed, selectedOptionModeUsed]);
 
   return (
-    <div className="acne__detection--result-image box--shadow-btn">
-      <div className="acne__detection--result-image-box">
-        <BoundingBoxCanvas
-          selectedOptionModeUsed={selectedOptionModeUsed}
-          base64Image={image}
-          boxes={boxes}
-          labelColors={labelColors}
-          sliderConfidence={sliderConfidence}
-          overlapThreshold={sliderOverlap}
-        />
+    <>
+      {openZoom && (
+        <div className="zoom__dialog">
+          <div className="bouding__img--dialog">
+            <div className="rezoom_img" onClick={() => handleZoom()}>
+              <ReZoomImg className="icon__zoom-rezoom" />
+            </div>
+            <div className="acne__detection--result-image-box">
+              <BoundingBoxCanvas
+                selectedOptionModeUsed={selectedOptionModeUsed}
+                base64Image={image}
+                boxes={boxes}
+                labelColors={labelColors}
+                sliderConfidence={sliderConfidence}
+                overlapThreshold={sliderOverlap}
+              />
+            </div>
+          </div>
+        </div>
+      )}
+
+      <div className="acne__detection--result-image box--shadow-btn">
+        <div className="acne__detection--result-image-box">
+          {(images.length >= 1 && !openZoom) && (
+            <div className="zoom_img" onClick={() => handleZoom()}>
+              <ZoomImg className="icon__zoom-rezoom" />
+            </div>
+          )}
+          <BoundingBoxCanvas
+            selectedOptionModeUsed={selectedOptionModeUsed}
+            base64Image={image}
+            boxes={boxes}
+            labelColors={labelColors}
+            sliderConfidence={sliderConfidence}
+            overlapThreshold={sliderOverlap}
+          />
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+
 import "./css/Navleft.css";
 
 import { ReactComponent as ReportIcon } from "../assets/icons/report.svg";
@@ -8,10 +10,29 @@ import { ReactComponent as LogoutIcon } from "../assets/icons/logout.svg";
 import { ReactComponent as DemoIcon } from "../assets/icons/demo.svg";
 import { ReactComponent as ScanIcon } from "../assets/icons/scan.svg";
 import { ReactComponent as MedicalRecordIcon } from "../assets/icons/medicalrecord.svg";
+
 import Avatar from "../assets/avatars/avatar.jpg";
 import Tooltip from "./Tooltip";
 import YesNoDialog from "./YesNoDialog";
+
+import SettingDialog from "./settingDialog";
+
 export default function NavLeft() {
+  const dispatch = useDispatch();
+
+  // setting dialog
+  const isActiveDialogSetting = useSelector(
+    (state) => state.activeDialog.isActiveDialogSetting
+  );
+
+  const handleOpenSettingDialog = () => {
+    dispatch({ type: "ACTIVE_DIALOG_SETTING" });
+  };
+
+  const handleCloseSettingDialog = () => {
+    dispatch({ type: "CLOSE_DIALOG_SETTING" });
+  };
+  //
   const [openLogoutDialog, setOpenLogoutDialog] = React.useState(false);
   const [notification, setNotification] = React.useState("");
   const navigate = useNavigate();
@@ -38,6 +59,10 @@ export default function NavLeft() {
     }
   };
 
+  useEffect(() => {
+    console.log(isActiveDialogSetting);
+  }, [isActiveDialogSetting]);
+
   return (
     <>
       {openLogoutDialog ? (
@@ -45,6 +70,7 @@ export default function NavLeft() {
       ) : (
         ""
       )}
+      {isActiveDialogSetting ? <SettingDialog handleCloseSettingDialog={handleCloseSettingDialog}/> : ""}
       <div className="nav__left box--shadow-btn">
         <div className="nav__left--avatar">
           <div className="avatar">
@@ -54,25 +80,34 @@ export default function NavLeft() {
         <div className="nav__left--func">
           <div className="nav__left--head">
             <Tooltip text="Acne scan daily">
-              <div className={`icon ${isActivePath("/diagnosis") ? "icon-active" : ""}`} onClick={() => handleClickNav('/diagnosis')}>
+              <div
+                className={`icon ${
+                  isActivePath("/diagnosis") ? "icon-active" : ""
+                }`}
+                onClick={() => handleClickNav("/diagnosis")}
+              >
                 <ScanIcon className="icon--element" />
                 <span className="span-active"></span>
               </div>
             </Tooltip>
             <Tooltip text="Skin health monitoring">
-              <div className={`icon ${isActivePath("/test") ? "icon-active" : ""}`}>
+              <div
+                className={`icon ${isActivePath("/test") ? "icon-active" : ""}`}
+              >
                 <MedicalRecordIcon className="icon--element" />
               </div>
             </Tooltip>
             <Tooltip text="Demo">
-              <div className={`icon ${isActivePath("/demo") ? "icon-active" : ""}`}>
+              <div
+                className={`icon ${isActivePath("/demo") ? "icon-active" : ""}`}
+              >
                 <DemoIcon className="icon--element" />
               </div>
             </Tooltip>
           </div>
           <div className="nav__left--bottom">
             <Tooltip text="Settings">
-              <div className="icon">
+              <div className="icon" onClick={() => handleOpenSettingDialog()}>
                 <SettingIcon className="icon--element" />
               </div>
             </Tooltip>

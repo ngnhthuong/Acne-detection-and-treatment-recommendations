@@ -1,5 +1,6 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import Cropper from "react-cropper";
+import Webcam from "react-webcam";
 import "cropperjs/dist/cropper.css";
 import "./css/UploadAndCropImageDialog.css";
 import { ReactComponent as MultipleImg } from "../assets/icons/multiple.svg";
@@ -7,6 +8,9 @@ import { ReactComponent as CropImg } from "../assets/icons/crop.svg";
 import { ReactComponent as UploadImg } from "../assets/icons/upload-img.svg";
 import { ReactComponent as LockedImg } from "../assets/icons/locked.svg";
 import { ReactComponent as MedicalImg } from "../assets/icons/medical.svg";
+import { ReactComponent as CameraImg } from "../assets/icons/camera.svg";
+import { ReactComponent as CaptureImg } from "../assets/icons/capture.svg";
+
 import ZoomAcneImg from "../assets/icons/zoom_images.png";
 import LimitedImg from "../assets/icons/limited_images.png";
 import HighQualityImg from "../assets/icons/high_quality.png";
@@ -33,12 +37,15 @@ const UploadAndCropImage = ({ toggleUploadAndCropImageDialogOpen }) => {
   const [uploadError, setUploadError] = useState("");
   const [idImgDelete, setIdImgDelete] = useState([]);
   const [notificationEmpty, setNotificationEmpty] = useState(false);
+  const [isWebcamOpen, setIsWebcamOpen] = useState(false);
 
   const cropperRef = useRef(null);
+  const webcamRef = useRef(null);
+
   const generateDateTimeId = () => {
     const now = new Date();
     const year = now.getFullYear();
-    const month = String(now.getMonth() + 1).padStart(2, "0"); // Months are zero-indexed
+    const month = String(now.getMonth() + 1).padStart(2, "0");
     const day = String(now.getDate()).padStart(2, "0");
     const hours = String(now.getHours()).padStart(2, "0");
     const minutes = String(now.getMinutes()).padStart(2, "0");
@@ -59,13 +66,13 @@ const UploadAndCropImage = ({ toggleUploadAndCropImageDialogOpen }) => {
           const reader = new FileReader();
           reader.onloadend = () => {
             setSelectedImage(reader.result);
-            setUploadError(""); // Clear any previous error
+            setUploadError("");
           };
           reader.readAsDataURL(file);
         }
       };
       img.src = URL.createObjectURL(file);
-      event.target.value = null; // Reset the file input
+      event.target.value = null;
     }
   };
 
@@ -103,10 +110,6 @@ const UploadAndCropImage = ({ toggleUploadAndCropImageDialogOpen }) => {
 
   const isUploadDisabled = imageBase64Array.length >= 4;
 
-  useEffect(() => {
-    console.log(imageBase64Array);
-  }, [imageBase64Array]);
-
   const handleDispatchImage = () => {
     if (id_daily_acne_detection == "") {
       if (imagePredict.length === 0) {
@@ -118,7 +121,10 @@ const UploadAndCropImage = ({ toggleUploadAndCropImageDialogOpen }) => {
       }
       dispatch(detectionAcneDaily(imagePredict, user_id));
     } else {
-      if (imagePredict.length === 0 && idImgDelete.length === 0 || (images.length === 0 && imagePredict.length === 0)) {
+      if (
+        (imagePredict.length === 0 && idImgDelete.length === 0) ||
+        (images.length === 0 && imagePredict.length === 0)
+      ) {
         setNotificationEmpty(true);
         setTimeout(() => {
           setNotificationEmpty(false);
@@ -132,6 +138,34 @@ const UploadAndCropImage = ({ toggleUploadAndCropImageDialogOpen }) => {
       console.log("data", data);
       dispatch(detectionAcneDailyPut(data, user_id));
       setImagePredict([]);
+    }
+  };
+
+  const captureWebcamImage = () => {
+    const imageSrc = webcamRef.current.getScreenshot();
+    if (imageSrc) {
+      const img = new Image();
+      img.src = imageSrc;
+
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        const context = canvas.getContext("2d");
+
+        canvas.width = img.width;
+        canvas.height = img.height;
+
+        // Lật ảnh theo chiều ngang
+        context.translate(canvas.width, 0);
+        context.scale(-1, 1);
+
+        context.drawImage(img, 0, 0, img.width, img.height);
+
+        // Lấy dữ liệu hình ảnh từ canvas
+        const flippedImageSrc = canvas.toDataURL("image/jpeg");
+
+        setSelectedImage(flippedImageSrc);
+        setIsWebcamOpen(false);
+      };
     }
   };
 
@@ -154,15 +188,22 @@ const UploadAndCropImage = ({ toggleUploadAndCropImageDialogOpen }) => {
           <div className="dialog__body-func">
             <div
               className={`dialog__body--upload-img-btn ${
-                isUploadDisabled ? "disabled" : ""
+                isUploadDisabled 
+                  ? "disabled"
+                  : ""
               }`}
               onClick={() =>
                 !isUploadDisabled &&
                 document.getElementById("upload-input").click()
               }
-              style={{ cursor: isUploadDisabled ? "not-allowed" : "pointer" }}
+              style={{
+                cursor:
+                  isUploadDisabled || isWebcamOpen || selectedImage
+                    ? "not-allowed"
+                    : "pointer",
+              }}
             >
-              {isUploadDisabled ? (
+              {isUploadDisabled  ? (
                 <LockedImg className="icon--element-locked" />
               ) : (
                 <UploadImg className="icon--element-unlocked" />
@@ -179,17 +220,40 @@ const UploadAndCropImage = ({ toggleUploadAndCropImageDialogOpen }) => {
                 onChange={handleImageUpload}
                 style={{ display: "none", width: "100%", height: "100%" }}
                 id="upload-input"
-                disabled={isUploadDisabled}
+                disabled={isUploadDisabled || selectedImage || isWebcamOpen}
               />
             </div>
-            {
-              notificationEmpty && (
-                <div className="notification__empty">
-                  <p>Hãy thêm dữ liệu!</p>
-                </div>
-              )
-            }
-      
+            <div
+              className={`dialog__body--upload-img-btn webcam ${
+                isUploadDisabled
+                  ? "disabled"
+                  : ""
+              }`}
+              onClick={() => {
+                if (!isWebcamOpen && !selectedImage && !isUploadDisabled) {
+                  setIsWebcamOpen(true);
+                }
+              }}
+              
+              style={{
+                cursor:
+                  isUploadDisabled || isWebcamOpen || selectedImage
+                    ? "not-allowed"
+                    : "pointer",
+              }}
+            >
+              {isUploadDisabled ? (
+                <CameraImg className="icon--element-locked" />
+              ) : (
+                <CameraImg className="icon--element-unlocked" />
+              )}
+              <p>Webcam</p>
+            </div>
+            {notificationEmpty && (
+              <div className="notification__empty">
+                <p>Hãy thêm dữ liệu!</p>
+              </div>
+            )}
           </div>
 
           {uploadError && <p className="error-message">{uploadError}</p>}
@@ -223,6 +287,27 @@ const UploadAndCropImage = ({ toggleUploadAndCropImageDialogOpen }) => {
             </>
           )}
 
+          {isWebcamOpen && (
+            <div className="webcam-container">
+              <Webcam
+                audio={false}
+                ref={webcamRef}
+                screenshotFormat="image/jpeg"
+                width="100%"
+                videoConstraints={{
+                  width: 2560,
+                  height: 1440,
+                  facingMode: "user",
+                }}
+                className="webcam-flip"
+              />
+              <div className="bouding__capture--btn">
+                <button onClick={captureWebcamImage} className="capture-btn">
+                  <span>Capture</span>
+                </button>
+              </div>
+            </div>
+          )}
           <div className="list__img--diagnoises">
             <div className="list__diagnoises--img">
               {imageBase64Array.map((object, index) => (
@@ -263,8 +348,8 @@ const UploadAndCropImage = ({ toggleUploadAndCropImageDialogOpen }) => {
                   />
                 </div>
                 <div className="img_diagnoises--text">
-                  Đảm bảo rằng các ảnh tải lên có độ phân giải cao để tránh bị vỡ khi cắt ảnh và hỗ trợ quá
-                  trình chuẩn đoán chính xác hơn.
+                  Đảm bảo rằng các ảnh tải lên có độ phân giải cao để tránh bị
+                  vỡ khi cắt ảnh và hỗ trợ quá trình chuẩn đoán chính xác hơn.
                 </div>
               </div>
               <div className="img__diagnoises--rule">
@@ -276,8 +361,9 @@ const UploadAndCropImage = ({ toggleUploadAndCropImageDialogOpen }) => {
                   />
                 </div>
                 <div className="img_diagnoises--text">
-                  Sử dụng chức năng phóng to ảnh để tránh việc vật thể mụn quá nhỏ. Điều này sẽ
-                  cải thiện độ chính xác của quá trình chuẩn đoán.
+                  Sử dụng chức năng phóng to ảnh để tránh việc vật thể mụn quá
+                  nhỏ. Điều này sẽ cải thiện độ chính xác của quá trình chuẩn
+                  đoán.
                 </div>
               </div>
 
@@ -286,11 +372,12 @@ const UploadAndCropImage = ({ toggleUploadAndCropImageDialogOpen }) => {
                   <img
                     className="img__diagnoises--icon"
                     src={LimitedImg}
-                    alt="limited_images"
+                    alt="high_quality"
                   />
                 </div>
                 <div className="img_diagnoises--text">
-                  Bạn có thể tải lên tối thiểu 1 ảnh và tối đa 4 ảnh để chuẩn đoán mụn.
+                  Hạn chế tải lên nhiều ảnh cùng lúc để tối ưu hóa tốc độ xử lý
+                  và kết quả chuẩn đoán.
                 </div>
               </div>
             </div>
