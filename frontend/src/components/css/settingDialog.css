@@ -13,7 +13,7 @@
     position: relative;
     border-radius: 20px;
     width: 640px;
-    height: 600px;
+    height: 610px;
     background-color: var(--theme-background-white-dialog);
     overflow: hidden;
 }

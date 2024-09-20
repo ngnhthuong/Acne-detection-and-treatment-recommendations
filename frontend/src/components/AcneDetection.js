@@ -1,10 +1,13 @@
 // Diagnosis.js
 import React, { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import "./css/Acnedetection.css";
 import AcneDetectionFuncRight from "./AcneDetectionFuncRight";
 import AcneDetectionResultImg from "./AcneDetectionResultImg";
 import AcneDetectionFuncHead from "./AcneDetectionFuncHead";
 import UploadAndCropImageDialog from "./UploadAndCropImageDialog";
+
+import {activeDialogUploadImg,closeDialogUploadImg } from "../redux/action/actions";
 
 
 const labelColors = {
@@ -26,12 +29,13 @@ const labelColors = {
 
 
 export default function RightDiagnosis() {
+  const dispatch = useDispatch();
+  const openUploadImg = useSelector((state) => state.activeDialog.isActiveDialogUploadImg);
   // mode, model, confidence, overlap using for props
   const [sliderConfidence, setSliderConfidence] = useState(1);
   const [sliderOverlap, setSliderOverlap] = useState(1);
   const [selectedOptionModeUsed, setSelectedOptionModeUsed] = useState("all");
   const [selectedOptionModelUsed, setSelectedOptionModelUsed] = useState("YoloV8 with SAHI");
-  const [isUploadAndCropImageDialogOpen, setUploadAndCropImageDialogOpen] = useState(false);
 
   const handleChangeSelecteModelUsed = (event) => {
     setSelectedOptionModelUsed(event.target.value);
@@ -47,24 +51,16 @@ export default function RightDiagnosis() {
     console.log(event.target.value);
     setSliderOverlap(event.target.value);
   };
-  const toggleUploadAndCropImageDialogOpen = () => {
-    setUploadAndCropImageDialogOpen((prev) => !prev); 
-  };
+
 
   return (
     <>
-      {isUploadAndCropImageDialogOpen && (
-        <UploadAndCropImageDialog
-          toggleUploadAndCropImageDialogOpen={
-            toggleUploadAndCropImageDialogOpen
-          }
-        />
+      {openUploadImg && (
+        <UploadAndCropImageDialog/>
       )}
       <div className="acne__detection--split">
         <div className="acne__detection--tool">
-          <AcneDetectionFuncHead
-            toggleUploadAndCropImageDialogOpen={toggleUploadAndCropImageDialogOpen}
-          />
+          <AcneDetectionFuncHead/>
         </div>
         <div className="acne__detection--result">
 

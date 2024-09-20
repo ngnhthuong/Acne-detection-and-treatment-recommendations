@@ -225,7 +225,6 @@
     flex-direction: row;
     justify-content: left;
     width: 100%;
-    height: fit-content;
     gap: 10px;
 }
 
@@ -316,7 +315,6 @@
 
 .img__diagnoises--icon{
     width: 90px;
-    height: fit-content;
 }
 
 .webcam-flip {

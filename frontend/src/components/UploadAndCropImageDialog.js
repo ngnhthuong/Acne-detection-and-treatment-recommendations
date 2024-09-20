@@ -21,9 +21,10 @@ import { useSelector, useDispatch } from "react-redux";
 import {
   detectionAcneDailyPut,
   detectionAcneDaily,
+  closeDialogUploadImg,
 } from "../redux/action/actions";
 
-const UploadAndCropImage = ({ toggleUploadAndCropImageDialogOpen }) => {
+const UploadAndCropImage = () => {
   const dispatch = useDispatch();
   const user_id = useSelector((state) => state.user.user.id);
   const id_daily_acne_detection = useSelector(
@@ -169,6 +170,10 @@ const UploadAndCropImage = ({ toggleUploadAndCropImageDialogOpen }) => {
     }
   };
 
+  const handleCloseUploadImgDialog = () => {
+    dispatch(closeDialogUploadImg());
+  };
+
   return (
     <div className="background__dialog ban--select">
       <div className="background__dialog--main box--shadow-btn">
@@ -179,7 +184,7 @@ const UploadAndCropImage = ({ toggleUploadAndCropImageDialogOpen }) => {
           </div>
           <button
             className="cls__btn box--shadow-btn"
-            onClick={toggleUploadAndCropImageDialogOpen}
+            onClick={()=>handleCloseUploadImgDialog()}
           >
             <MultipleImg className="icon--element-mul" />
           </button>

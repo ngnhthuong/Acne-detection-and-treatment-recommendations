@@ -16,7 +16,9 @@ const SettingDialog = ({ handleCloseSettingDialog }) => {
 
   const [formAccount, setFormAccount] = useState({
     email: useSelector((state) => state.user.user.email),
-    password: "",
+    password_old: "",
+    password_new: "",
+
   });
 
   const [isEditingInformation, setIsEditingInformation] = useState(false);
@@ -185,10 +187,24 @@ const SettingDialog = ({ handleCloseSettingDialog }) => {
                   />
                 </div>
                 <div className="grid__secure--item">
-                  <label className="">Mật khẩu</label>
+                  <label className="">Mật khẩu cũ</label>
                   <input
                     type="password"
-                    name="password"
+                    name="password_old"
+                    placeholder="Mật khẩu cũ"
+                    value={formAccount.password}
+                    onChange={handleChangeSecure}
+                    disabled={!isEditingAccount}
+                    className={!isEditingAccount ? "dont__fillin" : ""}
+                    minLength={8}
+                    required
+                  />
+                </div>
+                <div className="grid__secure--item">
+                  <label className="">Mật khẩu mới</label>
+                  <input
+                    type="password"
+                    name="password_new"
                     placeholder="Mật khẩu mới"
                     value={formAccount.password}
                     onChange={handleChangeSecure}

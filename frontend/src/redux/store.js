@@ -5,7 +5,7 @@ import thunkMiddleware from "redux-thunk";
 // includes: reducers, middleware
 const store = createStore(
     rootReducer, 
-    composeWithDevTools(applyMiddleware(thunkMiddleware))
+    applyMiddleware(thunkMiddleware)
 );
 
 export default store;

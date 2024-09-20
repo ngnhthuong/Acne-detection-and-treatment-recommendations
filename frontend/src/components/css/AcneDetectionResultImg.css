@@ -14,6 +14,7 @@
     background-position: center;
     background-repeat: no-repeat;
     background-size: 50%;
+    position: relative
 }
 
 .acne__detection--result-image-box{
@@ -59,7 +60,7 @@
     position: absolute;
     width: 30px;
     height: 30px;
-    top: 5px;
+    bottom: 5px;
     right: 5px;
     border-radius: 8px;
     background-color: var(--theme-background-dialog-light);
@@ -74,13 +75,12 @@
     position: absolute;
     width: 30px;
     height: 30px;
-    top: 5px;
+    bottom: 5px;
     right: 5px;
     border-radius: 8px;
     background-color: var(--theme-background-dialog-light);
   
 }
-
 
 .icon__zoom-rezoom{
     font-size: 1.5rem;

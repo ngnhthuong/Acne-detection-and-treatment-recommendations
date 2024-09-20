@@ -24,7 +24,9 @@ import {
   ACNE_DETECTION_DAILY_RESET,
   ACTIVE_DIALOG_SETTING,
   ACTIVE_DIALOG_RESET,
-  CLOSE_DIALOG_SETTING
+  CLOSE_DIALOG_SETTING,
+  ACTIVE_DIALOG_UPLOAD_IMG,
+  CLOSING_DIALOG_UPLOAD_IMG
 } from "./types";
 
 export const increaseCounter = (data) => {
@@ -176,10 +178,10 @@ export const detectionAcneDailyPut = (data, user_id) => {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-
       const dataRes = res && res.data ? res.data.data : null;
       dispatch(detectionAcneDailySuccess(dataRes));
       dispatch(detectionAcneDailySuccessNoti());
+      dispatch(closeDialogUploadImg())
     } catch (error) {
       dispatch(detectionAcneDailyFailure(error));
       console.log("error", error);
@@ -268,5 +270,17 @@ export const activeDialogSetting = () => {
 export const closeDialogSetting = () => {
   return {
     type: CLOSE_DIALOG_SETTING,
+  };
+}
+
+export const activeDialogUploadImg = () => {
+  return {
+    type: ACTIVE_DIALOG_UPLOAD_IMG,
+  };
+}
+
+export const closeDialogUploadImg = () => {
+  return {
+    type: CLOSING_DIALOG_UPLOAD_IMG,
   };
 }

@@ -2,16 +2,22 @@ import { ReactComponent as UploadImg } from "../assets/icons/upload-img.svg";
 import "./css/AcneDetectionFuncHead.css";
 import ImgDiagnoisis from "./ImgDiagnoisis";
 import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { activeDialogUploadImg } from "../redux/action/actions";
 const AcneDetectionFuncHead = ({
-  toggleUploadAndCropImageDialogOpen,
   handleChangeSelectedImage,
 }) => {
+  const dispatch = useDispatch();
   const images = useSelector((state) => state.acnePredictionDaily.images);
+  const handleOpenUploadImgDialog = () => {
+    dispatch(activeDialogUploadImg());
+  };
+
   return (
     <>
       <div
         className="acne__detection--tool-input-image box--shadow-btn"
-        onClick={toggleUploadAndCropImageDialogOpen}
+        onClick={() => handleOpenUploadImgDialog()}
         style={{ cursor: "pointer" }}
       >
         <UploadImg className="icon--element-arrow" />

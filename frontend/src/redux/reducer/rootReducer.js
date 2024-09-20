@@ -4,7 +4,7 @@ import devideReducer from './devideReducer';
 import userReducer from "./userReducer";
 import userRegisReducer from "./userRegisReducer";
 import acnePredictionDailyReducer from "./acnePredictionDailyRouter";
-import activeDialog from "./activeDialog";
+import activeDialog from "./activeDialogReducer";
 
 const rootReducer = combineReducers({
     counter: counterReducer,
