@@ -1,130 +1,355 @@
-import React, { useState } from "react";
+// import React, { useState } from "react";
+// import "./css/Chatbox.css";
+// import { ReactComponent as Send } from "../assets/icons/send.svg";
+// import LoadingGifIcon from "../assets/loading/loading_plus_icon.gif";
+// import { ReactComponent as Gpt } from "../assets/icons/gpt.svg";
+// import { ReactComponent as Db } from "../assets/icons/database.svg";
+// import { useSelector, useDispatch } from "react-redux";
+// import { ReactComponent as Advice } from "../assets/icons/advice_treatment.svg";
+// import { ReactComponent as Monitor } from "../assets/icons/monitor.svg";
+// import { ReactComponent as AcneDiagnosis } from "../assets/icons/acne_diagnosis.svg";
+// import {
+//   chatboxRequestion,
+//   chatboxRag,
+//   chatboxMedicalDb,
+// } from "../redux/action/actions";
+
+// const Chatbox = () => {
+//   const dispatch = useDispatch();
+//   const chatMessages = useSelector((state) => state.adviceChatbox.chatMessage);
+//   const rag = useSelector((state) => state.adviceChatbox.rag);
+//   const db = useSelector((state) => state.adviceChatbox.medicaldb);
+//   const user = useSelector((state) => state.user.user);
+//   const loadingChat = useSelector((state) => state.adviceChatbox.loading);
+//   const [message, setMessage] = useState("");
+
+//   const toggleOnOffRag = () => {
+//     dispatch(chatboxRag());
+//   };
+
+//   const toggleOnOffMedicalDb = () => {
+//     dispatch(chatboxMedicalDb());
+//   };
+
+//   const sendChatMessage = (message) => {
+//     const newMessage = {
+//       user_id: user.id,
+//       role: "user",
+//       message: message,
+//       rag: rag,
+//       db: db,
+//     };
+//     dispatch(chatboxRequestion(newMessage));
+//     console.log("Sending message:", newMessage);
+//   };
+
+//   const handleSendClick = () => {
+//     if (message.trim() !== "") {
+//       sendChatMessage(message);
+//       setMessage("");
+//     }
+//   };
+
+//   const handleKeyPress = (event) => {
+//     if (
+//       event.key === "Enter" &&
+//       !event.shiftKey &&
+//       !event.ctrlKey &&
+//       !event.altKey &&
+//       !event.metaKey &&
+//       !loadingChat
+//     ) {
+//       event.preventDefault();
+//       handleSendClick();
+//     }
+//   };
+
+//   return (
+//     <>
+//       {chatMessages.length === 0 ? (
+//         <div className="chatbox__introduction">
+//           <div className="chatbox__say-hello ban--select">
+//             <span>
+//               👋 Hi, {user.first_name} {user.last_name}
+//             </span>
+//             <p>How Can I help you today?</p>
+//           </div>
+//           <div className="chatbox__introduction-func">
+//             <div className="chatbox__introduction-func-item">
+//               <AcneDiagnosis
+//                 className="icon--element"
+//                 style={{ color: "orange" }}
+//               />
+//               <span className="ban--select">Acne Diagnosis</span>
+//             </div>
+//             <div className="chatbox__introduction-func-item">
+//               <Advice className="icon--element" />
+//               <span className="ban--select">Treatment Advice</span>
+//             </div>
+//             <div className="chatbox__introduction-func-item">
+//               <Monitor className="icon--element" style={{ color: "purple" }} />
+//               <span className="ban--select">Skin Health Monitor</span>
+//             </div>
+//           </div>
+//         </div>
+//       ) : (
+//         <div className="chatbox__message">
+//           {chatMessages.map((chatItem, index) => (
+//             <div key={index} className={`chatbox__message--${chatItem.role}`}>
+//               {chatItem.role === "user" ? (
+//                 <div className="message">
+//                   <p>{chatItem.message}</p>
+//                 </div>
+//               ) : (
+//                 <div className="chatbox__message--bot">
+//                   <div className="chatbox__message--bot-info">
+//                     <div className="chatbox__message--bot-avatar"></div>
+//                     <div className="chatbox__message--bot-name">
+//                       <span>Glowypa</span>
+//                     </div>
+//                     <div className="chatbox__message--bot-tag">
+//                       <span>RAG</span>
+//                     </div>
+//                     <div className="chatbox__message--bot-tag">
+//                       <span>Medical DB</span>
+//                     </div>
+//                   </div>
+//                   <div
+//                     className="chatbox__message--mes"
+//                     dangerouslySetInnerHTML={{ __html: chatItem.message }}
+//                   ></div>
+//                 </div>
+//               )}
+//             </div>
+//           ))}
+//         </div>
+//       )}
+//       <div className="chatbox__send">
+//         <div className="chatbox__send--input">
+//           <textarea
+//             className="chatbox__send--text-input"
+//             placeholder="Ask me anything about your skin ..."
+//             name="text-input"
+//             id="text-input"
+//             value={message}
+//             onChange={(e) => setMessage(e.target.value)}
+//             onKeyPress={handleKeyPress}
+//           ></textarea>
+//         </div>
+//         <div className="chatbox__send--func">
+//           <div className="chatbox__send--advance">
+//             <div className="chatbox__send--rag chatbox__send--advance-position">
+//               <Gpt className="icon-advance" />
+//               RAG
+//               <div
+//                 id={rag ? "on" : undefined}
+//                 className="button-on-off"
+//                 onClick={toggleOnOffRag}
+//               >
+//                 <div
+//                   id={rag ? "on-circle" : undefined}
+//                   className="circle-on-off"
+//                 ></div>
+//               </div>
+//             </div>
+//             <div className="chatbox__send--db chatbox__send--advance-position">
+//               <Db className="icon-advance" />
+//               Medical DB
+//               <div
+//                 id={db ? "on" : undefined}
+//                 onClick={toggleOnOffMedicalDb}
+//                 className="button-on-off"
+//               >
+//                 <div
+//                   id={db ? "on-circle" : undefined}
+//                   className="circle-on-off"
+//                 ></div>
+//               </div>
+//             </div>
+//           </div>
+//           <button
+//             className="chatbox__send--button"
+//             onClick={handleSendClick}
+//             aria-label="Send Message"
+//           >
+//             {loadingChat ? (
+//               <img
+//                 src={LoadingGifIcon}
+//                 className="icon-loading"
+//                 alt="Loading"
+//               />
+//             ) : (
+//               <Send className="icon-send" />
+//             )}
+//           </button>
+//         </div>
+//       </div>
+//     </>
+//   );
+// };
+
+// export default Chatbox;
+import React, { useState, useEffect } from "react";
 import "./css/Chatbox.css";
 import { ReactComponent as Send } from "../assets/icons/send.svg";
+import LoadingGifIcon from "../assets/loading/loading_plus_icon.gif";
 import { ReactComponent as Gpt } from "../assets/icons/gpt.svg";
 import { ReactComponent as Db } from "../assets/icons/database.svg";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { ReactComponent as Advice } from "../assets/icons/advice_treatment.svg";
 import { ReactComponent as Monitor } from "../assets/icons/monitor.svg";
 import { ReactComponent as AcneDiagnosis } from "../assets/icons/acne_diagnosis.svg";
+import {
+  chatboxRequestion,
+  chatboxRag,
+  chatboxMedicalDb,
+} from "../redux/action/actions";
 
 const Chatbox = () => {
+  const dispatch = useDispatch();
+  const chatMessages = useSelector((state) => state.adviceChatbox.chatMessage);
+  const rag = useSelector((state) => state.adviceChatbox.rag);
+  const db = useSelector((state) => state.adviceChatbox.medicaldb);
   const user = useSelector((state) => state.user.user);
-  const [onOffRag, setOnOffRag] = useState(false);
-  const [onOffMedicalDb, setOnOffMedicalDb] = useState(false);
+  const loadingChat = useSelector((state) => state.adviceChatbox.loading);
+  const [message, setMessage] = useState("");
 
   const toggleOnOffRag = () => {
-    setOnOffRag((prevState) => !prevState);
+    dispatch(chatboxRag());
   };
 
   const toggleOnOffMedicalDb = () => {
-    setOnOffMedicalDb((prevState) => !prevState);
+    dispatch(chatboxMedicalDb());
   };
+
+  const sendChatMessage = (message) => {
+    const newMessage = {
+      user_id: user.id,
+      role: "user",
+      message: message,
+      rag: rag,
+      db: db,
+    };
+    dispatch(chatboxRequestion(newMessage));
+    console.log("Sending message:", newMessage);
+  };
+
+  const handleSendClick = () => {
+    if (message.trim() !== "") {
+      sendChatMessage(message);
+      setMessage("");
+      setIntervalUse(true);
+    }
+  };
+
+  const handleKeyPress = (event) => {
+    if (
+      event.key === "Enter" &&
+      !event.shiftKey &&
+      !event.ctrlKey &&
+      !event.altKey &&
+      !event.metaKey &&
+      !loadingChat
+    ) {
+      event.preventDefault();
+      handleSendClick();
+    }
+  };
+  const [loadingShow, setLoadingShow] = useState(false);
+  const [displayedMessages, setDisplayedMessages] = useState([]);
+  const [intervalUse, setIntervalUse] = useState(false);
+
+  useEffect(() => {
+    if (chatMessages.length > displayedMessages.length && intervalUse) {
+      const newMessage = chatMessages[displayedMessages.length];
+      if (newMessage && newMessage.role !== "user") {
+        let index = 0;
+        const contentArray = (newMessage.message || "").split(/(<\/?[^>]+>)/g).filter(Boolean);
+        setLoadingShow(true);
+        const intervalId = setInterval(() => {
+          if (index < contentArray.length) {
+            setDisplayedMessages((prev) => {
+              const updatedMessages = [...prev];
+              if (!updatedMessages[displayedMessages.length]) {
+                updatedMessages.push("");
+              }
+              updatedMessages[displayedMessages.length] += contentArray[index] || "";
+              return updatedMessages;
+            });
+            index++;
+          } else {
+            setLoadingShow(false);
+            clearInterval(intervalId);
+          }
+        }, 50);
+      } else if (newMessage) {
+        setDisplayedMessages([...displayedMessages, newMessage.message || ""]);
+      }
+    }
+  }, [chatMessages, displayedMessages]);
+
   return (
     <>
-      <div className="chatbox__introduction">
-        <div className="chatbox__say-hello ban--select">
-          <span>
-            👋 Hi, {user.first_name} {user.last_name}
-          </span>
-          <p>How Can I help you today ?</p>
+      {chatMessages.length === 0 ? (
+        <div className="chatbox__introduction">
+          <div className="chatbox__say-hello ban--select">
+            <span>
+              👋 Hi, {user.first_name} {user.last_name}
+            </span>
+            <p>How Can I help you today?</p>
+          </div>
+          <div className="chatbox__introduction-func">
+            <div className="chatbox__introduction-func-item">
+              <AcneDiagnosis
+                className="icon--element"
+                style={{ color: "orange" }}
+              />
+              <span className="ban--select">Acne Diagnosis</span>
+            </div>
+            <div className="chatbox__introduction-func-item">
+              <Advice className="icon--element" />
+              <span className="ban--select">Treatment Advice</span>
+            </div>
+            <div className="chatbox__introduction-func-item">
+              <Monitor className="icon--element" style={{ color: "purple" }} />
+              <span className="ban--select">Skin Health Monitor</span>
+            </div>
+          </div>
         </div>
-        <div className="chatbox__introduction-func">
-          <div className="chatbox__introduction-func-item">
-            <AcneDiagnosis
-              className="icon--element"
-              style={{ color: "orange" }}
-            />
-            <span className="ban--select">Acne Diagnosis</span>
-          </div>
-          <div className="chatbox__introduction-func-item">
-            <Advice className="icon--element" />
-            <span className="ban--select">Treatment Advice</span>
-          </div>
-          <div className="chatbox__introduction-func-item">
-            <Monitor className="icon--element" style={{ color: "purple" }}/>
-            <span className="ban--select" >Skin Health Monitor</span>
-          </div>
-        </div>
-      </div>
-      {/* {
+      ) : (
         <div className="chatbox__message">
-          <div className="chatbox__message--user">
-            <div className="message">
-              <p>Mụn đầu đen là gì? cách điều trị mụn đầu đen?</p>
+          {chatMessages.map((chatItem, index) => (
+            <div key={index} className={`chatbox__message--${chatItem.role}`}>
+              {chatItem.role === "user" ? (
+                <div className="message">
+                  <p>{chatItem.message || ""}</p>
+                </div>
+              ) : (
+                <div className="chatbox__message--bot">
+                  <div className="chatbox__message--bot-info">
+                    <div className="chatbox__message--bot-avatar"></div>
+                    <div className="chatbox__message--bot-name">
+                      <span>Glowypa</span>
+                    </div>
+                    <div className="chatbox__message--bot-tag">
+                      <span>RAG</span>
+                    </div>
+                    <div className="chatbox__message--bot-tag">
+                      <span>Medical DB</span>
+                    </div>
+                  </div>
+                  <div
+                    className="chatbox__message--mes"
+                    dangerouslySetInnerHTML={{
+                      __html: displayedMessages[index] || "",
+                    }}
+                  ></div>
+                </div>
+              )}
             </div>
-          </div>
-          <div className="chatbox__message--bot">
-            <div className="chatbox__message--bot-info">
-              <div className="chatbox__message--bot-avatar"></div>
-              <div className="chatbox__message--bot-name">
-                <span>Glowypa</span>
-              </div>
-              <div className="chatbox__message--bot-tag">
-                <span>RAG</span>
-              </div>
-              <div className="chatbox__message--bot-tag">
-                <span>Medical DB</span>
-              </div>
-            </div>
-            <div className="chatbox__message--mes">
-              <p>
-                Mụn đầu đen là một loại mụn phổ biến xuất hiện khi lỗ chân lông
-                bị tắc nghẽn bởi dầu thừa và tế bào da chết. Dưới đây là một số
-                cách cơ bản để điều trị mụn đầu đen:
-              </p>
-              <h3>Điều Trị Mụn Đầu Đen</h3>
-              <ol>
-                <li>
-                  <strong>Làm sạch da:</strong> Sử dụng sữa rửa mặt nhẹ nhàng,
-                  không chứa dầu, để loại bỏ dầu thừa và bụi bẩn. Rửa mặt hai
-                  lần mỗi ngày để giữ cho lỗ chân lông thông thoáng.
-                </li>
-                <li>
-                  <strong>Tẩy tế bào chết:</strong> Sử dụng sản phẩm tẩy tế bào
-                  chết chứa axit salicylic hoặc axit glycolic để loại bỏ tế bào
-                  da chết và ngăn ngừa tắc nghẽn lỗ chân lông.
-                </li>
-                <li>
-                  <strong>Sử dụng sản phẩm chứa retinoid:</strong> Retinoid giúp
-                  làm sạch lỗ chân lông và thúc đẩy quá trình tái tạo da, giảm
-                  mụn đầu đen hiệu quả.
-                </li>
-                <li>
-                  <strong>Đắp mặt nạ đất sét:</strong> Mặt nạ đất sét có khả
-                  năng hấp thụ dầu thừa và làm sạch sâu lỗ chân lông, giúp giảm
-                  mụn đầu đen.
-                </li>
-                <li>
-                  <strong>Tránh nặn mụn:</strong> Nặn mụn có thể gây viêm nhiễm
-                  và để lại sẹo, vì vậy tốt nhất là nên tránh.
-                </li>
-                <li>
-                  <strong>Tham khảo ý kiến chuyên gia:</strong> Nếu tình trạng
-                  mụn đầu đen nghiêm trọng, bạn nên gặp bác sĩ da liễu để được
-                  tư vấn và điều trị phù hợp.
-                </li>
-              </ol>
-              <ul>
-                <li>
-                  <strong>Làm sạch da:</strong> Sử dụng sữa rửa mặt nhẹ nhàng,
-                  không chứa dầu, để loại bỏ dầu thừa và bụi bẩn. Rửa mặt hai
-                  lần mỗi ngày để giữ cho lỗ chân lông thông thoáng.
-                </li>
-                <li>
-                  <strong>Tẩy tế bào chết:</strong> Sử dụng sản phẩm tẩy tế bào
-                  chết chứa axit salicylic hoặc axit glycolic để loại bỏ tế bào
-                  da chết và ngăn ngừa tắc nghẽn lỗ chân lông.
-                </li>
-              </ul>
-              <p>
-                Những phương pháp trên có thể giúp cải thiện tình trạng mụn đầu
-                đen nếu được thực hiện đều đặn và đúng cách.
-              </p>
-            </div>
-          </div>
+          ))}
         </div>
-      } */}
+      )}
       <div className="chatbox__send">
         <div className="chatbox__send--input">
           <textarea
@@ -132,6 +357,9 @@ const Chatbox = () => {
             placeholder="Ask me anything about your skin ..."
             name="text-input"
             id="text-input"
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            onKeyPress={handleKeyPress}
           ></textarea>
         </div>
         <div className="chatbox__send--func">
@@ -140,12 +368,12 @@ const Chatbox = () => {
               <Gpt className="icon-advance" />
               RAG
               <div
-                id={onOffRag ? "on" : undefined}
+                id={rag ? "on" : ""}
                 className="button-on-off"
-                onClick={() => toggleOnOffRag()}
+                onClick={toggleOnOffRag}
               >
                 <div
-                  id={onOffRag ? "on-circle" : undefined}
+                  id={rag ? "on-circle" : ""}
                   className="circle-on-off"
                 ></div>
               </div>
@@ -154,19 +382,31 @@ const Chatbox = () => {
               <Db className="icon-advance" />
               Medical DB
               <div
-                id={onOffMedicalDb ? "on" : undefined}
-                onClick={() => toggleOnOffMedicalDb()}
+                id={db ? "on" : ""}
+                onClick={toggleOnOffMedicalDb}
                 className="button-on-off"
               >
                 <div
-                  id={onOffMedicalDb ? "on-circle" : undefined}
+                  id={db ? "on-circle" : ""}
                   className="circle-on-off"
                 ></div>
               </div>
             </div>
           </div>
-          <button className="chatbox__send--button">
-            <Send className="icon--element" />
+          <button
+            className="chatbox__send--button"
+            onClick={handleSendClick}
+            aria-label="Send Message"
+          >
+            {loadingChat || loadingShow ? (
+              <img
+                src={LoadingGifIcon}
+                className="icon-loading"
+                alt="Loading"
+              />
+            ) : (
+              <Send className="icon-send" />
+            )}
           </button>
         </div>
       </div>

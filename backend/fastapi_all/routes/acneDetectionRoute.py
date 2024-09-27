@@ -1,13 +1,12 @@
 from fastapi import APIRouter, UploadFile, File, HTTPException
 from typing import List
-from datetime import datetime, timedelta
-import pytz
+from datetime import datetime
 import base64
 import uuid
 from pymongo import MongoClient
 from models.acne_detection_table import AcneTreatment, PredictedImage, Image, ImageBase64AndModel, DeleteAndAddBase64Img  # Import the models here
 from schema.schemaAcneDetection import acneDetectionFormat, acneDetectionListFormat
-from acne_detection.yolo.acne_predict import acnePredictWithYolo, acnePredictWithSahi
+from ai.yolo.acne_predict import acnePredictWithYolo, acnePredictWithSahi
 from config.database import acne_detection_table
 from bson import ObjectId
 import tempfile
@@ -20,11 +19,8 @@ async def create_or_update_upload_files(
     data: List[ImageBase64AndModel],
     
 ):
-    vietnam_tz = pytz.timezone('Asia/Ho_Chi_Minh')
-    now_vietnam = datetime.now(vietnam_tz)
-    today_start = datetime.combine(now_vietnam.date(), datetime.min.time()).astimezone(vietnam_tz)
-    today_end = datetime.combine(now_vietnam.date(), datetime.max.time()).astimezone(vietnam_tz)
-    
+    today_start = datetime.combine(datetime.now().date(), datetime.min.time())
+    today_end = datetime.combine(datetime.now().date(), datetime.max.time())
     acne_treatment = acne_detection_table.find_one({
         "user_id": user_id,
         "date": {"$gte": today_start, "$lt": today_end}
@@ -79,10 +75,8 @@ async def delete_and_put_upload_files(
     data: DeleteAndAddBase64Img,
     
 ):
-    vietnam_tz = pytz.timezone('Asia/Ho_Chi_Minh')
-    now_vietnam = datetime.now(vietnam_tz)
-    today_start = datetime.combine(now_vietnam.date(), datetime.min.time()).astimezone(vietnam_tz)
-    today_end = datetime.combine(now_vietnam.date(), datetime.max.time()).astimezone(vietnam_tz)
+    today_start = datetime.combine(datetime.now().date(), datetime.min.time())
+    today_end = datetime.combine(datetime.now().date(), datetime.max.time())
     
     acne_treatment = acne_detection_table.find_one({
         "user_id": user_id,
@@ -146,10 +140,8 @@ async def get_acne_detection_daily(
     user_id: str,
     
 ):
-    vietnam_tz = pytz.timezone('Asia/Ho_Chi_Minh')
-    now_vietnam = datetime.now(vietnam_tz)
-    today_start = datetime.combine(now_vietnam.date(), datetime.min.time()).astimezone(vietnam_tz)
-    today_end = datetime.combine(now_vietnam.date(), datetime.max.time()).astimezone(vietnam_tz)
+    today_start = datetime.combine(datetime.now().date(), datetime.min.time())
+    today_end = datetime.combine(datetime.now().date(), datetime.max.time())
     acne_treatment = acne_detection_table.find_one({
         "user_id": user_id,
         "date": {"$gte": today_start, "$lt": today_end}

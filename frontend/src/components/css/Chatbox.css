@@ -167,3 +167,19 @@
     background-color: var(--background-grey);
 }
 
+
+.icon-send{
+    width: 20px;
+    height: 20px;
+}
+
+.icon-send:hover{
+    cursor: pointer;
+    color: var(--green-deep);
+}
+
+.icon-loading{
+    width: 25px;
+    height: 25px;
+}
+

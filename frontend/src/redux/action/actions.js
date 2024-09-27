@@ -26,7 +26,14 @@ import {
   ACTIVE_DIALOG_RESET,
   CLOSE_DIALOG_SETTING,
   ACTIVE_DIALOG_UPLOAD_IMG,
-  CLOSING_DIALOG_UPLOAD_IMG
+  CLOSING_DIALOG_UPLOAD_IMG,
+
+  CHATBOX_REQUESTION,
+  CHATBOX_RESPONSE,
+  CHATBOX_RESET,
+  CHATBOX_RAG,
+  CHATBOX_MEDICAL_DB,
+  CHATBOX_FAILURE,
 } from "./types";
 
 export const increaseCounter = (data) => {
@@ -282,5 +289,72 @@ export const activeDialogUploadImg = () => {
 export const closeDialogUploadImg = () => {
   return {
     type: CLOSING_DIALOG_UPLOAD_IMG,
+  };
+}
+
+
+
+// chatbox
+export const chatboxRequestUser = (data) => {
+  return {
+    type: CHATBOX_REQUESTION,
+    payload: data
+  };
+};
+
+export const chatboxRequestion = (data) => {
+  return async (dispatch, getState) => {
+    try {
+      dispatch(chatboxRequestUser(data));
+      const token = localStorage.getItem("authToken");
+      console.log("dataRes-----|", data);
+      const res = await axios.post(
+        `${BASE_URL}/api/chatbox/`,
+        data,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      const dataRes = res && res.data ? res.data.chatbox : null;
+      console.log("dadaad---", dataRes);
+      dispatch(chatboxResponse(dataRes));
+    } catch (error) {
+      dispatch(chatboxFailure(error));
+      console.log("error", error);
+    }
+  };
+};
+
+
+
+export const chatboxResponse = (data) => {
+  return {
+    type: CHATBOX_RESPONSE,
+    payload: data
+  };
+};
+
+export const chatboxReset = () => {
+  return {
+    type: CHATBOX_RESET,
+  };
+};
+
+export const chatboxRag = () => {
+  return {
+    type: CHATBOX_RAG,
+  };
+};
+
+export const chatboxMedicalDb = () => {
+  return {
+    type: CHATBOX_MEDICAL_DB,
+  };
+};
+
+export const chatboxFailure = (error) => {
+  return {
+    type: CHATBOX_FAILURE,
+    payload: error
   };
 }

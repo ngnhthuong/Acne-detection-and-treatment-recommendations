@@ -3,8 +3,9 @@ import counterReducer from './counterReducer';
 import devideReducer from './devideReducer';
 import userReducer from "./userReducer";
 import userRegisReducer from "./userRegisReducer";
-import acnePredictionDailyReducer from "./acnePredictionDailyRouter";
+import acnePredictionDailyReducer from "./acnePredictionDailyReducer";
 import activeDialog from "./activeDialogReducer";
+import treatmentAdviceChatbox from "./treatmentAdviceChatboxReducer";
 
 const rootReducer = combineReducers({
     counter: counterReducer,
@@ -13,6 +14,7 @@ const rootReducer = combineReducers({
     userRegis: userRegisReducer,
     acnePredictionDaily: acnePredictionDailyReducer,
     activeDialog: activeDialog,
+    adviceChatbox: treatmentAdviceChatbox,
 });
 
 export default rootReducer;
