@@ -353,8 +353,9 @@ const UploadAndCropImage = () => {
                   />
                 </div>
                 <div className="img_diagnoises--text">
-                  Đảm bảo rằng các ảnh tải lên có độ phân giải cao để tránh bị
-                  vỡ khi cắt ảnh và hỗ trợ quá trình chuẩn đoán chính xác hơn.
+                  {/* Đảm bảo rằng các ảnh tải lên có độ phân giải cao để tránh bị
+                  vỡ khi cắt ảnh và hỗ trợ quá trình chuẩn đoán chính xác hơn. */}
+                  Ensure that the uploaded images are of high resolution to avoid breaking when cropping and to support a more accurate diagnostic process.
                 </div>
               </div>
               <div className="img__diagnoises--rule">
@@ -366,9 +367,10 @@ const UploadAndCropImage = () => {
                   />
                 </div>
                 <div className="img_diagnoises--text">
-                  Sử dụng chức năng phóng to ảnh để tránh việc vật thể mụn quá
+                  {/* Sử dụng chức năng phóng to ảnh để tránh việc vật thể mụn quá
                   nhỏ. Điều này sẽ cải thiện độ chính xác của quá trình chuẩn
-                  đoán.
+                  đoán. */}
+                  Use the zoom function on images to avoid acne objects being too small. This will improve the accuracy of the diagnostic process.
                 </div>
               </div>
 
@@ -381,8 +383,9 @@ const UploadAndCropImage = () => {
                   />
                 </div>
                 <div className="img_diagnoises--text">
-                  Hạn chế tải lên nhiều ảnh cùng lúc để tối ưu hóa tốc độ xử lý
-                  và kết quả chuẩn đoán.
+                  {/* Hạn chế tải lên nhiều ảnh cùng lúc để tối ưu hóa tốc độ xử lý
+                  và kết quả chuẩn đoán. */}
+                  Limit uploading multiple images at once to optimize processing speed and diagnostic results.
                 </div>
               </div>
             </div>

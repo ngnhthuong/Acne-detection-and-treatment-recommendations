@@ -27,8 +27,8 @@ const Notification = () => {
     if (isSuccessRegis || isErrorRegis) {
       setNotification(
         isSuccessRegis
-          ? "Chào mừng đến với Glowypa"
-          : `Đăng ký thất bại: ${errorRegisMessage}`
+          ? "Welcome to Glowypa!"
+          : `Registration failed: ${errorRegisMessage}`
       );
       setType(isSuccessRegis ? "success" : "error");
       setShow(true);
@@ -41,8 +41,8 @@ const Notification = () => {
     if (isPredictedSuccess || isPredictedError) {
       setNotification(
         isPredictedSuccess
-          ? "Nhận diện mụn thành công"
-          : "Phát hiện mụn thất bại"
+          ? "Acne detection successful"
+          : "Failed to detect acne"
       );
       setType(isPredictedSuccess ? "success" : "error");
       setShow(true);

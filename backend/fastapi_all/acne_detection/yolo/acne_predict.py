@@ -12,12 +12,12 @@ import numpy as np
 from datetime import datetime
 import sys
 import os
-sys.path.append('/Users/nhatthuong/Documents/Acne-detection-and-treatment-recommendations/backend/fastapi_all/ai/yolo/ultralytics')
+sys.path.append('/Users/nhatthuong/Documents/Acne-detection-and-treatment-recommendations/backend/fastapi_all/acne_detection/yolo/ultralytics')
 from ultralytics import YOLO
 import torch
 import base64
 
-MODEL_PATH = '/Users/nhatthuong/Documents/Acne-detection-and-treatment-recommendations/backend/fastapi_all/ai/yolo/weight_acne/best_640img.pt'
+MODEL_PATH = '/Users/nhatthuong/Documents/Acne-detection-and-treatment-recommendations/backend/fastapi_all/acne_detection/yolo/weight_acne/best_640img.pt'
 
 detection_model = AutoDetectionModel.from_pretrained(
     model_type= "yolov8",
@@ -46,7 +46,7 @@ def acnePredictWithYolo(file_path):
             'y_max': y_max,
             'y_min': y_min
         })    
-    result.export_visuals("/Users/nhatthuong/Documents/Acne-detection-and-treatment-recommendations/backend/fastapi_all/ai/yolo/image_predict")
+    result.export_visuals("/Users/nhatthuong/Documents/Acne-detection-and-treatment-recommendations/backend/fastapi_all/acne_detection/yolo/image_predict")
     return {'message': 'YoloV8', 'bounding-box': boundingbox}
 
 def acnePredictWithSahi(file_path):
@@ -76,6 +76,6 @@ def acnePredictWithSahi(file_path):
             'y_max': y_max,
             'y_min': y_min
         })    
-    result.export_visuals("/Users/nhatthuong/Documents/Acne-detection-and-treatment-recommendations/backend/fastapi_all/ai/yolo/image_predict")
+    result.export_visuals("/Users/nhatthuong/Documents/Acne-detection-and-treatment-recommendations/backend/fastapi_all/acne_detection/yolo/image_predict")
     return {'message': 'YoloV8 with SAHI', 'bounding-box': boundingbox}
 

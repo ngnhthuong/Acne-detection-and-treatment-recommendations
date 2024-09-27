@@ -20,7 +20,7 @@
 .registration__form{
     position: relative;
     width: 500px;
-    height: 500px;
+    height: 550px;
     border-radius: 20px;
     display: flex;
     /* justify-content: center; */
@@ -29,12 +29,13 @@
     gap: 10px;
     background-color: white;
     overflow: hidden;
+    padding: 0px 20px 0px 20px;
 }
 
 .name__form, .location__form, .email__form, .password__form{
     display: flex;
     gap: 10px;
-    width: 93%;
+    width: 100%;
     height: 40px;
 }
 
@@ -52,7 +53,7 @@
 .birthday-skin__form {
     display: flex;
     gap: 10px;
-    width: 93%;
+    width: 100%;
     height: 60px;
 }
 
@@ -97,9 +98,8 @@
 }
 
 .register__btn{
-    position: absolute;
     bottom: 40px;
-    width: 93%;
+    width: 100%;
     height: 40px;
     background-color: var(--green-deep);
     color: white;
@@ -108,7 +108,15 @@
     font-size: 16px;
     font-weight: 500;
     cursor: pointer;
+    margin-top: 10px;
 }
+
+.error-message {
+    color: red;
+    font-size: 12px;
+    margin-top: 5px;
+  }
+  
 
 .cls-btn-regis{
     position: absolute;

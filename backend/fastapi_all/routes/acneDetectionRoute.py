@@ -7,7 +7,7 @@ import uuid
 from pymongo import MongoClient
 from models.acne_detection_table import AcneTreatment, PredictedImage, Image, ImageBase64AndModel, DeleteAndAddBase64Img  # Import the models here
 from schema.schemaAcneDetection import acneDetectionFormat, acneDetectionListFormat
-from ai.yolo.acne_predict import acnePredictWithYolo, acnePredictWithSahi
+from acne_detection.yolo.acne_predict import acnePredictWithYolo, acnePredictWithSahi
 from config.database import acne_detection_table
 from bson import ObjectId
 import tempfile

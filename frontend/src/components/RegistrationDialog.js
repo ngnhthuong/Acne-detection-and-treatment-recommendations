@@ -3,15 +3,12 @@ import "./css/RegistrationDialog.css";
 import { ReactComponent as MultipleImg } from "../assets/icons/multiple.svg";
 import { useSelector, useDispatch } from "react-redux";
 import LoadingTask from "./LoadingTask";
+import { regisUsers } from "../redux/action/actions";
 
-import {
-  regisUsers,
-} from "../redux/action/actions";
 const RegistrationForm = ({ handleChangeRegisOpen }) => {
   const dispatch = useDispatch();
   const today = new Date().toISOString().split("T")[0];
   const regisLoading = useSelector((state) => state.userRegis.isLoading);
-  const regisError = useSelector((state) => state.userRegis.isError);
   const [openLoading, setOpenLoading] = useState(false);
   const [formData, setFormData] = useState({
     first_name: "",
@@ -22,7 +19,10 @@ const RegistrationForm = ({ handleChangeRegisOpen }) => {
     location: "",
     email: "",
     password: "",
+    confirmPassword: "",
   });
+
+  const [errors, setErrors] = useState({}); // State for error messages
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -30,13 +30,27 @@ const RegistrationForm = ({ handleChangeRegisOpen }) => {
       ...formData,
       [name]: value,
     });
+    setErrors({ ...errors, [name]: "" }); // Clear error on change
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const data = formData;
-    console.log("Form submitted:", data);
-    dispatch(regisUsers(data));
+    const newErrors = {};
+
+    if (formData.password !== formData.confirmPassword) {
+      newErrors.confirmPassword = "Passwords do not match!";
+    }
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      setTimeout(() => {
+        setErrors({}); // Clear errors after 2 seconds
+      }, 2000);
+      return;
+    }
+
+    console.log("Form submitted:", formData);
+    dispatch(regisUsers(formData));
   };
 
   useEffect(() => {
@@ -51,7 +65,7 @@ const RegistrationForm = ({ handleChangeRegisOpen }) => {
     return () => {
       clearTimeout(timer);
     };
-  }, [regisLoading, regisError]);
+  }, [regisLoading]);
 
   return (
     <div className="registration ban--select">
@@ -121,7 +135,7 @@ const RegistrationForm = ({ handleChangeRegisOpen }) => {
             </div>
           </div>
 
-          <div className="gap--information, location__form">
+          <div className="gap--information location__form">
             <input
               type="text"
               name="location"
@@ -132,7 +146,7 @@ const RegistrationForm = ({ handleChangeRegisOpen }) => {
             />
           </div>
 
-          <div className="gap--information, email__form">
+          <div className="gap--information email__form">
             <input
               type="email"
               name="email"
@@ -142,7 +156,7 @@ const RegistrationForm = ({ handleChangeRegisOpen }) => {
               required
             />
           </div>
-          <div className="gap--information, password__form">
+          <div className="gap--information password__form">
             <input
               type="password"
               name="password"
@@ -153,9 +167,24 @@ const RegistrationForm = ({ handleChangeRegisOpen }) => {
               required
             />
           </div>
+          <div className="gap--information password__form">
+            <input
+              type="password"
+              name="confirmPassword"
+              placeholder="Confirm Password"
+              value={formData.confirmPassword}
+              onChange={handleChange}
+              minLength={8}
+              required
+            />
+            
+          </div>
           <button type="submit" className="register__btn">
             Register
           </button>
+          {errors.confirmPassword && (
+              <span className="error-message">{errors.confirmPassword}</span>
+            )}
         </form>
       </div>
     </div>
