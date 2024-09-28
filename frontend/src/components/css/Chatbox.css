@@ -65,8 +65,8 @@
 }
 
 .chatbox__message--bot-name{
-    font-weight: 600;
-    color: black;
+    font-weight: bold;
+    color: var(--green-deep);
 }
 
 .chatbox__message--bot-tag{
@@ -171,6 +171,7 @@
 .icon-send{
     width: 20px;
     height: 20px;
+    color: var(--theme-background-orange-light-deep);
 }
 
 .icon-send:hover{

@@ -9,6 +9,7 @@ class ChatboxMessage(BaseModel):
     role: str
     rag: bool = Field(default=True)
     db: bool = Field(default=True)
+    history_chat: Optional[list] = Field(default=[])
 
     
     

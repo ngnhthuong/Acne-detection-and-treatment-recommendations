@@ -138,7 +138,6 @@ async def delete_and_put_upload_files(
 @acneDetection.get("/api/acne_detection_daily/{user_id}")
 async def get_acne_detection_daily(
     user_id: str,
-    
 ):
     today_start = datetime.combine(datetime.now().date(), datetime.min.time())
     today_end = datetime.combine(datetime.now().date(), datetime.max.time())
@@ -154,7 +153,6 @@ async def get_acne_detection_daily(
 @acneDetection.get("/api/acne_detection_user_all/{user_id}")
 async def get_acne_detection_user_all(
     user_id: str,
-    
 ):
     acne_treatment = acne_detection_table.find({"user_id": user_id})
     return {"message": "success: get all detection of user", "data": acneDetectionListFormat(acne_treatment)}

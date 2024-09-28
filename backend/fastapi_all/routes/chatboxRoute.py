@@ -5,18 +5,66 @@ from schema.schemaArchitecture import architectureFormat, architecturesFormat
 from datetime import datetime
 from ai.rag.ragWithDocs import mainChat
 from models.chatbox_table import ChatboxMessage
+from config.database import acne_detection_table
+from schema.schemaAcneDetection import acneDetectionFormat, acneDetectionListFormat
 import os
+import re
 
 chatbox = APIRouter()
+
+def remove_html_tags(text):
+    """
+    Xóa tất cả các thẻ HTML từ một chuỗi.
+
+    Args:
+    text (str): Chuỗi chứa các thẻ HTML.
+
+    Returns:
+    str: Chuỗi đã được loại bỏ các thẻ HTML.
+    """
+    clean_text = re.sub(r'<.*?>', '', text)
+    return clean_text
 
 @chatbox.post("/api/chatbox/")
 async def create_chatbox(data: ChatboxMessage):
     question = data.message
-    response = mainChat(question)
+    chatHistoryCache = "Dưới đây là lịch sử chat: "
+    chatHistoryList = data.history_chat
+    medical_db  = ""
+    for chatHistory in chatHistoryList:
+        if chatHistory["role"] == "user":
+            chatHistoryCache += " " + "user: " + remove_html_tags(chatHistory["message"])
+        elif chatHistory["role"] == "bot":
+            chatHistoryCache += " " + "bot: " + remove_html_tags(chatHistory["message"])
+            
+    if data.db == True:
+        medical_list = []
+        medical_acne = set()
+        total_acne = 0
+        today_start = datetime.combine(datetime.now().date(), datetime.min.time())
+        today_end = datetime.combine(datetime.now().date(), datetime.max.time())  
+        acne_treatment = acne_detection_table.find_one({
+            "user_id": data.user_id,
+            "date": {"$gte": today_start, "$lt": today_end}
+        })
+        medical_list = acneDetectionFormat(acne_treatment)
+        for medical in medical_list["predicted_images"]:
+            if medical["architecture_ai_name"] == "YoloV8 with SAHI":
+                total_acne += medical["total_acnes"]
+                for result in medical["predicted"]:
+                  medical_acne.add(result["class_name"])
+        medical_db = (
+            "Dưới đây là hồ sơ bệnh án của người dùng:\n"
+            + "Có tổng số lượng đốt mụn là: " + str(total_acne) + "\n"
+            + "Các loại mụn đang bị là: " + ", ".join(medical_acne) + "\n"
+        )
+                  
+    response = mainChat(question, chatHistoryCache, medical_db)
+    
     answer = {
         "message": response,
         "role": "bot",
         "rag": data.rag,
-        "medical_db": data.db,
+        "db": data.db,
     }
     return {"message": "Chatbox has been created successfully", "chatbox": answer}

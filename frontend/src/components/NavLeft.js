@@ -26,11 +26,11 @@ export default function NavLeft() {
   );
 
   const handleOpenSettingDialog = () => {
-    // dispatch({ type: "ACTIVE_DIALOG_SETTING" });
+    dispatch({ type: "ACTIVE_DIALOG_SETTING" });
   };
 
   const handleCloseSettingDialog = () => {
-    // dispatch({ type: "CLOSE_DIALOG_SETTING" });
+    dispatch({ type: "CLOSE_DIALOG_SETTING" });
   };
   //
   const [openLogoutDialog, setOpenLogoutDialog] = React.useState(false);
@@ -127,3 +127,8 @@ export default function NavLeft() {
     </>
   );
 }
+
+
+
+
+

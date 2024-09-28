@@ -1,5 +1,5 @@
 import logging
-from langchain_community.document_loaders import PyPDFLoader
+from langchain_community.document_loaders import PyPDFLoader, Docx2txtLoader, UnstructuredExcelLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_chroma import Chroma
 from langchain_google_genai import GoogleGenerativeAIEmbeddings, ChatGoogleGenerativeAI
@@ -12,18 +12,40 @@ import markdown
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-GOOGLE_API_KEY = "AIzaSyA-hTQ0ATIHXks1t4iIxIsiQdvXLqfBKEk"
+GOOGLE_API_KEY = "AIzaSyBoLp2fXcrGICLQHUY4YyKv3jvujbqypSo"
+
+# List of document file paths
+document_links = [
+    "/Users/nhatthuong/Documents/Acne-detection-and-treatment-recommendations/backend/fastapi_all/ai/rag/documents/acne_treatment.docx",
+    "/Users/nhatthuong/Documents/Acne-detection-and-treatment-recommendations/backend/fastapi_all/ai/rag/documents/acne_treatment_2.docx"
+]
+
+all_docs = []
 
 try:
-    loader = PyPDFLoader("/Users/nhatthuong/Documents/Acne-detection-and-treatment-recommendations/backend/fastapi_all/ai/rag/documents/RESUME_NGUYEN_NHAT_THUONG.pdf")
-    data = loader.load()
+    for document_link in document_links:
+        try:
+            if document_link.endswith('.pdf'):
+                loader = PyPDFLoader(document_link)
+            elif document_link.endswith('.docx'):
+                loader = Docx2txtLoader(document_link) 
+            elif document_link.endswith('.xlsx'):
+                loader = UnstructuredExcelLoader(document_link)
+            else:
+                logger.warning(f"Unsupported file format: {document_link}")
+                continue
+
+            data = loader.load()
+            all_docs.extend(data)
+        except Exception as e:
+            logger.error(f"Error loading document {document_link}: {e}")
 except Exception as e:
-    logger.error(f"Error loading PDF: {e}")
+    logger.error(f"Error processing document links: {e}")
     raise
 
 try:
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000)
-    docs = text_splitter.split_documents(data)
+    docs = text_splitter.split_documents(all_docs)
 except Exception as e:
     logger.error(f"Error splitting documents: {e}")
     raise
@@ -48,7 +70,10 @@ system_prompt = (
     "Câu hỏi. Nếu bạn không biết câu trả lời, hãy nói rằng bạn "
     "không biết."
     "Vui lòng trả lời bằng tiếng Việt và không sử dụng từ ngữ không phù hợp."
-    "Khi có ai hỏi bạn là ai, hãy nói rằng bạn là trợ lý của Glowypa chuyên gia về điều trị tư vấn mụn, và bạn sẽ cố gắng giúp họ. "
+    "Bạn là trợ lý của Glowypa chuyên gia về điều trị tư vấn mụn, nếu có ai hỏi bạn là ai thì hãy trả lời"
+    "Nếu chưa biết loại mụn gì của người bệnh thì hãy nói người bệnh rằng, Bạn hãy sử dụng chức năng Ance Scane daily của Glowypa để xác định loại mụn của mình và bật chức năng Medical record để tôi có thể truy cập và đưa câu trả lời"
+    "Không khuyên người dùng đi bác sĩ nếu tình trạng mụn có thể tự chữa được (mức độ mụn không tự chữa được mới khuyên đi bác sĩ)"
+    "Glowypa đang cung cấp bạn thông tin điều trị mụn như một bác sĩ tư vấn mụn, hãy cung cấp cho người dùng những kiến thức bạn có, bạn đang là một bác sĩ của Glowypa và bạn là người tư vấn trực tiếp"
     "\n\n"
     "{context}"
 )
@@ -83,13 +108,17 @@ def chatgpt_response_to_html(response_text):
     html_output = markdown.markdown(response_text)
     return html_output
 
-def mainChat(question):
+def mainChat(question, chatHistoryCache, medical_db):
     try:
-        response = rag_chain.invoke({"input": question})
+        full_input = medical_db + chatHistoryCache + "\nDưới đây là câu hỏi mới\n" + question
+        print("Full input: ", full_input)
+        response = rag_chain.invoke({"input": full_input})
         markdown_tag = chatgpt_response_to_html(response["answer"])
         answer = remove_newlines(markdown_tag)
         return answer
     except Exception as e:
         logger.error(f"Error during chat invocation: {e}")
         return "<p>Xin lỗi, đã xảy ra lỗi khi xử lý yêu cầu của bạn.</p>"
+
+
 
