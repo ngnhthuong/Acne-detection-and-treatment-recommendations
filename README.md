@@ -28,9 +28,21 @@ ACNE DOCTOR CARE+ SYSTEM/
 │   │
 │   ├── fast_api/
 │   │   │
-│   │   ├── uploaded_images/
+│   │   ├── models/       
 │   │   │ 
-│   │   ├── model/       
+│   │   ├── routes/       
+│   │   │ 
+│   │   ├── schema/       
+│   │   │ 
+│   │   ├── env/       
+│   │   │ 
+│   │   ├── config/       
+│   │   │ 
+│   │   ├── ai/ 
+│   │   │   │
+│   │   │   ├── rag
+│   │   │   │
+│   │   │   └── yolo
 │   │   │ 
 │   │   ├── main.py
 │   │   │ 
