@@ -27,7 +27,6 @@ import {
   CLOSE_DIALOG_SETTING,
   ACTIVE_DIALOG_UPLOAD_IMG,
   CLOSING_DIALOG_UPLOAD_IMG,
-
   CHATBOX_REQUESTION,
   CHATBOX_RESPONSE,
   CHATBOX_RESET,
@@ -166,7 +165,7 @@ export const detectionAcneDaily = (data, user_id) => {
       console.log("dadaad---", dataRes);
       dispatch(detectionAcneDailySuccess(dataRes));
       dispatch(detectionAcneDailySuccessNoti());
-      dispatch(closeDialogUploadImg())
+      dispatch(closeDialogUploadImg());
     } catch (error) {
       dispatch(detectionAcneDailyFailure(error));
       console.log("error", error);
@@ -189,7 +188,7 @@ export const detectionAcneDailyPut = (data, user_id) => {
       const dataRes = res && res.data ? res.data.data : null;
       dispatch(detectionAcneDailySuccess(dataRes));
       dispatch(detectionAcneDailySuccessNoti());
-      dispatch(closeDialogUploadImg())
+      dispatch(closeDialogUploadImg());
     } catch (error) {
       dispatch(detectionAcneDailyFailure(error));
       console.log("error", error);
@@ -211,9 +210,7 @@ export const getDetectionAcneDailyPut = (user_id) => {
       );
 
       const dataRes = res && res.data ? res.data.data : null;
-      setTimeout(() => {
         dispatch(detectionAcneDailySuccess(dataRes));
-      }, 2750);
     } catch (error) {
       dispatch(detectionAcneDailyFailure(error));
       console.log("error", error);
@@ -267,39 +264,36 @@ export const detectionAcneDailyActiveShow = (image_id) => {
   };
 };
 
-
 // ACTIVE DIALOG
 export const activeDialogSetting = () => {
   return {
     type: ACTIVE_DIALOG_SETTING,
   };
-}
+};
 
 export const closeDialogSetting = () => {
   return {
     type: CLOSE_DIALOG_SETTING,
   };
-}
+};
 
 export const activeDialogUploadImg = () => {
   return {
     type: ACTIVE_DIALOG_UPLOAD_IMG,
   };
-}
+};
 
 export const closeDialogUploadImg = () => {
   return {
     type: CLOSING_DIALOG_UPLOAD_IMG,
   };
-}
-
-
+};
 
 // chatbox
 export const chatboxRequestUser = (data) => {
   return {
     type: CHATBOX_REQUESTION,
-    payload: data
+    payload: data,
   };
 };
 
@@ -309,13 +303,9 @@ export const chatboxRequestion = (data) => {
       dispatch(chatboxRequestUser(data));
       const token = localStorage.getItem("authToken");
       console.log("dataRes-----|", data);
-      const res = await axios.post(
-        `${BASE_URL}/api/chatbox/`,
-        data,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+      const res = await axios.post(`${BASE_URL}/api/chatbox/`, data, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       const dataRes = res && res.data ? res.data.chatbox : null;
       console.log("dadaad---", dataRes);
       dispatch(chatboxResponse(dataRes));
@@ -326,12 +316,10 @@ export const chatboxRequestion = (data) => {
   };
 };
 
-
-
 export const chatboxResponse = (data) => {
   return {
     type: CHATBOX_RESPONSE,
-    payload: data
+    payload: data,
   };
 };
 
@@ -356,6 +344,6 @@ export const chatboxMedicalDb = () => {
 export const chatboxFailure = (error) => {
   return {
     type: CHATBOX_FAILURE,
-    payload: error
+    payload: error,
   };
-}
+};

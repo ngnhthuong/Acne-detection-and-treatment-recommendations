@@ -59,9 +59,9 @@ export default function Test() {
                 ></iframe>
               </div>{" "}
             </div>
-            <div className="footer__demo--container">
+            {/* <div className="footer__demo--container">
               <img className="logo" src={Glowypa} alt="" />
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
