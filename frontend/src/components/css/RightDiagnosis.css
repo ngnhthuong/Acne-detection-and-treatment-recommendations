@@ -206,6 +206,12 @@
     color: var(--color-icon-green);
 }
 
+@media (max-width: 1400px) {
+    .chatbox {
+        display: none;
+    }
+}
+
 
 
 

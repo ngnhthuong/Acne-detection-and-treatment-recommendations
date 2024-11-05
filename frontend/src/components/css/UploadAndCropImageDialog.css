@@ -353,3 +353,24 @@
     color: var(--theme-background-orange-deep) !important;
 } */
 
+
+.btn__func--crop{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    justify-content: right;
+}
+
+.cancel-btn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    right: 0;
+    width: 130px;
+    min-height: 2.5rem;
+    border: none;
+    background-color: var( --theme-color-red);
+    border-radius: 5px;
+    color: white;
+    font-weight: 200;}

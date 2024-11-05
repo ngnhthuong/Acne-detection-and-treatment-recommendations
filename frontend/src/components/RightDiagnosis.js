@@ -7,7 +7,7 @@ import AcneDetection from "../components/AcneDetection";
 import Chatbox from "./Chatbox";
 
 export default function RightDiagnosis() {
-    const [onOffChat, setOnOffChat] = useState(true);
+    const [onOffChat, setOnOffChat] = useState(false);
 
     const toggleOnOffChat = () => {
         setOnOffChat(prevState => !prevState);

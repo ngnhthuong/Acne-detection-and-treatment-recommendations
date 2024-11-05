@@ -59,7 +59,7 @@ const Login = () => {
   useEffect(() => {
     if (isLoggedIn && user) {
       dispatch(getDetectionAcneDailyPut(user.id));
-      navigate("/diagnosis");
+      navigate("/demo");
     }
     console.log(user);
   }, [isLoggedIn, user, dispatch, navigate]);
