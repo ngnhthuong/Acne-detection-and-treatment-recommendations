@@ -70,7 +70,11 @@ export default function NavLeft() {
       ) : (
         ""
       )}
-      {isActiveDialogSetting ? <SettingDialog handleCloseSettingDialog={handleCloseSettingDialog}/> : ""}
+      {isActiveDialogSetting ? (
+        <SettingDialog handleCloseSettingDialog={handleCloseSettingDialog} />
+      ) : (
+        ""
+      )}
       <div className="nav__left box--shadow-btn">
         <div className="nav__left--avatar">
           <div className="avatar">
@@ -79,6 +83,14 @@ export default function NavLeft() {
         </div>
         <div className="nav__left--func">
           <div className="nav__left--head">
+            <Tooltip text="Demo">
+              <div
+                className={`icon ${isActivePath("/demo") ? "icon-active" : ""}`}
+                onClick={() => handleClickNav("/demo")}
+              >
+                <DemoIcon className="icon--element" />
+              </div>
+            </Tooltip>
             <Tooltip text="Acne scan daily">
               <div
                 className={`icon ${
@@ -95,13 +107,6 @@ export default function NavLeft() {
                 className={`icon ${isActivePath("/test") ? "icon-active" : ""}`}
               >
                 <MedicalRecordIcon className="icon--element" />
-              </div>
-            </Tooltip>
-            <Tooltip text="Demo">
-              <div
-                className={`icon ${isActivePath("/demo") ? "icon-active" : ""}`}
-              >
-                <DemoIcon className="icon--element" />
               </div>
             </Tooltip>
           </div>
@@ -127,8 +132,3 @@ export default function NavLeft() {
     </>
   );
 }
-
-
-
-
-

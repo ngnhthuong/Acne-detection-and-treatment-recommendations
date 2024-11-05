@@ -1,6 +1,7 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Diagnosis from "./pages/Diagnosis.js";
 import Test from "./pages/Test.js";
+import Demo from "./pages/Demo.js"
 import Login from "./pages/Login.js";
 import ProtectedRoute from "./components/ProtectedRoute"; 
 import "./app.css";
@@ -15,8 +16,8 @@ const App = () => {
       element: <ProtectedRoute element={<Diagnosis />} isLoggedIn={isLoggedIn} />,
     },
     {
-      path: "/test",
-      element: <ProtectedRoute element={<Test />} isLoggedIn={isLoggedIn} />,
+      path: "/demo",
+      element: <ProtectedRoute element={<Demo />} isLoggedIn={isLoggedIn} />,
     },
   ]);
 

@@ -32,7 +32,7 @@ const UploadAndCropImage = () => {
   );
   const images = useSelector((state) => state.acnePredictionDaily.images);
   const isLoading = useSelector((state) => state.acnePredictionDaily.isLoading);
-  
+
   const [imageBase64Array, setImageBase64Array] = useState(images);
   const [imagePredict, setImagePredict] = useState([]);
   const [selectedImage, setSelectedImage] = useState(null);
@@ -94,6 +94,10 @@ const UploadAndCropImage = () => {
     setImagePredict((prevArray) => [...prevArray, imgUpObject]);
     setSelectedImage(null);
   };
+
+  const handleCancel = () => {
+    setSelectedImage(null);
+  }
 
   const handleDeleteImage = (id_img) => {
     setIdImgDelete((prevArray) => [...prevArray, id_img]);
@@ -171,6 +175,10 @@ const UploadAndCropImage = () => {
     }
   };
 
+  const captureWebcamImageClose = () => {
+    setIsWebcamOpen(false);
+  }
+
   const handleCloseUploadImgDialog = () => {
     dispatch(closeDialogUploadImg());
   };
@@ -185,7 +193,7 @@ const UploadAndCropImage = () => {
           </div>
           <button
             className="cls__btn box--shadow-btn"
-            onClick={()=>handleCloseUploadImgDialog()}
+            onClick={() => handleCloseUploadImgDialog()}
           >
             <MultipleImg className="icon--element-mul" />
           </button>
@@ -194,9 +202,7 @@ const UploadAndCropImage = () => {
           <div className="dialog__body-func">
             <div
               className={`dialog__body--upload-img-btn ${
-                isUploadDisabled 
-                  ? "disabled"
-                  : ""
+                isUploadDisabled ? "disabled" : ""
               }`}
               onClick={() =>
                 !isUploadDisabled &&
@@ -209,7 +215,7 @@ const UploadAndCropImage = () => {
                     : "pointer",
               }}
             >
-              {isUploadDisabled  ? (
+              {isUploadDisabled ? (
                 <LockedImg className="icon--element-locked" />
               ) : (
                 <UploadImg className="icon--element-unlocked" />
@@ -231,16 +237,13 @@ const UploadAndCropImage = () => {
             </div>
             <div
               className={`dialog__body--upload-img-btn webcam ${
-                isUploadDisabled
-                  ? "disabled"
-                  : ""
+                isUploadDisabled ? "disabled" : ""
               }`}
               onClick={() => {
                 if (!isWebcamOpen && !selectedImage && !isUploadDisabled) {
                   setIsWebcamOpen(true);
                 }
               }}
-              
               style={{
                 cursor:
                   isUploadDisabled || isWebcamOpen || selectedImage
@@ -286,10 +289,21 @@ const UploadAndCropImage = () => {
                   checkOrientation={false}
                 />
               </div>
-              <button onClick={handleCrop} className="crop-btn box--shadow-btn">
-                <CropImg className="icon--element-crop" />
-                <span>Crop Image</span>
-              </button>
+              <div className="btn__func--crop">
+                <button
+                  onClick={handleCrop}
+                  className="crop-btn box--shadow-btn"
+                >
+                  <CropImg className="icon--element-crop" />
+                  <span>Crop Image</span>
+                </button>
+                <button
+                  onClick={handleCancel}
+                  className="cancel-btn box--shadow-btn"
+                >
+                  <span>Cancel</span>
+                </button>
+              </div>
             </>
           )}
 
@@ -308,8 +322,14 @@ const UploadAndCropImage = () => {
                 className="webcam-flip"
               />
               <div className="bouding__capture--btn">
-                <button onClick={captureWebcamImage} className="capture-btn">
+                <button onClick={captureWebcamImage} className="capture-btn box--shadow-btn">
                   <span>Capture</span>
+                </button>
+                <button
+                  onClick={captureWebcamImageClose}
+                  className="cancel-btn box--shadow-btn"
+                >
+                  <span>Cancel</span>
                 </button>
               </div>
             </div>
@@ -329,7 +349,7 @@ const UploadAndCropImage = () => {
 
           <div className="save__img">
             <button
-              className="dialog__img-save"
+              className="dialog__img-save box--shadow-btn"
               onClick={() => {
                 handleDispatchImage();
                 setIdImgDelete([]);
@@ -356,7 +376,9 @@ const UploadAndCropImage = () => {
                 <div className="img_diagnoises--text">
                   {/* Đảm bảo rằng các ảnh tải lên có độ phân giải cao để tránh bị
                   vỡ khi cắt ảnh và hỗ trợ quá trình chuẩn đoán chính xác hơn. */}
-                  Ensure that the uploaded images are of high resolution to avoid breaking when cropping and to support a more accurate diagnostic process.
+                  Ensure that the uploaded images are of high resolution to
+                  avoid breaking when cropping and to support a more accurate
+                  diagnostic process.
                 </div>
               </div>
               <div className="img__diagnoises--rule">
@@ -371,7 +393,9 @@ const UploadAndCropImage = () => {
                   {/* Sử dụng chức năng phóng to ảnh để tránh việc vật thể mụn quá
                   nhỏ. Điều này sẽ cải thiện độ chính xác của quá trình chuẩn
                   đoán. */}
-                  Use the zoom function on images to avoid acne objects being too small. This will improve the accuracy of the diagnostic process.
+                  Use the zoom function on images to avoid acne objects being
+                  too small. This will improve the accuracy of the diagnostic
+                  process.
                 </div>
               </div>
 
@@ -386,7 +410,8 @@ const UploadAndCropImage = () => {
                 <div className="img_diagnoises--text">
                   {/* Hạn chế tải lên nhiều ảnh cùng lúc để tối ưu hóa tốc độ xử lý
                   và kết quả chuẩn đoán. */}
-                  Limit uploading multiple images at once to optimize processing speed and diagnostic results.
+                  Limit uploading multiple images at once to optimize processing
+                  speed and diagnostic results.
                 </div>
               </div>
             </div>

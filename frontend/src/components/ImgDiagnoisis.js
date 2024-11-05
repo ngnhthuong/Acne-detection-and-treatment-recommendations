@@ -70,7 +70,7 @@ const ImgDiagnoisis = ({
         </button>
       ) : null}
       {base64Image ? (
-        <div className={image_active == image_id && tag == 1 ? "acne-image active-image" : "acne-image"} >
+        <div className={image_active == image_id && tag == 1 ? "acne-image active-image box--shadow-btn" : "acne-image"} >
           <img className="responsive-image" src={base64Image} alt="Diagnosis" />
         </div>
       ) : (

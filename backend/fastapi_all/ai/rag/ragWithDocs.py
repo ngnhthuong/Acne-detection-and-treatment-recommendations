@@ -11,7 +11,7 @@ from dotenv import load_dotenv
 import os
 
 #load env
-dotenv_path = '/Users/nhatthuong/Documents/Acne-detection-and-treatment-recommendations/backend/fastapi_all/.env'
+dotenv_path = '/home/nhatthuong/Documents/Thesis/Acne-detection-and-treatment-recommendations/backend/fastapi_all/.env'
 load_dotenv(dotenv_path=dotenv_path)
 GOOGLE_API_KEY = os.getenv('GOOGLE_API_KEY')
 
@@ -21,8 +21,8 @@ logger = logging.getLogger(__name__)
 
 # List of document file paths
 document_links = [
-    "/Users/nhatthuong/Documents/Acne-detection-and-treatment-recommendations/backend/fastapi_all/ai/rag/documents/acne_treatment.docx",
-    "/Users/nhatthuong/Documents/Acne-detection-and-treatment-recommendations/backend/fastapi_all/ai/rag/documents/acne_treatment_2.docx"
+    "/home/nhatthuong/Documents/Thesis/Acne-detection-and-treatment-recommendations/backend/fastapi_all/ai/rag/documents/acne_treatment_2.docx",
+    "/home/nhatthuong/Documents/Thesis/Acne-detection-and-treatment-recommendations/backend/fastapi_all/ai/rag/documents/acne_treatment.docx"
 ]
 all_docs = []
 try:
