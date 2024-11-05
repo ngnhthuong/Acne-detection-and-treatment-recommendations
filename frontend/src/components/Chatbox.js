@@ -187,8 +187,35 @@ const Chatbox = () => {
               )}
             </div>
           ))}
+          {loadingChat && (<div className="chatbox__message--bot">
+            <div className="chatbox__message--bot-info">
+              <div className="chatbox__message--bot-avatar"></div>
+              <div className="chatbox__message--bot-name">
+                <span>Glowypa</span>
+              </div>
+              {rag && (
+                <div className="chatbox__message--bot-tag">
+                  <span>Gemini v1.5 Pro</span>
+                </div>
+              )}
+              {db && (
+                <div className="chatbox__message--bot-tag">
+                  <span>Medical Record</span>
+                </div>
+              )}
+            </div>
+            <div class="typing-indicator">
+              <div class="dot"></div>
+              <div class="dot"></div>
+              <div class="dot"></div>
+            </div>
+          </div>)}
         </div>
       )}
+
+
+
+
       <div className="chatbox__send">
         <div className="chatbox__send--input">
           <textarea

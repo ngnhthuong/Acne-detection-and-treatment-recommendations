@@ -18,6 +18,7 @@ GOOGLE_API_KEY = os.getenv('GOOGLE_API_KEY')
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
 # List of document file paths
 document_links = [
     "/Users/nhatthuong/Documents/Acne-detection-and-treatment-recommendations/backend/fastapi_all/ai/rag/documents/acne_treatment.docx",
@@ -55,7 +56,7 @@ except Exception as e:
 try:
     embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001", google_api_key=GOOGLE_API_KEY)
     vectorstore = Chroma.from_documents(documents=docs, embedding=embeddings)
-    retriever = vectorstore.as_retriever(search_type="similarity", search_kwargs={"k": 10})
+    retriever = vectorstore.as_retriever(search_type="similarity", search_kwargs={"k": 5})
 except Exception as e:
     logger.error(f"Error creating embeddings or vectorstore: {e}")
     raise
@@ -67,18 +68,21 @@ except Exception as e:
     raise
 # Create chains system prompt
 system_prompt = (
-    "Bạn là trợ lý cho các nhiệm vụ trả lời câu hỏi. hãy sử dụng tiếng Việt Nam"
-    "Sử dụng các phần sau đây của ngữ cảnh đã thu thập được để trả lời "
-    "Câu hỏi. Nếu bạn không biết câu trả lời, hãy nói rằng bạn "
-    "không biết."
-    "Vui lòng trả lời bằng tiếng Việt và không sử dụng từ ngữ không phù hợp."
-    "Bạn là trợ lý của Glowypa chuyên gia về điều trị tư vấn mụn, nếu có ai hỏi bạn là ai thì hãy trả lời"
-    "Nếu chưa biết loại mụn gì của người bệnh thì hãy nói người bệnh rằng, Bạn hãy sử dụng chức năng Ance Scan Daily của Glowypa để xác định loại mụn của mình và bật chức năng Medical record để tôi có thể truy cập và đưa câu trả lời"
-    "Không khuyên người dùng đi bác sĩ nếu tình trạng mụn có thể tự chữa được (mức độ mụn không tự chữa được mới khuyên đi bác sĩ)"
-    "Glowypa đang cung cấp bạn thông tin điều trị mụn như một bác sĩ tư vấn mụn, hãy cung cấp cho người dùng những kiến thức bạn có, bạn đang là một bác sĩ của Glowypa và bạn là người tư vấn trực tiếp"
-    "\n\n"
-    "{context}"
+"Bạn là trợ lý cho các nhiệm vụ trả lời câu hỏi. hãy sử dụng tiếng Việt Nam"
+"Sử dụng các phần sau đây của ngữ cảnh đã thu thập được để trả lời "
+"Câu hỏi. Nếu bạn không biết câu trả lời, hãy nói rằng bạn "
+"không biết." 
+"Vui lòng trả lời bằng tiếng Việt và không sử dụng từ ngữ không phù hợp."
+"Bạn là trợ lý của Glowypa chuyên gia về điều trị tư vấn mụn, nếu có ai hỏi bạn là ai thì hãy trả lời"
+"Nếu chưa biết loại mụn gì của người bệnh thì hãy nói người bệnh rằng, Bạn hãy sử dụng chức năng Ance Scan Daily của Glowypa để xác định loại mụn của mình và bật chức năng Medical record để tôi có thể truy cập và đưa câu trả lời"
+"Không khuyên người dùng đi bác sĩ nếu tình trạng mụn có thể tự chữa được (mức độ mụn không tự chữa được mới khuyên đi bác sĩ)"
+"Glowypa đang cung cấp bạn thông tin điều trị mụn như một bác sĩ tư vấn mụn, hãy cung cấp cho người dùng những kiến thức bạn có, bạn đang là một bác sĩ của Glowypa và bạn là người tư vấn trực tiếp"
+"\n\n"
+"{context}"
 )
+
+
+#multi agent 
 
 prompt = ChatPromptTemplate.from_messages(
     [
@@ -102,7 +106,6 @@ def chatgpt_response_to_html(response_text):
     Convert ChatGPT's response into HTML formatted text.
     Args:
         response_text (str): The text response from ChatGPT.
-
     Returns:
         str: HTML formatted string.
     """
@@ -110,10 +113,10 @@ def chatgpt_response_to_html(response_text):
     return html_output
 
 def mainChat(question, chatHistoryCache, medical_db):
+  
     try:
         full_input = medical_db + chatHistoryCache + "\nDưới đây là câu hỏi mới\n" + question
-        print("Full input: ", full_input)
-        response = rag_chain.invoke({"input": full_input})
+        response = rag_chain.invoke({"input": full_input, "system": system_prompt})
         markdown_tag = chatgpt_response_to_html(response["answer"])
         answer = remove_newlines(markdown_tag)
         return answer

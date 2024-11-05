@@ -166,6 +166,7 @@ export const detectionAcneDaily = (data, user_id) => {
       console.log("dadaad---", dataRes);
       dispatch(detectionAcneDailySuccess(dataRes));
       dispatch(detectionAcneDailySuccessNoti());
+      dispatch(closeDialogUploadImg())
     } catch (error) {
       dispatch(detectionAcneDailyFailure(error));
       console.log("error", error);

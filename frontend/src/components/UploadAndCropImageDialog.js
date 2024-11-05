@@ -32,6 +32,7 @@ const UploadAndCropImage = () => {
   );
   const images = useSelector((state) => state.acnePredictionDaily.images);
   const isLoading = useSelector((state) => state.acnePredictionDaily.isLoading);
+  
   const [imageBase64Array, setImageBase64Array] = useState(images);
   const [imagePredict, setImagePredict] = useState([]);
   const [selectedImage, setSelectedImage] = useState(null);

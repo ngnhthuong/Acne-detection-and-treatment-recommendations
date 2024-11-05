@@ -7,12 +7,12 @@ const INITIAL_STATE = {
 
 const dialogReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case ACTIVE_DIALOG_SETTING:
+    case "ACTIVE_DIALOG_SETTING":
       return {
         ...state,
         isActiveDialogSetting: true,
       };
-    case CLOSE_DIALOG_SETTING:
+    case "CLOSE_DIALOG_SETTING":
       return {
         ...state,
         isActiveDialogSetting: false,
