@@ -175,6 +175,10 @@ const UploadAndCropImage = () => {
     }
   };
 
+  const captureWebcamImageClose = () => {
+    setIsWebcamOpen(false);
+  }
+
   const handleCloseUploadImgDialog = () => {
     dispatch(closeDialogUploadImg());
   };
@@ -318,8 +322,14 @@ const UploadAndCropImage = () => {
                 className="webcam-flip"
               />
               <div className="bouding__capture--btn">
-                <button onClick={captureWebcamImage} className="capture-btn">
+                <button onClick={captureWebcamImage} className="capture-btn box--shadow-btn">
                   <span>Capture</span>
+                </button>
+                <button
+                  onClick={captureWebcamImageClose}
+                  className="cancel-btn box--shadow-btn"
+                >
+                  <span>Cancel</span>
                 </button>
               </div>
             </div>

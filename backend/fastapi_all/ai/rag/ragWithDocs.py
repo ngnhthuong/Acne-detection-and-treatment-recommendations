@@ -21,8 +21,8 @@ logger = logging.getLogger(__name__)
 
 # List of document file paths
 document_links = [
-    "/Users/nhatthuong/Documents/Acne-detection-and-treatment-recommendations/backend/fastapi_all/ai/rag/documents/acne_treatment.docx",
-    "/Users/nhatthuong/Documents/Acne-detection-and-treatment-recommendations/backend/fastapi_all/ai/rag/documents/acne_treatment_2.docx"
+    "/Users/nhatthuong/Documents/Acne-detection-and-treatment-recommendations/backend/fastapi_all/ai/rag/documents/acne_treatment_2.docx",
+    "/Users/nhatthuong/Documents/Acne-detection-and-treatment-recommendations/backend/fastapi_all/ai/rag/documents/acne_treatment.docx"
 ]
 all_docs = []
 try:

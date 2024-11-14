@@ -210,6 +210,10 @@
     .chatbox {
         display: none;
     }
+    .button-close-open-chat{
+        display: none;
+    }
+    
 }
 
 
