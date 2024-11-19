@@ -9,20 +9,20 @@ from langchain_core.prompts import ChatPromptTemplate
 import markdown
 from dotenv import load_dotenv
 import os
+pwwd = '/home/nhatthuong/Documents/Thesis/Acne-detection-and-treatment-recommendations/backend/fastapi_all/'
 
 #load env
-dotenv_path = '/Users/nhatthuong/Documents/Acne-detection-and-treatment-recommendations/backend/fastapi_all/.env'
+dotenv_path = f'{pwwd}/.env'
 load_dotenv(dotenv_path=dotenv_path)
 GOOGLE_API_KEY = os.getenv('GOOGLE_API_KEY')
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
-
 # List of document file paths
 document_links = [
-    "/Users/nhatthuong/Documents/Acne-detection-and-treatment-recommendations/backend/fastapi_all/ai/rag/documents/acne_treatment_2.docx",
-    "/Users/nhatthuong/Documents/Acne-detection-and-treatment-recommendations/backend/fastapi_all/ai/rag/documents/acne_treatment.docx"
+    f"{pwwd}ai/rag/documents/acne_treatment_2.docx",
+    f"{pwwd}ai/rag/documents/acne_treatment.docx"
 ]
 all_docs = []
 try:
@@ -113,7 +113,6 @@ def chatgpt_response_to_html(response_text):
     return html_output
 
 def mainChat(question, chatHistoryCache, medical_db):
-  
     try:
         full_input = medical_db + chatHistoryCache + "\nDưới đây là câu hỏi mới\n" + question
         response = rag_chain.invoke({"input": full_input, "system": system_prompt})

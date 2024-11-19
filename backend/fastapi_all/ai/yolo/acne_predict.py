@@ -12,7 +12,7 @@ import numpy as np
 from datetime import datetime
 import sys
 import os
-pwd = '/Users/nhatthuong/Documents/Acne-detection-and-treatment-recommendations/backend/fastapi_all/'
+pwd = '/home/nhatthuong/Documents/Thesis/Acne-detection-and-treatment-recommendations/backend/fastapi_all/'
 sys.path.append(f'{pwd}ai/yolo/ultralytics')
 from ultralytics import YOLO
 import torch
