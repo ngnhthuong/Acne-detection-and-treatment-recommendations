@@ -18,7 +18,6 @@ from docling.document_converter import (
 )
 from docling.pipeline.simple_pipeline import SimplePipeline
 from docling.pipeline.standard_pdf_pipeline import StandardPdfPipeline
-from semantic_chunking import SemanticChunker
 logger = logging.getLogger(__name__)
 class ExtractData: 
     def __init__(self):
@@ -100,9 +99,3 @@ class ExtractData:
             return
         metadata = self._collect_data_json_convert()
         return metadata
-
-if __name__ == "__main__":
-    extract_data = ExtractData()
-    semantic_chunk = SemanticChunker(chunk_size=200,chunk_overlap=50)
-    metadata = extract_data.text_from_pdf('/home/nhatthuong/Documents/Thesis/Acne-detection-and-treatment-recommendations/backend/fastapi_all/ai/rag/convert_document/2206.01062.pdf')
-    print(semantic_chunk.semantic_chunking_process(metadata=[metadata]))

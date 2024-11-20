@@ -29,7 +29,7 @@ class SemanticChunker:
         self.separators = None
         self.lang = None
         self.embedding_model = HuggingFaceEmbeddings(model_name=embedding_model)
-        model_path = "lid.176.bin"
+        model_path = "/home/nhatthuong/Documents/Thesis/Acne-detection-and-treatment-recommendations/backend/fastapi_all/ai/rag/doctor_advice/extract_data/lid.176.bin"
         self.lang_detector = fasttext.load_model(model_path)
 
     def detect_language(self, text: str) -> str:
@@ -172,26 +172,4 @@ class SemanticChunker:
                         "file_name": document['file_name'],
                         "text": chunk
                     })
-                    
         return metadata_chunked
-
-# def main():
-#     chunker = SemanticChunker(
-#         chunk_size=200,
-#         chunk_overlap=50
-#     )
-#     text_vi = """
-#     Hà Nội là thủ đô của Việt Nam, một thành phố với hơn 1000 năm lịch sử. 
-#     Thành phố này nổi tiếng với những con phố cổ, những hồ nước và ẩm thực đường phố đặc sắc.
-#     Du lịch Hà Nội luôn thu hút khách du lịch bởi sự kết hợp hài hòa giữa các giá trị 
-#     truyền thống và hiện đại. Phố cổ Hà Nội với 36 phố phường là điểm đến không thể bỏ qua.
-#     """
-    
-#     print("\nProcessing Vietnamese text:")
-#     chunks_vi = chunker.process_text(text_vi)
-#     for i, chunk in enumerate(chunks_vi, 1):
-#         print(f"\nChunk {i}:")
-#         print(chunk)
-
-# if __name__ == "__main__":
-#     main()

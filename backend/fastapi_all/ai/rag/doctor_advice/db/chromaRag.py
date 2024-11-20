@@ -30,23 +30,21 @@ class ChromaStorage:
         Convert raw data into Langchain Document objects.
 
         Args:
-            data: List of dictionaries containing document data
+            data: List of dictionaries containing document data with format:
+                [{"filename": str, "text": str}, ...]
 
         Returns:
             List of Document objects
         """
         documents = []
         for item in data:
-            filename = item["filename"]
-            for slide_name, slide_content in item["pages"].items():
-                doc = Document(
-                    page_content=slide_content,
-                    metadata={
-                        "filename": filename,
-                        "slide_name": slide_name
-                    }
-                )
-                documents.append(doc)
+            doc = Document(
+                page_content=item["text"],
+                metadata={
+                    "filename": item["file_name"]
+                }
+            )
+            documents.append(doc)
         return documents
 
     def storage_db_vector(self) -> Chroma:
@@ -91,35 +89,3 @@ class ChromaStorage:
             }
         )
         return retriever.get_relevant_documents(query)
-
-def main() -> None:
-    """
-    Main function to demonstrate ChromaStorage usage.
-    """
-    test_data = [
-        {
-            "filename": "file3.txt", 
-            "pages": {
-                "slide_1": "nội dung mới slide 1", 
-                "slide_2": "nội dung mới slide 2"
-            }
-        }
-    ]
-
-    # Initialize ChromaStorage and perform operations
-    chroma_storage = ChromaStorage(data=test_data)
-    vectorstore = chroma_storage.storage_db_vector()
-    results = chroma_storage.query_top_k(
-        vectorstore=vectorstore,
-        query="slide 1",
-        fetch_k=1
-    )
-    
-    # Print results
-    for i, doc in enumerate(results, 1):
-        print(f"\nResult {i}:")
-        print(f"Content: {doc.page_content}")
-        print(f"Metadata: {doc.metadata}")
-
-if __name__ == '__main__':
-    main()

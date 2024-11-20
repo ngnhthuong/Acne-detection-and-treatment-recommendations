@@ -23,6 +23,7 @@ logger = logging.getLogger(__name__)
 document_links = [
     f"{pwwd}ai/rag/documents/acne_treatment_2.docx",
     f"{pwwd}ai/rag/documents/acne_treatment.docx"
+    # "/home/nhatthuong/Documents/Thesis/Acne-detection-and-treatment-recommendations/backend/fastapi_all/ai/rag/doctor_advice/storage/Acne_Vulgaris.pdf"
 ]
 all_docs = []
 try:

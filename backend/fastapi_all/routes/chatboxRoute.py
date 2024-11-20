@@ -3,7 +3,8 @@ from config.database import architecture_table
 from bson import ObjectId
 from schema.schemaArchitecture import architectureFormat, architecturesFormat
 from datetime import datetime
-from ai.rag.ragWithDocs import mainChat
+# from ai.rag.ragWithDocs import mainChat
+from ai.rag.rag_llma import mainChat
 from models.chatbox_table import ChatboxMessage
 from config.database import acne_detection_table
 from schema.schemaAcneDetection import acneDetectionFormat
@@ -36,7 +37,6 @@ async def create_chatbox(data: ChatboxMessage):
             chatHistoryCache += " " + "user: " + remove_html_tags(chatHistory["message"])
         elif chatHistory["role"] == "bot":
             chatHistoryCache += " " + "bot: " + remove_html_tags(chatHistory["message"])
-    print(data) 
     if data.db == True:
         medical_list = []
         medical_acne = set()
@@ -47,7 +47,6 @@ async def create_chatbox(data: ChatboxMessage):
             "user_id": data.user_id,
             "date": {"$gte": today_start, "$lt": today_end}
         })
-        print(acne_treatment)
         if acne_treatment is not None:
             medical_list = acneDetectionFormat(acne_treatment)
             
@@ -58,8 +57,7 @@ async def create_chatbox(data: ChatboxMessage):
                         medical_acne.add(result["class_name"])
                         
         medical_db = (
-            "Dưới đây là hồ sơ bệnh án của người dùng:\n"
-            + "Có tổng số lượng đốt mụn là: " + str(total_acne) + "\n"
+            "Có tổng số lượng đốt mụn là: " + str(total_acne) + "\n"
             + "Các loại mụn đang bị là: " + ", ".join(medical_acne) + "\n"
         )
         print(medical_db)
