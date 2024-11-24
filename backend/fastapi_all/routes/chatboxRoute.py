@@ -28,8 +28,9 @@ def remove_html_tags(text):
 
 @chatbox.post("/api/chatbox/")
 async def create_chatbox(data: ChatboxMessage):
+    print(data)
     question = data.message
-    chatHistoryCache = "Dưới đây là lịch sử chat: "
+    chatHistoryCache = ""
     chatHistoryList = data.history_chat
     medical_db  = ""
     for chatHistory in chatHistoryList:
@@ -41,21 +42,16 @@ async def create_chatbox(data: ChatboxMessage):
         medical_list = []
         medical_acne = set()
         total_acne = 0
-        today_start = datetime.combine(datetime.now().date(), datetime.min.time())
-        today_end = datetime.combine(datetime.now().date(), datetime.max.time())  
         acne_treatment = acne_detection_table.find_one({
             "user_id": data.user_id,
-            "date": {"$gte": today_start, "$lt": today_end}
         })
         if acne_treatment is not None:
             medical_list = acneDetectionFormat(acne_treatment)
-            
             for medical in medical_list["predicted_images"]:
                 if medical["architecture_ai_name"] == "YoloV8 with SAHI":
                     total_acne += medical["total_acnes"]
                     for result in medical["predicted"]:
                         medical_acne.add(result["class_name"])
-                        
         medical_db = (
             "Có tổng số lượng đốt mụn là: " + str(total_acne) + "\n"
             + "Các loại mụn đang bị là: " + ", ".join(medical_acne) + "\n"

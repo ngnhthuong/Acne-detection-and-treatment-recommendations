@@ -1,4 +1,4 @@
-import fasttext
+from langdetect import detect, detect_langs
 import os
 from typing import List
 import numpy as np
@@ -29,27 +29,22 @@ class SemanticChunker:
         self.separators = None
         self.lang = None
         self.embedding_model = HuggingFaceEmbeddings(model_name=embedding_model)
-        model_path = "/home/nhatthuong/Documents/Thesis/Acne-detection-and-treatment-recommendations/backend/fastapi_all/ai/rag/doctor_advice/extract_data/lid.176.bin"
-        self.lang_detector = fasttext.load_model(model_path)
 
     def detect_language(self, text: str) -> str:
         """
-        Tự động nhận diện ngôn ngữ của văn bản sử dụng FastText
+        Tự động nhận diện ngôn ngữ của văn bản sử dụng langdetect
         """
-        # try:
         text = ' '.join(text.split())
-        predictions = self.lang_detector.predict(text, k=1)
-        lang_code = predictions[0][0].replace('__label__', '')
+        lang_code = detect(text)
         lang_map = {
             'vi': 'vietnamese',
             'ja': 'japanese',
             'en': 'english'
         }
-        logger.debug(predictions)
-        self.lang = predictions
+        logger.debug(lang_code)
+        self.lang = lang_code
         return lang_map.get(lang_code)
-        # except:
-        #     return 'english'
+ 
 
     def _get_language_separators(self, language: str) -> List[str]:
         """

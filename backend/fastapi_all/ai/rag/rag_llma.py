@@ -10,11 +10,11 @@ from typing import List, Dict, Any, Optional
 import os
 import ollama
 import markdown
+import time
 from langchain_google_genai import ChatGoogleGenerativeAI
 import google.generativeai as genai
-
 # Định nghĩa system prompt như một constant
-SYSTEM_PROMPT_TEMPLATE = """Bạn là trợ lý chuyên gia điều trị mụn của Glowypa.:
+SYSTEM_PROMPT_TEMPLATE = """Bạn là trợ lý chuyên gia điều trị mụn của Glowypa:
 
 1. THÔNG TIN VAI TRÒ:
 - Bạn là bác sĩ tư vấn trực tiếp của Glowypa, chuyên về điều trị và tư vấn mụn
@@ -37,7 +37,7 @@ KIẾN THỨC THAM KHẢO:
 # LỊCH SỬ TƯ VẤN:
 {chatHistoryCache}
 
-Vui lòng trả lời theo format Markdown 
+Vui lòng trả lời theo dạng Markdown 
 
 """
 # sau nếu người dùng hỏi về phân tích, phương pháp điều trị mụn và người dùng có mụn mới dùng formt bên dưới:
@@ -181,87 +181,22 @@ def setup_pipeline(data_path: str) -> RagPipeline:
 # Initialize the pipeline
 PIPELINE = setup_pipeline("/home/nhatthuong/Documents/Thesis/Acne-detection-and-treatment-recommendations/backend/fastapi_all/ai/rag/doctor_advice/storage")
 
-# def mainChat(
-#     chatHistoryCache: Optional[str] = None,
-#     medical_db: Optional[str] = None,
-#     question: str = None
-# ) -> str:
-#     """
-#     Main chat function that processes user questions and returns responses
-    
-#     Args:
-#         chatHistoryCache (Optional[str]): Chat history
-#         medical_db (Optional[str]): Medical database information
-#         question (str): User question
-        
-#     Returns:
-#         str: HTML formatted response
-#     """
-#     try:
-#         # Validate input
-#         if not question.strip():
-#             return "Vui lòng nhập câu hỏi"
-
-#         # Search for relevant documents
-#         results = PIPELINE.search_engine(question)
-#         chunk_text = "".join(str(doc.metadata) for doc in results)
-
-#         # Format system prompt
-#         system_prompt = SYSTEM_PROMPT_TEMPLATE.format(
-#             medical_db=medical_db or "Không có thông tin",
-#             chunk_text=chunk_text,
-#             chatHistoryCache=chatHistoryCache or "Không có lịch sử chat",
-#         )
-
-#         # Get response from Ollama
-#         response = ollama.chat(
-#                 model='llama3.2',
-#                 messages=[
-#                     {'role': 'system', 'content': system_prompt},
-#                     {'role': 'user', 'content': question}
-#                 ],
-#                 options={
-#                     'temperature': 0.7,  # Giá trị từ 0.0 đến 1.0
-#                     'top_p': 0.9,       # Tùy chọn: thêm top_p để kiểm soát tốt hơn
-#                 }
-#             )
-
-#         # Convert response to HTML
-#         return PIPELINE.chatgpt_response_to_html(
-#             response_text=response['message']['content']
-#         )
-
-#     except Exception as e:
-#         print(f"Error occurred: {str(e)}")
-#         return "Xin lỗi, đã có lỗi xảy ra trong quá trình xử lý."
-
-
-
 def mainChat(
     chatHistoryCache: Optional[str] = None,
     medical_db: Optional[str] = None,
     question: str = None
 ) -> str:
-    """
-    Main chat function that processes user questions and returns responses using Gemini Pro 1.5
-    
-    Args:
-        chatHistoryCache (Optional[str]): Chat history
-        medical_db (Optional[str]): Medical database information
-        question (str): User question
-        
-    Returns:
-        str: HTML formatted response
-    """
+    print(question)
     try:
         # Validate input
-        if not question.strip():
-            return "Vui lòng nhập câu hỏi"
+        # if not question.strip():
+        #     return "Vui lòng nhập câu hỏi"
 
         # Search for relevant documents
+        start_time = time.time()
         results = PIPELINE.search_engine(question)
         chunk_text = "".join(str(doc.metadata) for doc in results)
-
+        print("time search engine",time.time() - start_time)
         # Format system prompt
         system_prompt = SYSTEM_PROMPT_TEMPLATE.format(
             medical_db=medical_db or "Không có thông tin",
@@ -273,10 +208,11 @@ def mainChat(
         # Initialize Gemini Pro 1.5
         llm = ChatGoogleGenerativeAI(
             model="gemini-1.5-pro",
-            temperature=0.7,
+            temperature=1,
             top_p=0.9,
             google_api_key="AIzaSyBoLp2fXcrGICLQHUY4YyKv3jvujbqypSo"  # Thay thế bằng API key của bạn
         )
+        
 
         # Create messages
         messages = [
@@ -285,7 +221,9 @@ def mainChat(
         ]
 
         # Get response from Gemini
+        start_time = time.time()
         response = llm.invoke(messages)
+        print("time llm",time.time() - start_time)
 
         # Convert response to HTML
         result = PIPELINE.chatgpt_response_to_html(
@@ -296,4 +234,5 @@ def mainChat(
 
     except Exception as e:
         print(f"Error occurred: {str(e)}")
+        
         return "Xin lỗi, đã có lỗi xảy ra trong quá trình xử lý. Vui lòng thử lại sau."

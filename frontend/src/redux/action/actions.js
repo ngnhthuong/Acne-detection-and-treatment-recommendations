@@ -33,6 +33,7 @@ import {
   CHATBOX_RAG,
   CHATBOX_MEDICAL_DB,
   CHATBOX_FAILURE,
+  CHANGE_DISPLAY
 } from "./types";
 
 export const increaseCounter = (data) => {
@@ -347,3 +348,10 @@ export const chatboxFailure = (error) => {
     payload: error,
   };
 };
+
+export const changeDiaplay = () => {
+  console.log('to here--')
+  return {
+    type: CHANGE_DISPLAY,
+  }
+}

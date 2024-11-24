@@ -1,3 +1,4 @@
+import { changeDiaplay } from "../action/actions";
 import {
     CHATBOX_REQUESTION,
     CHATBOX_RESPONSE,
@@ -5,6 +6,7 @@ import {
     CHATBOX_RAG,
     CHATBOX_MEDICAL_DB,
     CHATBOX_FAILURE,
+    CHANGE_DISPLAY
   } from "../action/types";
 const INITIAL_STATE = {
     chatMessage: [],
@@ -12,6 +14,7 @@ const INITIAL_STATE = {
     isError: false,
     rag: true,
     medicaldb: true,
+    changeDisplay: false,
 };
 
 const treatmentAdviceChatbox = (state = INITIAL_STATE, action) => {
@@ -40,6 +43,10 @@ const treatmentAdviceChatbox = (state = INITIAL_STATE, action) => {
             return {
                 ...state, isError: true, loading: false,
             };
+        case CHANGE_DISPLAY:
+            return{
+                ...state, changeDisplay: !state.changeDisplay
+            }
         default:
             return state;
     }

@@ -13,7 +13,7 @@ const Notification = () => {
   const isSuccessRegis = useSelector((state) => state.userRegis.isSuccess);
   const isErrorRegis = useSelector((state) => state.userRegis.isError);
   const isErrorLogin = useSelector((state) => state.user.isError);
-  // const isLoginSuccess = useSelector((state) => state.user.isLoginSuccess);
+  const isLoginSuccess = useSelector((state) => state.user.isLoginSuccess);
   const isPredictedSuccess = useSelector(
     (state) => state.acnePredictionDaily.isPredictedSuccess
   );
@@ -49,18 +49,18 @@ const Notification = () => {
       timer = setTimeout(() => setShow(false), 4000);
     }
 
-    // if (isErrorLogin || isLoginSuccess) {
-    //   console.log("isErrorLogin", isErrorLogin);
-    //   setNotification(
-    //     isLoginSuccess ? "Đăng nhập thành công 🥰" : "Đăng nhập thất bại 🙂‍↔️"
-    //   );
-    //   setType(isLoginSuccess ? "success" : "error");
-    //   setShow(true);
-    //   timer = setTimeout(() => {
-    //     setShow(false);
-    //     dispatch(fetchUserReset());
-    //   }, 4000);
-    // }
+    if (isErrorLogin || isLoginSuccess) {
+      console.log("isErrorLogin", isErrorLogin);
+      setNotification(
+        isLoginSuccess ? "Login Success" : "Login failure, please check again email and password!"
+      );
+      setType(isLoginSuccess ? "success" : "error");
+      setShow(true);
+      timer = setTimeout(() => {
+        setShow(false);
+        dispatch(fetchUserReset());
+      }, 4000);
+    }
 
     return () => {
       clearTimeout(timer);

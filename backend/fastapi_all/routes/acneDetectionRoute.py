@@ -19,11 +19,11 @@ async def create_or_update_upload_files(
     data: List[ImageBase64AndModel],
     
 ):
-    today_start = datetime.combine(datetime.now().date(), datetime.min.time())
-    today_end = datetime.combine(datetime.now().date(), datetime.max.time())
+    # today_start = datetime.combine(datetime.now().date(), datetime.min.time())
+    # today_end = datetime.combine(datetime.now().date(), datetime.max.time())
     acne_treatment = acne_detection_table.find_one({
         "user_id": user_id,
-        "date": {"$gte": today_start, "$lt": today_end}
+        # "date": {"$gte": today_start, "$lt": today_end}
     })
     if acne_treatment:
         raise HTTPException(status_code=404, detail="Today exist history")
@@ -75,12 +75,12 @@ async def delete_and_put_upload_files(
     data: DeleteAndAddBase64Img,
     
 ):
-    today_start = datetime.combine(datetime.now().date(), datetime.min.time())
-    today_end = datetime.combine(datetime.now().date(), datetime.max.time())
+    # today_start = datetime.combine(datetime.now().date(), datetime.min.time())
+    # today_end = datetime.combine(datetime.now().date(), datetime.max.time())
     
     acne_treatment = acne_detection_table.find_one({
         "user_id": user_id,
-        "date": {"$gte": today_start, "$lt": today_end}
+        # "date": {"$gte": today_start, "$lt": today_end}
     })
     
     if not acne_treatment:
@@ -130,7 +130,7 @@ async def delete_and_put_upload_files(
     
     acne_treatment_new = acne_detection_table.find_one({
         "user_id": user_id,
-        "date": {"$gte": today_start, "$lt": today_end}
+        # "date": {"$gte": today_start, "$lt": today_end}
     })    
     
     return {"message": "success: Acne detection has been updated successfully", "data": acneDetectionFormat(acne_treatment_new)}
@@ -139,11 +139,11 @@ async def delete_and_put_upload_files(
 async def get_acne_detection_daily(
     user_id: str,
 ):
-    today_start = datetime.combine(datetime.now().date(), datetime.min.time())
-    today_end = datetime.combine(datetime.now().date(), datetime.max.time())
+    # today_start = datetime.combine(datetime.now().date(), datetime.min.time())
+    # today_end = datetime.combine(datetime.now().date(), datetime.max.time())
     acne_treatment = acne_detection_table.find_one({
         "user_id": user_id,
-        "date": {"$gte": today_start, "$lt": today_end}
+        # "date": {"$gte": today_start, "$lt": today_end}
     })
     if not acne_treatment:
         return {"message": "success: get acne_detection_daily", "data": []}
