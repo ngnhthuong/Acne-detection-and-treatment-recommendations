@@ -32,7 +32,7 @@ class SemanticChunker:
 
     def detect_language(self, text: str) -> str:
         """
-        Tự động nhận diện ngôn ngữ của văn bản sử dụng langdetect
+        Tự động nhận diện ngôn ngữ của văn bản sử dụng 
         """
         text = ' '.join(text.split())
         lang_code = detect(text)
